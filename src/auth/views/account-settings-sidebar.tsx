@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import Skeleton from 'react-loading-skeleton';
-import React, { createRef, useCallback, useEffect, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Dictionary } from 'lodash';
 import { Account } from 'auth/auth.types';
+import { TFormikForm } from 'common/common.types';
 import { groupByProviderName } from 'auth/auth.helper';
 import useSearchParam from 'auth/hooks/useSearchParam';
 import { fetchConnectionInfo } from 'auth/auth.service';
@@ -12,6 +12,8 @@ import { useAuthState, useAuthDispatch } from 'auth/auth.context';
 import { ReactComponent as SecurityIcon } from 'assets/images/signup/security.svg';
 
 import AccountSettingForm from './inc/account-setting-form';
+import AccountSettingSidebarSkeleton from './inc/account-setting-sidebar-skeleton';
+import { logger } from 'common/logger.helper';
 
 interface Props {
   setFinish?: () => void;
@@ -33,6 +35,7 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
 
   const from = useSearchParam('from');
   const isFromFastlink = from === 'fastLink';
+  const accountSettingFormRef = useRef<TFormikForm>(null);
 
   /**
    * @description we will avoid the fetch connection info call
@@ -40,7 +43,8 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
    * i.e reload counter will be 0
    */
   useEffect(() => {
-    if (!isFromFastlink || reloadCounter) {
+    if (!isFromFastlink && reloadCounter) {
+      logger.log('We are hitting fetch connection info', reloadCounter);
       const getUser = async () => {
         await fetchConnectionInfo({ dispatch });
       };
@@ -125,45 +129,31 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
   }, [currentProviderAccounts, accountsByProviderName, clickEvent, setFinish]);
 
   if (!accounts || !currentAccount || !currentProviderAccounts) {
-    return (
-      <div className='bg-white credentials-wrapper account-setting'>
-        <div className='credentials-content'>
-          <div className='top-content-wrap'>
-            <h2>
-              <Skeleton count={1} />
-            </h2>
-            <p>
-              <Skeleton count={3} />
-            </p>
-          </div>
-          <div className='form-wrap'>
-            <ul className='bank-list'>
-              <li role='button'>
-                <Skeleton width={120} height={80} />
-              </li>
-              <li role='button'>
-                <Skeleton width={120} height={80} />
-              </li>
-            </ul>
-            <div className='form-heading'>
-              <Skeleton count={20} />
-            </div>
-            <p className='flex-box learn-more-security'>
-              <Skeleton count={1} />
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    return <AccountSettingSidebarSkeleton />;
   }
 
+  const handleFormChange = () => {
+    if (accountSettingFormRef.current) {
+      accountSettingFormRef.current.handleSubmit();
+    }
+  };
+
   const handleProviderChange = (provider: string) => {
+    // save the current form fields on provider changes
+    logger.log('Provider change', provider);
+    setReloadCounter(() => 0);
+    logger.log('reload counter', reloadCounter);
     setClickEvent(true);
     setProviderName(provider);
+    handleFormChange();
   };
 
   const handleChangeCurrentAccount = (curAccount: Account) => {
+    // save the current form fields on current account change.
+    logger.log('Current account change', curAccount);
+    setReloadCounter(() => 0);
     setCurrentAccount(curAccount);
+    handleFormChange();
   };
 
   const getProviderClass = (pName: string) => {
@@ -257,6 +247,7 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
             handleReload={() => setReloadCounter((c) => c + 1)}
             isFromAccount={selectedAccount ? true : false}
             closeSidebar={closeSidebar}
+            formRef={accountSettingFormRef}
           />
 
           <p className='flex-box learn-more-security'>

@@ -14,7 +14,7 @@ import MMToolTip from 'common/components/tooltip';
 import { makeFormFields } from 'auth/auth.helper';
 import { useModal } from 'common/components/modal';
 import { enumerateStr } from 'common/common-helper';
-import { StringKeyObject } from 'common/common.types';
+import { StringKeyObject, TRef } from 'common/common.types';
 import useAccountType from 'auth/hooks/useAccountType';
 import useLoanAccount from 'auth/hooks/useLoanAccount';
 import useAccountFilter from 'auth/hooks/useAccountFilter';
@@ -42,9 +42,16 @@ interface Props {
   handleReload?: () => void;
   closeSidebar?: () => void;
   isFromAccount?: boolean;
+  formRef: TRef;
 }
 
-const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, closeSidebar, isFromAccount }) => {
+const AccountSettingForm: React.FC<Props> = ({
+  currentAccount,
+  handleReload,
+  closeSidebar,
+  isFromAccount,
+  formRef,
+}) => {
   const history = useHistory();
   const { mmToast } = useToast();
   const { accounts } = useAuthState();
@@ -148,6 +155,7 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
 
   return (
     <Formik
+      innerRef={formRef}
       initialValues={
         {
           currency: currentFormFields?.currency || CurrencyOptions.USD,
