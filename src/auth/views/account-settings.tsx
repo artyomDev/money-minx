@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
+import AppHeader from 'common/app.header';
+import AppSidebar from 'common/app.sidebar';
 import { AuthLayout } from 'layouts/auth.layout';
 import { useAuthState } from 'auth/auth.context';
+import { patchCompleteProfile } from 'api/request.api';
 import { ReactComponent as LogoImg } from 'assets/icons/logo.svg';
 import { ReactComponent as LoginLockIcon } from 'assets/images/login/lock-icon.svg';
 import { ReactComponent as LoginShieldIcon } from 'assets/images/login/shield-icon.svg';
 
 import ConnectAccountSteps from './inc/connect-steps';
-import { patchCompleteProfile } from 'api/request.api';
 import AccountSettingsSideBar from './account-settings-sidebar';
-import AppHeader from '../../common/app.header';
-import AppSidebar from '../../common/app.sidebar';
 
 const AccountSettings = () => {
   const history = useHistory();
@@ -51,25 +51,28 @@ const AccountSettings = () => {
 
   const closeRightNav = () => {
     setOpenRightNav(false);
-  }
+  };
 
   return (
     <AuthLayout>
-      {onboarded ?
+      {onboarded ? (
         <AppHeader
           toggleLeftMenu={() => setOpenLeftNav(!openLeftNav)}
           toggleRightMenu={() => setOpenRightNav(!openRightNav)}
           open={openRightNav}
-        /> : null}
+        />
+      ) : null}
       <AppSidebar openLeft={openLeftNav} openRight={openRightNav} />
-      <div className='mm-slider-bg-overlay' onClick={closeRightNav} />
+      <div className='mm-slider-bg-overlay' onClick={closeRightNav} role='button' />
       <div className='main-table-wrapper'>
         <div>
           <div className='row login-wrapper'>
             <div className='guide-content'>
-              {!onboarded ? <Link to='/net-worth'>
-                <LogoImg className='icon auth-logo' />
-              </Link> : null}
+              {!onboarded ? (
+                <Link to='/net-worth'>
+                  <LogoImg className='icon auth-logo' />
+                </Link>
+              ) : null}
               <div className='auth-left-content'>
                 <h1>Three easy steps to get started with Money Minx</h1>
                 <ul>

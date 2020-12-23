@@ -136,11 +136,11 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
     return <AccountSettingSidebarSkeleton />;
   }
 
-  const handleFormChange = () => {
-    if (accountSettingFormRef.current) {
-      accountSettingFormRef.current.handleSubmit();
-    }
-  };
+  // const handleFormChange = () => {
+  //   if (accountSettingFormRef.current) {
+  //     accountSettingFormRef.current.handleSubmit();
+  //   }
+  // };
 
   const handleProviderChange = (provider: string) => {
     // save the current form fields on provider changes
@@ -149,7 +149,7 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
     logger.log('reload counter', reloadCounter);
     setClickEvent(true);
     setProviderName(provider);
-    handleFormChange();
+    // handleFormChange();
   };
 
   const handleChangeCurrentAccount = (curAccount: Account) => {
@@ -157,7 +157,7 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
     logger.log('Current account change', curAccount);
     setReloadCounter(() => 0);
     setCurrentAccount(curAccount);
-    handleFormChange();
+    // handleFormChange();
   };
 
   const getProviderClass = (pName: string) => {
