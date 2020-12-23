@@ -70,9 +70,9 @@ export const ExpiredLinkMainSection = () => {
 
           <div className='bg-white credentials-wrapper'>
             <div className='credentials-content'>
-              <div className='logo-img-wrapper'>
+              <Link to='/' className='logo-img-wrapper'>
                 <LogoImg className='auth-logo' />
-              </div>
+              </Link>
               <h2>Expired Link</h2>
               <p>The reset password link you are using already expired. Please request a new one below.</p>
               <Formik

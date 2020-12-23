@@ -149,7 +149,7 @@ const SubscriptionPlansTable = () => {
             return (
               <div className='price-table' key={index}>
                 <div className='price-heading'>
-                  <h2>{pt.name}</h2>
+                  <span className='price-plan-name'>{pt.name}</span>
                   <p>
                     {type === 'yearly' ? `$${pt.price}/Year` : `$${pt.price}/Month`}
                     {type === 'yearly' ? <span className='save-percentage'>Save ${pt.save}</span> : null}

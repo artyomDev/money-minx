@@ -8,7 +8,7 @@
   }
 
   p {
-    color: $gray;
+    color: $grayText;
   }
 }
 
@@ -25,7 +25,7 @@
   }
 
   p {
-    color: $gray;
+    color: $grayText;
     margin-bottom: 2.2rem;
   }
 }
@@ -44,7 +44,7 @@
   }
 
   p {
-    color: $gray;
+    color: $grayText;
   }
 }
 
@@ -159,7 +159,7 @@ ul.owner-list {
 }
 
 ul.owner-list li a {
-  color: $gray;
+  color: $grayText;
   text-decoration: none;
   outline: none;
   display: inline-block;

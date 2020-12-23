@@ -35,7 +35,7 @@
 
   &__profile-page {
     &--tag {
-      background: $purpleOpacity20;
+      background: $purpleOpacity16;
       border-radius: 6px;
       font-weight: 400;
       display: inline-block;
@@ -110,14 +110,14 @@
 }
 
 .card-sub-title {
-  color: $gray;
+  color: $grayText;
   margin-bottom: 1.6875rem;
   margin-top: 0.75rem;
   font-size: 1rem;
   font-weight: 400;
 }
 .card-description {
-  color: $gray;
+  color: $grayText;
   font-size: 0.875rem;
   font-weight: 400;
   margin: 10px 0 20px 0;

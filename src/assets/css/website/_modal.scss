@@ -34,7 +34,7 @@
 
   .modal-content {
     padding: 0;
-    height: 670px;
+    height: 100%;
   }
   .modal-body {
     padding: 0;
@@ -187,7 +187,9 @@ button.hidden {
   border-radius: 4px;
 }
 .signup-done-modal-logo {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
+  max-height: 40px;
+  display: flex;
 }
 .modal-wrapper.signup-modal h4 {
   font-size: 2rem;
@@ -236,7 +238,7 @@ button.hidden {
     background: none;
     font-weight: 500;
     font-size: 0.875rem;
-    color: $gray;
+    color: $grayText;
     border: 1px solid $grayOpacity24;
     border-radius: 4px;
     height: 48px;
@@ -258,4 +260,26 @@ button.hidden {
 
 .fastlink-modal-container {
   min-height: 50px;
+}
+
+.account-added-modal {
+  h1 {
+    font-size: 32px;
+  }
+  .account-modal-img-wrapper {
+    width: 187px;
+    height: 35px;
+    position: relative;
+
+    img {
+      position: absolute;
+      left: -30%;
+      top: -70%;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .modal-btn-wrapper {
+    margin-top: 3.5rem !important;
+  }
 }

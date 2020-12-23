@@ -33,6 +33,10 @@
     line-height: 1.4375rem;
     margin: auto;
   }
+
+  &.text-on-darkBG {
+    color: $purpleTextLight;
+  }
 }
 
 .highlighted-text-light {
@@ -53,9 +57,9 @@
 
 .red-links {
   &:hover {
-    border-bottom: 1.5px solid $redAlert;
+    border-bottom: 1.5px solid $redText;
     transition-duration: 0s;
-    color: $redAlert;
+    color: $redText;
   }
 }
 

@@ -14,7 +14,7 @@
   }
 
   p {
-    color: $gray;
+    color: $grayText;
   }
 }
 
@@ -24,7 +24,7 @@
   }
 
   p {
-    color: $gray;
+    color: $grayText;
   }
 }
 
@@ -39,7 +39,7 @@
   list-style: none;
   flex: 1 0 31.5%;
   font-size: 1.25rem;
-  color: $gray;
+  color: $grayText;
 }
 
 .home-list ul li h2 {
@@ -184,7 +184,7 @@
   }
 
   p {
-    color: $gray;
+    color: $grayText;
   }
 }
 
@@ -542,7 +542,7 @@ button.bg-primary:focus {
 
   .text,
   .info-text {
-    color: $gray;
+    color: $grayText;
   }
 
   .mm-scroll-down {
@@ -775,7 +775,7 @@ button.bg-primary:focus {
     }
 
     p {
-      color: $gray;
+      color: $grayText;
       font-weight: 300;
       font-size: 1.25rem;
       max-width: 100%;
@@ -786,7 +786,7 @@ button.bg-primary:focus {
     }
 
     small {
-      color: $gray;
+      color: $grayText;
       font-weight: 300;
       font-size: 0.875rem;
     }
@@ -849,7 +849,7 @@ button.bg-primary:focus {
   p {
     font-weight: 300;
     font-size: 1.25rem;
-    color: $gray;
+    color: $grayText;
   }
 
   .mm-home-feature-section {
@@ -1152,7 +1152,6 @@ button.bg-primary:focus {
   border-radius: 6px;
   font-size: 0.875rem;
   padding: 30px;
-  color: #434A55;
   min-height: 150px;
   width:276px;
 
@@ -1183,12 +1182,12 @@ button.bg-primary:focus {
   line-height: 30px;
   display: flex;
   align-items: center;
-  color: #000000;
+  color: $black;
   margin-top: 35px;
 }
 
 .testimonial-name span {
-  color: #969EAC;
+  color: $grayText;
   font-size: 18px;
   padding-left: 5px;
 }

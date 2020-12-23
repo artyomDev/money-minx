@@ -11,6 +11,7 @@ import AppHeader from 'common/app.header';
 import AppSidebar from 'common/app.sidebar';
 import useToast from 'common/hooks/useToast';
 import { events } from '@mm/data/event-list';
+import { STATUS_CODE } from 'app/app.status';
 import useAccounts from 'auth/hooks/useAccounts';
 import MMToolTip from 'common/components/tooltip';
 import FastLinkModal from 'yodlee/fast-link.modal';
@@ -23,6 +24,7 @@ import { FastLinkOptionsType } from 'yodlee/yodlee.type';
 import { TimeIntervalEnum } from 'networth/networth.enum';
 import { appRouteConstants } from 'app/app-route.constant';
 import { getCurrencySymbol } from 'common/currency-helper';
+import { Placeholder } from 'networth/views/inc/placeholder';
 import { fNumber, numberWithCommas } from 'common/number.helper';
 import AccountSettingsSideBar from 'auth/views/account-settings-sidebar';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
@@ -85,11 +87,11 @@ const AccountDetail: React.FC = () => {
   const dropdownToggle = useRef(null);
   const holdingsDetailsModal = useModal();
   const activityDetailsModal = useModal();
-  const { fetchNewAccounts } = useAccounts();
+  const { fetchLatestProviderAccounts, fetchAccounts } = useAccounts();
 
   useEffect(() => {
-    const fetchAccountDetails = async (accountId: string, baseCurrency: boolean) => {
-      const { data, error } = await getAccountDetails(accountId, baseCurrency);
+    const fetchAccountDetails = async (accId: string, bCurrency: boolean) => {
+      const { data, error } = await getAccountDetails(accId, bCurrency);
       if (!error) {
         setAccountDetails(data);
       }
@@ -131,12 +133,19 @@ const AccountDetail: React.FC = () => {
   const handleConnectAccountSuccess = async () => {
     setLoading(true);
     const { error } = await getRefreshedAccount({ dispatch });
-    await fetchNewAccounts();
+    if (STATUS_CODE.SERVER_ACCEPTED === error?.code) {
+      await fetchAccounts();
+      setLoading(false);
+
+      return history.push(appRouteConstants.auth.NET_WORTH);
+    }
+    await fetchLatestProviderAccounts();
     setLoading(false);
 
     if (error) {
       return mmToast('Error occurred on fetching refreshed account', { type: 'error' });
     }
+
     location.pathname = appRouteConstants.auth.ACCOUNT_SETTING;
     location.search = 'from=fastLink';
 
@@ -303,7 +312,7 @@ const AccountDetail: React.FC = () => {
                   <SettingsGear className='float-left mr-2 settings-gear-button' onClick={() => setAccSetting(true)} />
                   <ul>
                     <li>{AccountDetails?.accountName}</li>
-                    <li>x{AccountDetails?.accountNumber.slice(4) || '----'}</li>
+                    {AccountDetails?.accountNumber ? <li>{AccountDetails?.accountNumber.slice(4)}</li> : null}
                     <li>{AccountDetails?.category?.mmCategory}</li>
                     <li>{AccountDetails?.category?.mmAccountType}</li>
                     {AccountDetails?.category?.mmAccountSubType && (
@@ -463,54 +472,63 @@ const AccountDetail: React.FC = () => {
                 </div>
               </div>
 
-              <div className='account-ct-box mb-40'>
-                <div className='graphbox'>
-                  <ul>
-                    {AccountDetails?.category?.mmCategory === 'Investment Assets' && (
-                      <li className='inv-data'>
-                        <span>Value</span>
-                        <h3>
-                          {currencySymbol}
-                          {curAccountHoldingsItem?.[0]?.value
-                            ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0]?.value, 0))
-                            : 0}
-                        </h3>
-                      </li>
-                    )}
-                    {AccountDetails?.category?.mmCategory === 'Other Assets' && (
-                      <li className='other-data'>
-                        <span>Value</span>
-                        <h3>
-                          {currencySymbol}
-                          {curAccountHoldingsItem?.[0].value
-                            ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0].value, 0))
-                            : 0}
-                        </h3>
-                      </li>
-                    )}
-                    {AccountDetails?.category?.mmCategory === 'Liabilities' && (
-                      <li className='lty-data'>
-                        <span>Value</span>
-                        <h3>
-                          {currencySymbol}
-                          {curAccountHoldingsItem?.[0].value
-                            ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0].value, 0))
-                            : 0}
-                        </h3>
-                      </li>
-                    )}
-                  </ul>
-                  <div className='chartbox'>
-                    {AccountHoldings && curAccountHoldingsItem && (
-                      <AccountBarGraph
-                        data={AccountHoldings?.charts}
-                        curInterval={curAccountHoldingsItem?.[0]?.interval}
-                        currencySymbol={currencySymbol}
-                        mmCategory={AccountDetails?.category?.mmCategory}
-                      />
-                    )}
+              <div
+                className={[
+                  'account-ct-box mb-40',
+                  AccountHoldings?.holdings.length === 0 ? 'ct-box-placeholder' : '',
+                ].join(' ')}
+              >
+                {AccountHoldings?.holdings.length !== 0 ? (
+                  <div className='graphbox'>
+                    <ul>
+                      {AccountDetails?.category?.mmCategory === 'Investment Assets' && (
+                        <li className='inv-data'>
+                          <span className='graphbox-label'>Value</span>
+                          <span className='graphbox-amount'>
+                            {currencySymbol}
+                            {curAccountHoldingsItem?.[0]?.value
+                              ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0]?.value, 0))
+                              : 0}
+                          </span>
+                        </li>
+                      )}
+                      {AccountDetails?.category?.mmCategory === 'Other Assets' && (
+                        <li className='other-data'>
+                          <span className='graphbox-label'>Value</span>
+                          <span className='graphbox-amount'>
+                            {currencySymbol}
+                            {curAccountHoldingsItem?.[0].value
+                              ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0].value, 0))
+                              : 0}
+                          </span>
+                        </li>
+                      )}
+                      {AccountDetails?.category?.mmCategory === 'Liabilities' && (
+                        <li className='lty-data'>
+                          <span className='graphbox-label'>Value</span>
+                          <span className='graphbox-amount'>
+                            {currencySymbol}
+                            {curAccountHoldingsItem?.[0].value
+                              ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0].value, 0))
+                              : 0}
+                          </span>
+                        </li>
+                      )}
+                    </ul>
+                    <div className='chartbox'>
+                      {AccountHoldings && curAccountHoldingsItem && (
+                        <AccountBarGraph
+                          data={AccountHoldings?.charts}
+                          curInterval={curAccountHoldingsItem?.[0]?.interval}
+                          currencySymbol={currencySymbol}
+                          mmCategory={AccountDetails?.category?.mmCategory}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <Placeholder type='acctDetail' />
+                )}
               </div>
 
               <div className='d-flex justify-content-between flex-wrap'>

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import moment from 'moment';
-import { Formik } from 'formik';
 import { FormControl } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
-
 import 'react-circular-progressbar/dist/styles.css';
 
+import moment from 'moment';
+import { Formik } from 'formik';
 import useToast from 'common/hooks/useToast';
 import { ProfileType } from 'auth/auth.types';
 import useProfile from 'auth/hooks/useProfile';
@@ -21,8 +20,7 @@ import { ReactComponent as Shield } from 'assets/icons/shield.svg';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { ReactComponent as InfoIcon } from 'assets/images/signup/info.svg';
 import { HouseHoldIncomeOptions, MaritalStatusOptions, RiskToleranceOptions } from 'setting/setting.enum';
-
-import MMToolTip from '../../common/components/tooltip';
+import MMToolTip from 'common/components/tooltip';
 
 export const ProfileOverview = () => {
   const {
@@ -128,7 +126,7 @@ export const ProfileOverview = () => {
             </MMToolTip>
           </div>
           <div className='d-flex align-items-center'>
-            <div className='text--gray mr-4 sm-hide'>Profile complete</div>
+            <div className='text--grayText mr-4 sm-hide'>Profile complete</div>
             <div className='mm-radial__progress-bar'>
               <CircularProgressbar
                 value={change ? progress : curProgress}
@@ -342,7 +340,7 @@ export const ProfileOverview = () => {
                     <div>
                       <div className='mm-profile-overview__form'>
                         <div className='form-group row align-items-center'>
-                          <label htmlFor='fname' className='col-md-3 col-form-label'>
+                          <label htmlFor='firstName' className='col-md-3 col-form-label'>
                             First Name
                             <MMToolTip
                               placement='top'
@@ -353,6 +351,7 @@ export const ProfileOverview = () => {
                           </label>
                           <div className='col-md-9'>
                             <input
+                              id='firstName'
                               type='text'
                               name='firstName'
                               placeholder='John'
@@ -363,7 +362,7 @@ export const ProfileOverview = () => {
                           </div>
                         </div>
                         <div className='form-group row align-items-center'>
-                          <label htmlFor='lname' className='col-md-3 col-form-label'>
+                          <label htmlFor='lastName' className='col-md-3 col-form-label'>
                             Last Name
                             <MMToolTip
                               placement='top'
@@ -374,6 +373,7 @@ export const ProfileOverview = () => {
                           </label>
                           <div className='col-md-9'>
                             <input
+                              id='lastName'
                               type='text'
                               name='lastName'
                               placeholder='Doe'
@@ -394,8 +394,9 @@ export const ProfileOverview = () => {
                             </MMToolTip>
                           </label>
                           <div className='col-md-9'>
-                            <div className='mm-prepend-text text--gray'>@</div>
+                            <div className='mm-prepend-text text--grayText'>@</div>
                             <input
+                              id='username'
                               type='text'
                               name='username'
                               placeholder='john'
@@ -411,6 +412,7 @@ export const ProfileOverview = () => {
                           </label>
                           <div className='col-md-9'>
                             <textarea
+                              id='bio'
                               name='bio'
                               value={values.bio || ''}
                               onChange={handleChange}
@@ -425,6 +427,7 @@ export const ProfileOverview = () => {
                           </label>
                           <div className='col-md-9'>
                             <input
+                              id='website'
                               type='text'
                               name='website'
                               value={values.website || ''}
@@ -440,6 +443,7 @@ export const ProfileOverview = () => {
                           </label>
                           <div className='col-md-9'>
                             <FormControl
+                              id='year'
                               type='number'
                               name='investingSince'
                               value={values.investingSince || ''}
@@ -547,9 +551,10 @@ export const ProfileOverview = () => {
                           </div>
                         </div>
                         <div className='form-group row align-items-center'>
-                          <label className='col-md-3 col-form-label'>Date of birth</label>
+                          <label className='col-md-3 col-form-label' htmlFor='dob'>Date of birth</label>
                           <div className='col-md-5'>
                             <ReactDatePicker
+                              id='dob'
                               className='form-control form-control-lg mr-sm-2'
                               name='dob'
                               selected={values.dob ? new Date(values.dob) : undefined}
@@ -560,11 +565,13 @@ export const ProfileOverview = () => {
                           </div>
                         </div>
                         <div className='form-group row align-items-center'>
-                          <label className='col-md-3 col-form-label'>Retirement age</label>
+                          <label className='col-md-3 col-form-label' htmlFor='targetedRetirementAge'>Retirement age</label>
                           <div className='col-md-5'>
                             <FormControl
                               type='number'
+                              min='0'
                               name='targetedRetirementAge'
+                              id='targetedRetirementAge'
                               value={values.targetedRetirementAge || ''}
                               onChange={handleChange}
                               className='form-control form-control-lg mr-sm-2'
@@ -574,9 +581,10 @@ export const ProfileOverview = () => {
                           <div className='col text-md-center  mt-3 mt-md-0'>
                             <div className='form-wrap'>
                               <span className='checkbox-item'>
-                                <label className='check-box'>
+                                <label className='check-box' htmlFor='alreadyRetired'>
                                   Already retired
                                   <input
+                                    id='alreadyRetired'
                                     type='checkbox'
                                     name='alreadyRetired'
                                     value='true'
@@ -591,11 +599,12 @@ export const ProfileOverview = () => {
                           </div>
                         </div>
                         <div className='form-group row align-items-center'>
-                          <label className='col-md-3 col-form-label'>Marital status</label>
+                          <label className='col-md-3 col-form-label' htmlFor='maritalStatus'>Marital status</label>
                           <div className='col-md-5'>
                             <select
                               className='form-control form-control-lg mr-sm-2'
                               name='maritalStatus'
+                              id='maritalStatus'
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.maritalStatus || ''}
@@ -613,11 +622,12 @@ export const ProfileOverview = () => {
                         {values.maritalStatus !== MaritalStatusOptions.SINGLE && (
                           <>
                             <div className='form-group row align-items-center'>
-                              <label className='col-md-3 col-form-label'>Spouse’s date of birth</label>
+                              <label className='col-md-3 col-form-label' htmlFor='spouseDob'>Spouse’s date of birth</label>
                               <div className='col-md-5'>
                                 <ReactDatePicker
                                   className='form-control form-control-lg mr-sm-2'
                                   name='spouseDob'
+                                  id='spouseDob'
                                   selected={values.spouseDob ? new Date(values.spouseDob) : undefined}
                                   onChange={(val: Date) => {
                                     setFieldValue('spouseDob', moment(val).toISOString());
@@ -626,11 +636,13 @@ export const ProfileOverview = () => {
                               </div>
                             </div>
                             <div className='form-group row align-items-center'>
-                              <label className='col-md-3 col-form-label'>Spouse’s retirement age</label>
+                              <label className='col-md-3 col-form-label' htmlFor='spouseTargetedRetirementAge'>Spouse’s retirement age</label>
                               <div className='col-md-5'>
                                 <FormControl
                                   type='number'
+                                  min='0'
                                   name='spouseTargetedRetirementAge'
+                                  id='spouseTargetedRetirementAge'
                                   value={values.spouseTargetedRetirementAge || ''}
                                   onChange={handleChange}
                                   className='mr-sm-2 form-control form-control-lg'
@@ -640,11 +652,12 @@ export const ProfileOverview = () => {
                               <div className='col text-md-center mt-3 mt-md-0'>
                                 <div className='form-wrap'>
                                   <span className='checkbox-item'>
-                                    <label className='check-box'>
+                                    <label className='check-box' htmlFor='spouseAlreadyRetired'>
                                       Already retired
                                       <input
                                         type='checkbox'
                                         name='spouseAlreadyRetired'
+                                        id='spouseAlreadyRetired'
                                         value='true'
                                         checked={values.spouseAlreadyRetired}
                                         onChange={() => toggleFormCheck('spouseAlreadyRetired')}
@@ -659,11 +672,12 @@ export const ProfileOverview = () => {
                           </>
                         )}
                         <div className='form-group row align-items-center'>
-                          <label className='col-md-3 col-form-label'>Dependants</label>
+                          <label className='col-md-3 col-form-label' htmlFor='dependants'>Dependants</label>
                           <div className='col-md-5'>
                             <select
                               className='form-control form-control-lg mr-sm-2'
                               name='dependants'
+                              id='dependants'
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.dependants || 0}
@@ -742,7 +756,8 @@ export const ProfileOverview = () => {
               <SaveSettings handleSave={handleSubmit} statusText={statusText} />
             </form>
           );
-        }}
+        }
+        }
       </Formik>
     </section>
   );

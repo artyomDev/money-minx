@@ -51,7 +51,7 @@ const AppSidebar: React.FC<NetworthSidebarProps> = ({ openLeft, openRight }) => 
           <li>
             <Link to='/settings?active=Accounts'>
               <ManageConnection />
-              <i className='icon-manage-connections' /> Manage Connections
+              <i className='icon-manage-connections' /> Manage Accounts
             </Link>
           </li>
           <li>

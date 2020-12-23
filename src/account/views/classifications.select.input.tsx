@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 
-interface SelectInputProps {
+interface ClassificationsSelectInputProps {
   args: any[];
   onChange: (e: React.ChangeEvent<any>) => void;
   value: string;
   id: string;
   tabName: string;
-  classifications: any
+  classifications: any;
 }
 
-export const ClassificationsSelectInput: React.FC<SelectInputProps> = ({ args, onChange, value, id, tabName, classifications }) => {
+export const ClassificationsSelectInput: React.FC<ClassificationsSelectInputProps> = ({ args, onChange, value, id, tabName, classifications }) => {
+  console.log(classifications)
   const [show, setShow] = useState(false);
 
   const checkDisabled = (tabName: string, element: string) => {
@@ -26,8 +27,8 @@ export const ClassificationsSelectInput: React.FC<SelectInputProps> = ({ args, o
     <Dropdown className='drop-box dropdown-select-input' onToggle={(nextShow) => setShow(nextShow)} show={show}>
       <Dropdown.Toggle className='dropdown-toggle'>{value}</Dropdown.Toggle>
       <Dropdown.Menu className='mm-dropdown-menu'>
-        <ul className='checkbox-list'>
-          {args?.map((val, index) => {
+        <ul className='checkbox-list single'>
+          {args.sort()?.map((val, index) => {
             return (
               <li key={index}>
                 <label>

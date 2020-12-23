@@ -180,9 +180,9 @@ export const SignupMainSection = () => {
 
           <div className='bg-white credentials-wrapper'>
             <div className='credentials-content'>
-              <div className='logo-img-wrapper'>
+              <Link to='/' className='logo-img-wrapper'>
                 <LogoImg className='auth-logo' />
-              </div>
+              </Link>
               <h2>Track your net worth and portfolio in one place</h2>
               <p>
                 All of your accounts in one place, start with our free for life account and upgrade only when you need
@@ -270,7 +270,11 @@ export const SignupMainSection = () => {
                       <form onSubmit={props.handleSubmit}>
                         <div className='input-wrapper'>
                           <div className='email-wrap'>
+                            <label htmlFor='email-field' className='form-subheading'>
+                              Email address
+                            </label>
                             <input
+                              id='email-field'
                               type='email'
                               className='email'
                               onChange={props.handleChange}
@@ -283,8 +287,12 @@ export const SignupMainSection = () => {
                           {props.errors.email && <div className='mt-2 feedback'>{props.errors.email}</div>}
                         </div>
                         <div className='align-items-center'>
+                          <label htmlFor='password-field' className='form-subheading'>
+                            Password
+                          </label>
                           <div className='password-wrap'>
                             <input
+                              id='password-field'
                               type={visible ? 'text' : 'password'}
                               className='password'
                               onChange={props.handleChange}

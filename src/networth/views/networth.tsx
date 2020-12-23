@@ -10,38 +10,45 @@ import { useAlert } from 'common/components/alert';
 import { useModal } from 'common/components/modal';
 import useSettings from 'setting/hooks/useSettings';
 import useNetworth from 'networth/hooks/useNetworth';
+import useAnalytics from 'common/hooks/useAnalytics';
 import NetworthLayout from 'networth/networth.layout';
 import { isCurrent, gc } from 'common/interval-parser';
+import useSearchParam from 'auth/hooks/useSearchParam';
 import { AccountCategory } from 'networth/networth.enum';
+import useInitialModal from 'auth/hooks/useInitialModal';
 import { appRouteConstants } from 'app/app-route.constant';
 import { getCurrencySymbol } from 'common/currency-helper';
 import MeasureIcon from 'assets/images/networth/measure.svg';
 import BlurChart from 'assets/images/networth/chart-blur.png';
 import SignUpDoneModal from 'auth/views/inc/signup-done.modal';
 import { fNumber, numberWithCommas } from 'common/number.helper';
+import AccountAddedModal from 'auth/views/inc/account-added-modal';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { useNetworthState, useNetworthDispatch } from 'networth/networth.context';
 import { setToggleInvestment, setToggleOther, setToggleLiabilities, setToggleNet } from 'networth/networth.actions';
 
 import NetworthHead from './inc/networth-head';
+import { Placeholder } from './inc/placeholder';
 import NetworthFilter from './inc/networth-filter';
 import NetworthBarGraph from './networth-bar-graph';
-import useAnalytics from '../../common/hooks/useAnalytics';
-import { Placeholder } from './inc/placeholder';
 import NetworthSkeleton from './inc/networth-skeleton';
+
+interface IState {
+  state: { isFromFastlink: boolean };
+}
 
 const Networth = () => {
   useProfile();
   const history = useHistory();
-  const location = useLocation();
   const { data } = useSettings();
-  const [currencySymbol, setCurrencySymbol] = useState<string>('');
+  const { event } = useAnalytics();
+  const { loading } = useNetworth();
   const connectionAlert = useAlert();
   const signupDoneModal = useModal();
-  const { event } = useAnalytics();
-
-  const { loading } = useNetworth();
+  const accountAddedModal = useModal();
   const { onboarded } = useAuthState();
+  const { state }: IState = useLocation();
+  const [currencySymbol, setCurrencySymbol] = useState<string>('');
   const {
     accounts,
     networth,
@@ -54,20 +61,13 @@ const Networth = () => {
   const dispatch = useNetworthDispatch();
   const [loadCounter, setCounter] = useState(0);
 
-  const params = new URLSearchParams(location.search);
-  const from = params.get('from');
+  const from = useSearchParam('from');
+  const isFromFastlink = state?.isFromFastlink;
+  const isSignupModal = !isFromFastlink && from === 'accountSettings' && onboarded !== undefined && onboarded === false;
 
-  useEffect(() => {
-    if (from === 'accountSettings' && !onboarded) {
-      signupDoneModal.open();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [from]);
-
-  useEffect(() => {
-    connectionAlert.open();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useInitialModal(true, connectionAlert);
+  useInitialModal(isFromFastlink, accountAddedModal);
+  useInitialModal(isSignupModal, signupDoneModal);
 
   useEffect(() => {
     if (data) {
@@ -138,40 +138,40 @@ const Networth = () => {
                   {Object.keys(accounts).length !== 0 ? (
                     <div className='graphbox'>
                       <ul>
+                        {(fCategories.length === 0 || fCategories.length === 3) && (
+                          <li className='nw-data'>
+                            <span className='graphbox-label'>Net Worth</span>
+                            <span className='graphbox-amount'>
+                              {currencySymbol}
+                              {numberWithCommas(fNumber(currentNetworth, 0))}
+                              </span>
+                          </li>
+                        )}
                         {(fCategories.length === 0 || fCategories.includes('Investment Assets')) && (
                           <li className='inv-data'>
-                            <span>Investment Assets</span>
-                            <h3>
+                            <span className='graphbox-label'>Investment Assets</span>
+                            <span className='graphbox-amount'>
                               {currencySymbol}
                               {numberWithCommas(fNumber(currentInvestmentAsset, 0))}
-                            </h3>
+                            </span>
                           </li>
                         )}
                         {(fCategories.length === 0 || fCategories.includes('Other Assets')) && (
                           <li className='other-data'>
-                            <span>Other Assets</span>
-                            <h3>
+                            <span className='graphbox-label'>Other Assets</span>
+                            <span className='graphbox-amount'>
                               {currencySymbol}
                               {numberWithCommas(fNumber(currentOtherAssets, 0))}
-                            </h3>
+                            </span>
                           </li>
                         )}
                         {(fCategories.length === 0 || fCategories.includes('Liabilities')) && (
                           <li className='lty-data'>
-                            <span>Liabilities</span>
-                            <h3>
+                            <span className='graphbox-label'>Liabilities</span>
+                            <span className='graphbox-amount'>
                               {currencySymbol}
                               {numberWithCommas(fNumber(currentLiabilities, 0))}
-                            </h3>
-                          </li>
-                        )}
-                        {(fCategories.length === 0 || fCategories.length === 3) && (
-                          <li className='nw-data'>
-                            <span>Net Worth</span>
-                            <h3>
-                              {currencySymbol}
-                              {numberWithCommas(fNumber(currentNetworth, 0))}
-                            </h3>
+                            </span>
                           </li>
                         )}
                       </ul>
@@ -192,9 +192,9 @@ const Networth = () => {
               <div className='col-lg-3 mob-btm'>
                 <div className='ct-box padd-20'>
                   <div className='measure-box'>
-                    <h2>
+                    <h1>
                       <img src={MeasureIcon} alt='Measure UP' /> Minx Measure-up
-                    </h2>
+                    </h1>
                     <div
                       className='bgbox'
                       style={{
@@ -550,6 +550,7 @@ const Networth = () => {
         {/*<ConnectionAlert connectionAlert={connectionAlert} message='2 connections need attention' />*/}
 
         <SignUpDoneModal signupModal={signupDoneModal} handleSuccess={gotoConnectAccount} />
+        <AccountAddedModal accountAddedModal={accountAddedModal} handleSuccess={gotoConnectAccount} />
       </section>
     </NetworthLayout>
   );

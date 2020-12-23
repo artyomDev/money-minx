@@ -10,7 +10,7 @@ const termContentSection = () => {
   const privacyContent = terms.data.map((d, i) => {
     return (
       <div key={i}>
-        <h3 className='notice-content-title'>{d.title}</h3>
+        <h2 className='notice-content-title'>{d.title}</h2>
         <div className='notice-content' dangerouslySetInnerHTML={{ __html: d.content }} />
       </div>
     );

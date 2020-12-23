@@ -84,7 +84,7 @@ export const HomeTestimonials = () => {
   return (
     <section className='testimonial'>
       <div>
-        <h3 className='black title-in-post'>What users are saying</h3>
+        <span className='black title-in-post medium-heading-light'>What users are saying</span>
         <div className='testimonial-row'>
           <div className='testimonial-block'>
             <Quotes className='testimonial-quote'/>
@@ -239,7 +239,7 @@ export const HomeComingSoonSection = () => {
   return (
     <section>
       <div className='mm-home-feature-section'>
-        <div className='highlighted-text p-b-12'>And Much More Coming Soon!</div>
+        <div className='highlighted-text p-b-12 text-on-darkBG'>And Much More Coming Soon!</div>
         <div className='row mm-home-feature-wrapper'>
           <div className='col-12 col-md-6 col-xl-4'>
             <div className='feature-content'>
@@ -253,9 +253,7 @@ export const HomeComingSoonSection = () => {
           <div className='col-12 col-md-6 col-xl-4'>
             <div className='feature-content'>
               <div className='feature-icon py-3'>
-                <Link to='/net-worth'>
-                  <CSMinxWinks />
-                </Link>
+                <CSMinxWinks />
               </div>
               <h3 className='py-3'>Minx Winks</h3>
               <p>Get tips and strategies from our wealth of investment knowledge</p>

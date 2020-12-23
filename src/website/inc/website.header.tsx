@@ -30,8 +30,8 @@ const WebsiteHeader = () => {
   return (
     <nav className='mm-navbar navbar-expand-lg navbar-light'>
       <div className='logo-btn-wrapper'>
-        <Link className='navbar-brand' to='/'>
-          <Logo />
+        <Link className='navbar-brand' to='/' aria-label='Money Minx'>
+          <Logo role='img' aria-labelledby='mmLogoTitle mmLogoDesc'/>
         </Link>
         <div className='badge badge-pill badge-primary mm-coming-soon'>Beta</div>
       </div>
@@ -46,9 +46,9 @@ const WebsiteHeader = () => {
                   <div className='badge badge-pill badge-primary mm-coming-soon'>Beta</div>
                 </div>
               </div>
-              <ul className='navbar-nav mr-auto navbar-menu-list'>
+              <ul className='navbar-nav mr-auto navbar-menu-list' role='menubar'>
                 <li className={navClass('pricing')}>
-                  <Link className='mm-nav-link' to='/pricing'>
+                  <Link className='mm-nav-link' to='/pricing' role='menuitem'>
                     Pricing
                   </Link>
                 </li>
@@ -59,22 +59,23 @@ const WebsiteHeader = () => {
                     target='_blank'
                     rel='noopener noreferrer'
                     href='https://www.moneyminx.com/blog'
+                    role='menuitem'
                   >
                     Blog
                   </a>
                 </li>
                 <li className={navClass('about')}>
-                  <Link className='mm-nav-link' to='/about'>
-                    About
+                  <Link className='mm-nav-link' to='/about' role='menuitem'>
+                    About Us
                   </Link>
                 </li>
                 <li className={navClass('login')}>
-                  <Link className='mm-nav-link' to='login'>
+                  <Link className='mm-nav-link' to='/login' role='menuitem'>
                     Log In
                   </Link>
                 </li>
                 <li className='mm-nav-item'>
-                  <Link className='mm-nav-link' to='/signup'>
+                  <Link className='mm-nav-link' to='/signup' role='menuitem'>
                     <button className='w-100 mm-btn-signup btn-outline-primary mm-btn-animate mt-n2'>Sign Up</button>
                   </Link>
                 </li>

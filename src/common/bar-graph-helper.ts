@@ -1,6 +1,8 @@
 export const formatter = (value: number, currencySymbol: string) => {
   if (value > 1000000) return `${currencySymbol}${value / 1000000}m`;
   if (value > 1000) return `${currencySymbol}${value / 1000}k`;
+  if (value < -1000) return `${currencySymbol}${value / 1000}k`;
+  if (value < -1000000) return `${currencySymbol}${value / 1000000}m`;
   return `${currencySymbol}${Math.round(value)}`;
 };
 

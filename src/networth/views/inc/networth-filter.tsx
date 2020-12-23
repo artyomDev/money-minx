@@ -94,7 +94,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
       <div className='row'>
         <div className='col-12 dropdowns-container'>
           <div className='dflex-center mb-15'>
-            <Skeleton width={265} height={50} count={3}/>
+            <Skeleton width={265} height={50} count={3} />
           </div>
         </div>
       </div>
@@ -150,7 +150,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
                           checked={fCategories?.includes(cat)}
                           onChange={handleCategoryChange}
                         />
-                        <span>{cat}</span>
+                        <span className='pl-3'>{cat}</span>
                       </label>
                     </li>
                   );
@@ -171,13 +171,13 @@ const NetworthFilter = (props: NetworthFilterProps) => {
                         <div className='account-filter-dd-row'>
                           <label>
                             <input
-                            name='accBox'
-                            type='checkbox'
-                            aria-describedby='Investment assets'
-                            value={account.id}
-                            aria-checked={fAccounts.includes(account.id)}
-                            checked={fAccounts.includes(account.id)}
-                            onChange={handleAccountChange}
+                              name='accBox'
+                              type='checkbox'
+                              aria-describedby='Investment assets'
+                              value={account.id}
+                              aria-checked={fAccounts.includes(account.id)}
+                              checked={fAccounts.includes(account.id)}
+                              onChange={handleAccountChange}
                             />
                             <span />
                           </label>
@@ -215,7 +215,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
                           checked={fTypes?.includes(accountName)}
                           onChange={handleAccountTypeChange}
                         />
-                        <span>{accountName}</span>
+                        <span className='pl-3'>{accountName}</span>
                       </label>
                     </li>
                   );
@@ -248,6 +248,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
                     type='text'
                     className={['month_year', fc('fFromDate')].join(' ')}
                     value={fFromDate ? getMonthYear(fFromDate) : getMonthYear(fromDate)}
+                    aria-label='From Date Filter'
                     readOnly
                   />
                 </div>
@@ -273,6 +274,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
                     type='text'
                     className={['month_year', fc('fToDate')].join(' ')}
                     value={getMonthYear(fToDate)}
+                    aria-label='To Date Filter'
                     readOnly
                   />
                 </div>
@@ -307,7 +309,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
           </Dropdown>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -1,29 +1,20 @@
+import { getValue } from 'common/account-type.helper';
 import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 
-import { foramtHoldingType } from 'account/views/holdings-details.modal';
-import { HoldingsTypeUpperOptions } from 'account/enum/holdings-type-upper-options';
-import { enumerateStr } from 'common/common-helper';
-
-interface HoldingTypeSelectInputProps {
+interface AccountTypeSelectInputProps {
   args: any[];
   onChange: (e: React.ChangeEvent<any>) => void;
   value: string;
   name: string;
 }
 
-export const HoldingTypeSelectInput: React.FC<HoldingTypeSelectInputProps> = ({ name, args, onChange, value }) => {
+export const AccountTypeSelectInput: React.FC<AccountTypeSelectInputProps> = ({ name, args, onChange, value }) => {
   const [show, setShow] = useState(false);
-
-  for (let i = 0; i < args.length; i++) {
-    if (enumerateStr(HoldingsTypeUpperOptions).includes(args[i])) {
-      args[i] = args[i].toLowerCase();
-    }
-  }
 
   return (
     <Dropdown className='drop-box dropdown-select-input' onToggle={(nextShow) => setShow(nextShow)} show={show}>
-      <Dropdown.Toggle className='dropdown-toggle'>{foramtHoldingType(value)}</Dropdown.Toggle>
+      <Dropdown.Toggle className='dropdown-toggle'>{getValue(value)}</Dropdown.Toggle>
       <Dropdown.Menu className='mm-dropdown-menu'>
         <ul className='checkbox-list single'>
           {args.sort()?.map((val, index) => {
@@ -42,7 +33,7 @@ export const HoldingTypeSelectInput: React.FC<HoldingTypeSelectInputProps> = ({ 
                       setShow(false);
                     }}
                   />
-                  <span>{foramtHoldingType(val)}</span>
+                  <span>{getValue(val)}</span>
                 </label>
               </li>
             );

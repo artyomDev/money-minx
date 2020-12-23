@@ -231,6 +231,16 @@ span.zillow-img {
     font-size: 1rem;
   }
 
+  .drop-box .dropdown-toggle {
+    width: 100%;
+    color: #495057;
+    background-color: $white;
+  }
+
+  .dropdown-select-input .checkbox-list {
+    max-height: 40vh;
+  }
+
   .row-set {
     display: block;
 
@@ -274,8 +284,4 @@ span.zillow-img {
     width: 180px !important;
     height: 48px !important;
   }
-}
-
-.new-connect-spinner {
-
 }

@@ -235,3 +235,7 @@ export const patchCompleteProfile = (): TApiResponse => {
 export const getNewAccounts = (): TApiResponse => {
   return http.get(urls.auth.NEW_ACCOUNTS);
 };
+
+export const getLatestProviderAccounts = (): TApiResponse => {
+  return http.get(urls.auth.LATEST_PROVIDER_ACCOUNTS);
+};

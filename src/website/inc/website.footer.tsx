@@ -40,7 +40,7 @@ const FooterList = () => {
         <div className='wf-list-wrapper py-2'>
           <span className='footer-feature-title'>Company</span>
           <div className='wf-list-items'>
-            <h3 className='footer-feature'><a className='text-white' href='/about'>About</a></h3>
+            <h3 className='footer-feature'><a className='text-white' href='/about'>About Us</a></h3>
             <h3 className='footer-feature'><a className='text-white' href='/pricing'>Pricing</a></h3>
             <h3 className='footer-feature'><a className='text-white' href='/notices'>Notices</a></h3>
             <h3 className='footer-feature'><a className='text-white' href='/privacy'>Privacy</a></h3>
@@ -56,35 +56,41 @@ const social = [
   {
     icon: <FacebookIcon />,
     link: 'https://www.facebook.com/moneyminx',
+    label: 'Money Minx on Facebook'
   },
   {
     icon: <TwitterIcon />,
     link: 'https://twitter.com/moneyminxapp',
+    label: 'Money Minx on Twitter'
   },
   {
     icon: <InstagramIcon />,
     link: 'https://instagram.com/moneyminxapp',
+    label: 'Money Minx on Instagram'
   },
   {
     icon: <LinkedinIcon />,
     link: 'https://linkedin.com/company/moneyminx',
+    label: 'Money Minx on LinkedIn'
   },
   {
     icon: <YoutubeIcon />,
     link: 'https://www.youtube.com/channel/UCmWuUaetlK3fABjglo9cEaQ',
+    label: 'Money Minx on YouTube'
   },
   {
     icon: <PinterestIcon />,
     link: 'https://www.pinterest.com/moneyminx/',
+    label: 'Money Minx on Pinterest'
   },
 ];
 
 const SocialList: React.FC = () => (
   <ul className='navbar-nav'>
-    {social.map(({ icon, link }, idx) => {
+    {social.map(({ icon, link, label }, idx) => {
       return (
         <li key={idx} className='social-links'>
-          <a href={link} target='_blank' rel='noopener noreferrer'>
+          <a href={link} target='_blank' rel='noopener noreferrer' aria-label={label}>
             {icon}
           </a>
         </li>

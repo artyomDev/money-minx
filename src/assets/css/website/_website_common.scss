@@ -1,4 +1,5 @@
 .main-content {
+  overflow: hidden;
 
   @media (min-width: $lg) {
     padding: 40px 0 1px 0;
@@ -24,12 +25,12 @@
 
 .notice-wrapper {
   p {
-    color: $gray;
+    color: $grayText;
     font-size: 1.25rem;
   }
   ul {
     li {
-      color: $gray;
+      color: $grayText;
       list-style: inside;
     }
   }
@@ -42,6 +43,7 @@
 .notice-content-title {
   color: $darkGray;
   padding-top: 2.5rem;
+  font-weight: 300;
 }
 
 .notice-header {

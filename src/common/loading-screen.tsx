@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { ReactComponent as LogoWhiteImg } from 'assets/icons/money-minx-white-logo.svg';
 
-interface ILoadingScreen {
+import { ReactComponent as LogoWhiteImg } from 'assets/icons/money-minx-white-logo.svg';
+import { accountFetchingMessageArray, authenticatingMessageArray } from '@mm/data/loading-message';
+
+interface ILoadingScreen extends IMessageChange {
   onModal?: boolean;
 }
+
+interface IMessageChange {
+  onAccountFetching?: boolean;
+}
+
 type TLoadingScreen = (props: ILoadingScreen) => JSX.Element;
-const LoadingScreen: TLoadingScreen = ({ onModal }) => {
+const LoadingScreen: TLoadingScreen = ({ onModal, onAccountFetching }) => {
   return (
     <div>
       <div className={onModal ? 'modal-loading' : 'refresh-loading'}>
         <LogoWhiteImg className='loading-logo' />
-        <MessageChange />
+        <MessageChange onAccountFetching={onAccountFetching} />
       </div>
     </div>
   );
@@ -18,21 +25,14 @@ const LoadingScreen: TLoadingScreen = ({ onModal }) => {
 
 export default LoadingScreen;
 
-export const MessageChange = () => {
-  const messageArr = [
-    'Queue the suspenseful music...',
-    'I see you baby, loading that page...',
-    'I bet you wish this page would work work work work work.',
-    'Got your mind on your money and your money on your mind?',
-    'Like Axl says, just a little patience. Mmm, yeahhh.',
-    'Whoa, we\'re half way there. Whoaaaaa living on a prayer...',
-    'I still haven\'t found what I\'m looking for...'
-  ];
+export const MessageChange = ({ onAccountFetching = false }: IMessageChange) => {
+  const messageArr = onAccountFetching ? accountFetchingMessageArray : authenticatingMessageArray;
+  const initialMessage = onAccountFetching ? accountFetchingMessageArray[0] : authenticatingMessageArray[0];
 
-  const [showingMessage, setShowingMessage] = useState<string>('I like big bucks and I cannot lie.');
+  const [showingMessage, setShowingMessage] = useState<string>(initialMessage);
 
   const showMessage: any = () => {
-    const randomIndex = Math.floor(Math.random() * 8);
+    const randomIndex = Math.floor(Math.random() * 7);
     if (messageArr[randomIndex] === showingMessage) {
       return showMessage();
     }
@@ -41,7 +41,7 @@ export const MessageChange = () => {
   };
 
   useEffect(() => {
-    setTimeout(showMessage, 2500);
+    setTimeout(showMessage, 3000);
   });
 
   return <span className='mt-5'>{showingMessage}</span>;

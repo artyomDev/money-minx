@@ -55,7 +55,7 @@
   }
 
   p {
-    color: $gray;
+    color: $grayText;
   }
 
   ul {
@@ -183,7 +183,7 @@
     padding-bottom: 1.3rem;
   }
   p {
-    color: $gray;
+    color: $grayText;
     font-size: 1rem;
   }
 }
@@ -342,14 +342,14 @@ ul.footer-list li {
   line-height: 1.1875rem;
 }
 .copyright-text {
-  color: $gray;
+  color: $grayText;
   font-weight: 400;
   font-size: 0.9375rem;
   line-height: 1.1875rem;
 }
 
 .footer-second .footer-list li a {
-  color: $gray;
+  color: $grayText;
 }
 .footer-second .footer-list li a:hover {
   text-decoration: none;
@@ -450,7 +450,7 @@ ul.footer-list li {
 @media (max-width: $md - 1) {
   .credentials-content {
     padding-left: 32px;
-    padding-right: 6px;
+    padding-right: 32px;
 
     input {
       width: 100%;
@@ -516,7 +516,7 @@ span.visibility-icon {
 .social-login-options {
   margin-bottom: 40px;
   font-weight: 400;
-  color: $gray;
+  color: $grayText;
   font-size: 0.875rem;
   line-height: 1.125rem;
 }

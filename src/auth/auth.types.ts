@@ -131,7 +131,7 @@ export interface AuthType {
   email: string;
   token?: string;
   expires?: number;
-  onboarded: boolean;
+  onboarded?: boolean;
   user?: ProfileType;
   roles?: RoleEnum[];
   authState: AuthState;

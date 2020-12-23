@@ -24,17 +24,19 @@ interface SelectInputProps {
   value: string;
   name: string;
   format?: boolean;
-  single?: boolean;
+  sort?: boolean;
 }
 
-export const SelectInput: React.FC<SelectInputProps> = ({ name, args, onChange, value, format, single }) => {
+export const SelectInput: React.FC<SelectInputProps> = ({ name, args, onChange, value, format, sort = true }) => {
   const [show, setShow] = useState(false);
-
+  if (sort && args) {
+    args.sort();
+  }
   return (
     <Dropdown className='drop-box dropdown-select-input' onToggle={(nextShow) => setShow(nextShow)} show={show}>
-      <Dropdown.Toggle className='dropdown-toggle'>{formater(value)}</Dropdown.Toggle>
+      <Dropdown.Toggle className='dropdown-toggle'>{format ? formater(value) : value}</Dropdown.Toggle>
       <Dropdown.Menu className='mm-dropdown-menu'>
-        <ul className={['checkbox-list', single ? 'single' : ''].join(' ')}>
+        <ul className='checkbox-list single'>
           {args?.map((val, index) => {
             return (
               <li key={index}>

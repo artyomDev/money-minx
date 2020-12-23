@@ -1,12 +1,12 @@
 .app-subheader-container.account {
 
   .providerLogo {
-    height: 48px;
+    height: 40px;
     position: absolute;
     left: 43%;
 
     @media(max-width: $desk) {
-      left: 32%;
+      left: 36%;
     }
   }
 
@@ -39,19 +39,6 @@
     padding: 20px;
     height: 100%;
     position: relative;
-
-    span {
-      font-weight: 600;
-      font-size: 1rem;
-      line-height: 1.25rem;
-    }
-    
-    h3 {
-      font-weight: 300;
-      font-size: 1.5rem;
-      line-height: 1.875rem;
-    }
-
   }
 
   .account-responsive-container {
@@ -266,7 +253,7 @@
     p {
       font-weight: 500;
       font-size: 0.875rem;
-      color: $gray;
+      color: $grayText;
     }
 
     .mm-activity-table {
@@ -469,6 +456,7 @@
   .drop-box .dropdown-toggle {
     width: 100%;
     color: #495057;
+    background-color: $white;
   }
 
   .dropdown-select-input .checkbox-list {
@@ -590,7 +578,7 @@
   }
 
   .current-m {
-    color: $green;
+    color: $greenText;
   }
 
   .liner-gradient { 
@@ -895,4 +883,13 @@
 
 .radio-custom input:checked + label::after {
   opacity: 1;
+}
+
+.delete-account-modal .modal.mm-modal-backdrop.modal-show{
+  @media(min-width: $med) {
+    width: 530px;
+  }
+  @media(min-width: $md) {
+    width: 665px;
+  }
 }

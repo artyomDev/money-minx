@@ -100,7 +100,6 @@ export const SettingOverview: React.FC<SettingOverviewProps> = ({ changeTab }) =
                         onChange={(e) => setCurrency(e.target.value)}
                         value={currency}
                         name='currency'
-                        single={true}
                       />
                     )}
                 </div>

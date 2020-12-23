@@ -5,6 +5,7 @@ import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { fNumber, numberWithCommas } from 'common/number.helper';
 import { NetworthTooltipPayloadItem, NetworthBarGraphProps } from 'networth/networth.type';
 import { formatter, getInterval } from 'common/bar-graph-helper';
+import { BarChartColors } from 'common/color';
 
 const CustomTooltip = (props: any) => {
   const { active, payload, currencySymbol } = props;
@@ -130,7 +131,7 @@ const NetworthBarGraph: React.FC<NetworthBarGraphProps> = ({ networth, fCategori
             tickSize={0}
             tickMargin={10}
             tick={{ fontSize: 14 }}
-            interval="preserveStartEnd"
+            interval='preserveStartEnd'
             stroke='#969eac'
             tickFormatter={(tick) => formatter(tick, currencySymbol)}
             domain={['auto', _interval * 4]}
@@ -146,9 +147,9 @@ const NetworthBarGraph: React.FC<NetworthBarGraphProps> = ({ networth, fCategori
             content={<CustomTooltip currencySymbol={currencySymbol} />}
           />
           {(fCategories.length === 0 || fCategories.length === 3) && <Area dataKey='networth' type='monotone' stroke='#534cea' strokeOpacity='0' fill='url(#colorUv)' />}
-          {(fCategories.length === 0 || fCategories.includes('Investment Assets')) && <Bar dataKey='investmentAssets' barSize={10} fill='#235EE7' radius={[2, 2, 0, 0]} />}
-          {(fCategories.length === 0 || fCategories.includes('Other Assets')) && <Bar dataKey='otherAssets' barSize={10} fill='#29CFD6' radius={[2, 2, 0, 0]} />}
-          {(fCategories.length === 0 || fCategories.includes('Liabilities')) && <Bar dataKey='liabilities' barSize={10} fill='#D3365F' radius={[2, 2, 0, 0]} />}
+          {(fCategories.length === 0 || fCategories.includes('Investment Assets')) && <Bar dataKey='investmentAssets' barSize={10} fill={BarChartColors.BLUE} radius={[2, 2, 0, 0]} />}
+          {(fCategories.length === 0 || fCategories.includes('Other Assets')) && <Bar dataKey='otherAssets' barSize={10} fill={BarChartColors.CYAN} radius={[2, 2, 0, 0]} />}
+          {(fCategories.length === 0 || fCategories.includes('Liabilities')) && <Bar dataKey='liabilities' barSize={10} fill={BarChartColors.RED} radius={[2, 2, 0, 0]} />}
         </ComposedChart>
       </ResponsiveContainer>
     </div>

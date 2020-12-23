@@ -4,7 +4,7 @@
   }
 
   p {
-    color: $gray;
+    color: $grayText;
     margin: 0 0 53px;
   }
 }
@@ -110,7 +110,7 @@ ul.features-list {
   margin-bottom: 21px;
 }
 
-.price-heading h2 {
+.price-plan-name {
   font-size: 1.25rem;
   line-height: 25px;
 }
@@ -292,7 +292,7 @@ ul.features-list {
     cursor: pointer;
     padding: 0.875rem 2.625px;
     border: 1.5px solid $grayOpacity40;
-    color: $gray;
+    color: $grayText;
     border-radius: 4px;
     margin-left: -2px;
     width: 7.75rem;

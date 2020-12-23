@@ -1,29 +1,30 @@
-import Zabo from 'zabo-sdk-js';
 import React, { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
+import Zabo from 'zabo-sdk-js';
 import appEnv from 'app/app.env';
 import AppHeader from 'common/app.header';
 import AppSidebar from 'common/app.sidebar';
+import useToast from 'common/hooks/useToast';
+import { events } from '@mm/data/event-list';
+import { STATUS_CODE } from 'app/app.status';
+import useAccounts from 'auth/hooks/useAccounts';
+import { AuthLayout } from 'layouts/auth.layout';
 import MMToolTip from 'common/components/tooltip';
 import LoadingScreen from 'common/loading-screen';
 import FastLinkModal from 'yodlee/fast-link.modal';
+import { useModal } from 'common/components/modal';
 import useAnalytics from 'common/hooks/useAnalytics';
-import useAccounts from 'auth/hooks/useAccounts';
-import useToast from 'common/hooks/useToast';
-import UpgradeAccountModal from 'common/upgrade-account.modal';
-import { events } from '@mm/data/event-list';
-import { AuthLayout } from 'layouts/auth.layout';
 import { getRefreshedAccount } from 'auth/auth.service';
 import { FastLinkOptionsType } from 'yodlee/yodlee.type';
 import { appRouteConstants } from 'app/app-route.constant';
+import UpgradeAccountModal from 'common/upgrade-account.modal';
 import { pricingDetailConstant } from 'common/common.constant';
 import { useAuthDispatch, useAuthState } from 'auth/auth.context';
 import { ReactComponent as LogoImg } from 'assets/icons/logo.svg';
 import { ReactComponent as LoginLockIcon } from 'assets/images/login/lock-icon.svg';
 import { ReactComponent as LoginShieldIcon } from 'assets/images/login/shield-icon.svg';
 import { getAccount, getCurrentSubscription, getFastlink, getSubscription } from 'api/request.api';
-import { useModal } from 'common/components/modal';
 
 import ConnectAccountSteps from './inc/connect-steps';
 import ManualAccountModal from './inc/manual-account.modal';
@@ -40,18 +41,19 @@ const ConnectAccount = () => {
 
   const closeRightNav = () => {
     setOpenRightNav(false);
-  }
+  };
 
   return (
     <AuthLayout>
-      {onboarded ?
+      {onboarded ? (
         <AppHeader
-        toggleLeftMenu={() => setOpenLeftNav(!openLeftNav)}
-        toggleRightMenu={() => setOpenRightNav(!openRightNav)}
-        open={openRightNav}
-      /> : null}
+          toggleLeftMenu={() => setOpenLeftNav(!openLeftNav)}
+          toggleRightMenu={() => setOpenRightNav(!openRightNav)}
+          open={openRightNav}
+        />
+      ) : null}
       <AppSidebar openLeft={openLeftNav} openRight={openRightNav} />
-      <div className='mm-slider-bg-overlay' onClick={closeRightNav} />
+      <div className='mm-slider-bg-overlay' onClick={closeRightNav} role='button' />
       <ConnectAccountMainSection />
     </AuthLayout>
   );
@@ -76,7 +78,7 @@ export const ConnectAccountMainSection = () => {
   const [availableNumber, setAvailableNumber] = useState<number>(0);
   const [manualLoading, setManualLoading] = useState<boolean>(false);
   const [zaboLoading, setZaboLoading] = useState<boolean>(false);
-  const { loading: accountFetching, fetchNewAccounts } = useAccounts();
+  const { loading: accountFetching, fetchLatestProviderAccounts, fetchAccounts } = useAccounts();
 
   const fastlinkModal = useModal();
   const history = useHistory();
@@ -88,13 +90,13 @@ export const ConnectAccountMainSection = () => {
       return mmToast('Error Occurred to Get Fastlink', { type: 'error' });
     }
 
-    const fastLinkOptions: FastLinkOptionsType = {
+    const fLinkOptions: FastLinkOptionsType = {
       fastLinkURL: data.fastLinkUrl,
       token: data.accessToken,
       config: data.params,
     };
 
-    setFastLinkOptions(fastLinkOptions);
+    setFastLinkOptions(fLinkOptions);
 
     event(events.connectAccount);
 
@@ -179,7 +181,13 @@ export const ConnectAccountMainSection = () => {
   const handleConnectAccountSuccess = async () => {
     setLoading(true);
     const { error, data } = await getRefreshedAccount({ dispatch });
-    await fetchNewAccounts();
+    if (STATUS_CODE.SERVER_ACCEPTED === error?.code) {
+      await fetchAccounts();
+      setLoading(false);
+
+      return history.push(appRouteConstants.auth.NET_WORTH);
+    }
+    await fetchLatestProviderAccounts();
     if (data) {
       setLoading(false);
     }
@@ -194,7 +202,7 @@ export const ConnectAccountMainSection = () => {
   };
 
   if (loading || accountFetching) {
-    return <LoadingScreen />;
+    return <LoadingScreen onAccountFetching />;
   }
 
   return (
@@ -202,9 +210,11 @@ export const ConnectAccountMainSection = () => {
       <div>
         <div className='row login-wrapper'>
           <div className='guide-content'>
-            {!onboarded ? <Link to='/net-worth'>
-              <LogoImg className='icon auth-logo' />
-            </Link> : null}
+            {!onboarded ? (
+              <Link to='/net-worth'>
+                <LogoImg className='icon auth-logo' />
+              </Link>
+            ) : null}
             <div className='auth-left-content'>
               <h1>Three easy steps to get started with Money Minx</h1>
               <ul>
@@ -232,9 +242,9 @@ export const ConnectAccountMainSection = () => {
           </div>
           <div className='bg-white credentials-wrapper connect-wrap'>
             <div className='credentials-content connect-account'>
-              <div className='logo-img-wrapper'>
+              <Link to='/net-worth' className='logo-img-wrapper'>
                 <LogoImg className='auth-logo' />
-              </div>
+              </Link>
               <h2>Connect accounts</h2>
               <p>
                 We partnered with financial technology industry veterans, to facilitate aggregation of your accounts.
@@ -257,7 +267,9 @@ export const ConnectAccountMainSection = () => {
                     type='button'
                     onClick={handleCryptoExchange}
                   >
-                    {zaboLoading && <span className='spinner-grow spinner-grow-sm mr-2' role='status' aria-hidden='true' />}
+                    {zaboLoading && (
+                      <span className='spinner-grow spinner-grow-sm mr-2' role='status' aria-hidden='true' />
+                    )}
                     Add Crypto Exchanges
                   </button>
                 </MMToolTip>

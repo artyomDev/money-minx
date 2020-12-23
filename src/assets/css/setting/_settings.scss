@@ -75,7 +75,7 @@
       }
 
       &--link {
-        color: $gray;
+        color: $grayText;
       }
 
       &--bar {
@@ -111,7 +111,7 @@
     }
 
     &--subscription {
-      color: $redAlert;
+      color: $redText;
       font-weight: 500;
       font-size: 1.125rem;
     }
@@ -158,8 +158,8 @@
     &:disabled {
       cursor: not-allowed;
       background: none;
-      color: $gray;
-      border: 1.5px solid $gray;
+      color: $grayText;
+      border: 1.5px solid $grayText;
     }
 
     @media (max-width: $md - 1) {
@@ -170,7 +170,7 @@
 
   .mm-setting-form-info {
     font-size: 0.875rem;
-    color: $gray;
+    color: $grayText;
     margin-left: 2rem;
     font-weight: 400;
     line-height: 1.625rem;
@@ -294,7 +294,7 @@
         }
 
         a {
-          color: $gray;
+          color: $grayText;
         }
       }
     }

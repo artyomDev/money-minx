@@ -12,6 +12,7 @@ import useCurrentSubscription from 'auth/hooks/useCurrentSubscription';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { ReactComponent as PricingTickIcon } from 'assets/images/pricing/tick-icon.svg';
 import usePixel, { EPixelTrack } from 'common/hooks/usePixel';
+import { ReactComponent as PricingTickIconCS } from 'assets/images/pricing/tick-icon-cs.svg';
 
 const stripePromise = loadStripe(appEnv.STRIPE_PUBLIC_KEY);
 
@@ -136,7 +137,7 @@ export const PlanOverview = () => {
               return (
                 <div className='price-table' key={index}>
                   <div className='price-heading'>
-                    <h2>{pt.name}</h2>
+                    <span className='price-plan-name'>{pt.name}</span>
                     <p>
                       {type === 'yearly' ? `$${pt.price}/Year` : `$${pt.price}/Month`}
                       {type === 'yearly' ? <span className='save-percentage'>Save ${pt.save}</span> : null}
@@ -172,31 +173,40 @@ export const PlanOverview = () => {
                       <div className='tick-icon'>
                         <PricingTickIcon />
                       </div>
-                      Early Adopter badge
+                      {pt.details[pricingDetailConstant.CURRENCY] === 'USD'
+                        ? 'USD support only '
+                        : `USD, EUR, JPY, CHF and more currencies supported `}
                     </li>
                     <li>
                       <div className='tick-icon'>
                         <PricingTickIcon />
                       </div>
-                      {pt.details[pricingDetailConstant.NAME]} badge
+                      Support for syncing with over 21,000 institutions
                     </li>
                     <li>
                       <div className='tick-icon'>
                         <PricingTickIcon />
                       </div>
-                      New features as being developed
+                      Add custom manual accounts, positions and transactions
                     </li>
                     <li>
                       <div className='tick-icon'>
                         <PricingTickIcon />
                       </div>
-                      Early adopter access to founders
+                      Calculate net worth projections
                     </li>
+                    {pt.details[pricingDetailConstant.CRYPTO] === 'Yes' ? (
+                      <li className='cs-list'>
+                        <div className='highlighted-text-light'>Coming Soon!</div>
+                      </li>
+                    ) : null}
                     <li>
-                      <div className='tick-icon'>
-                        <PricingTickIcon />
-                      </div>
-                      Early adopter access to request new features for consideration
+                      {pt.details[pricingDetailConstant.CRYPTO] === 'Yes' ? (
+                        <div className='tick-icon'>
+                          <PricingTickIconCS />
+                        </div>
+                      ) : null}
+                      {pt.details[pricingDetailConstant.CRYPTO] === 'Yes' ? 'Sync your crypto wallets' : ''}
                     </li>
                   </ul>
                   <div className='mm-plan-overview__card-footer'>

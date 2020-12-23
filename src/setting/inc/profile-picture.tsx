@@ -69,7 +69,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({ pictureURL }) => {
               height='100'
             />
           </div>
-          <div className='mm-profile-pic-help text--gray'>Square images work best <br />(e.g. 300 x 300)</div>
+          <div className='mm-profile-pic-help text--grayText'>Square images work best <br />(e.g. 300 x 300)</div>
           <div className='mt-4 mt-sm-0'>
             <button
               type='button'

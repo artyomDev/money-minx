@@ -66,7 +66,7 @@ export const MMPieChart: React.FC<MMPieChartProps> = ({ chartData, share = false
     }))
     .sort((a, b) => b.per - a.per);
 
-  let w = 440;
+  let w = 430;
   let ir = 95;
   let outR = 155;
 
@@ -83,7 +83,7 @@ export const MMPieChart: React.FC<MMPieChartProps> = ({ chartData, share = false
   } else if (share) {
     w = 260;
     ir = 64;
-    outR = 124;
+    outR = 118;
   }
 
   return (

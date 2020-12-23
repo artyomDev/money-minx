@@ -1,4 +1,4 @@
-import { ModalType } from "common/components/modal";
+import { ModalType } from 'common/components/modal';
 import { Account } from 'auth/auth.types';
 
 export interface AccountSubNavigationProps {
@@ -134,4 +134,25 @@ export interface AccountTransactionTableProps {
 export interface AccountTransactionsProps {
   charts: AccountChartItem[];
   transactions: AccountTransactionItem[];
+}
+
+export type ClassificationType = 'Asset Class' | 'Country' | 'Risk' | 'Type';
+
+export interface ClassificationItem {
+  accountId: number;
+  allocation: number;
+  classificationType: ClassificationType;
+  classificationValue: string;
+  createdAt: string;
+  id: number;
+  positionId: number;
+  updatedAt: string;
+  yodleeId: number;
+}
+
+export interface Classifications {
+  Asset_Class: ClassificationItem[];
+  Country: ClassificationItem[];
+  Risk: ClassificationItem[];
+  Type: ClassificationItem[];
 }

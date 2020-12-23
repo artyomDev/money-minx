@@ -11,6 +11,7 @@ export const appRouteConstants = {
     CONNECT_ACCOUNT: '/connect-account',
     ACCOUNT_SETTING: '/account-settings',
     FORGOT_PASSWORD: '/forgot-password',
+    NET_WORTH: '/net-worth',
   },
 
   allocation: {

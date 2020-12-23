@@ -7,8 +7,10 @@ import useToast from 'common/hooks/useToast';
 import { appRouteConstants } from 'app/app-route.constant';
 import { Modal, ModalType } from 'common/components/modal';
 import { CurrencyOptions } from 'auth/enum/currency-options';
-import { enumerateStr, formater } from 'common/common-helper';
+import { enumerateStr } from 'common/common-helper';
 import { getConnectionInfo, getManualAccountType, postManualAccount } from 'api/request.api';
+import { SelectInput } from 'common/components/input/select.input';
+import { AccountTypeSelectInput } from './account-type-select.input';
 
 interface SettingModalProps {
   manualAccountModal: ModalType;
@@ -52,7 +54,6 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal })
     values.nickname = values.accountName;
     const { data: res, error: err } = await postManualAccount(values);
     if (!err) {
-      console.log(res);
       await getConnectionInfo();
       setValues(initialValues);
       setLoading(false);
@@ -117,14 +118,12 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal })
             <div className='row-set'>
               <Form.Group controlId='ManualAccountForm.AccountType' className='child'>
                 <Form.Label className='form-subheading'>Account Type</Form.Label>
-                <Form.Control as='select' name='yodleeAccountType' onChange={handleChange}>
-                  <option value=''>Select Account Type</option>
-                  {AccountTypes.map((item, index) => (
-                    <option key={index} value={item}>
-                      {formater(item)}
-                    </option>
-                  ))}
-                </Form.Control>
+                <AccountTypeSelectInput
+                  args={AccountTypes}
+                  onChange={handleChange}
+                  value={values.yodleeAccountType}
+                  name='yodleeAccountType'
+                />
               </Form.Group>
               <Form.Group controlId='ManualAccountForm.AccountNumber' className='child'>
                 <Form.Label className='form-subheading'>Account Number</Form.Label>
@@ -152,14 +151,12 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal })
               </Form.Group>
               <Form.Group controlId='ManualAccountForm.Currency' className='child'>
                 <Form.Label className='form-subheading'>Currency</Form.Label>
-                <Form.Control as='select' name='currency' onChange={handleChange}>
-                  <option value=''>Select Currency</option>
-                  {curArr.map((item, index) => (
-                    <option key={index} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </Form.Control>
+                <SelectInput
+                  args={curArr}
+                  onChange={handleChange}
+                  value={values.currency}
+                  name='currency'
+                />
               </Form.Group>
             </div>
           </Form>

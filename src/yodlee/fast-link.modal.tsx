@@ -29,10 +29,10 @@ const FastLinkModal: React.FC<Props> = ({ fastLinkModal, handleSuccess, fastLink
     logger.log('fastlink onerror log', err);
     const errorList = err
       ? Object.keys(err).map((ek, i) => (
-          <li key={i}>
-            {[ek]}:{err[ek]}
-          </li>
-        ))
+        <li key={i}>
+          {[ek]}:{err[ek]}
+        </li>
+      ))
       : null;
 
     return mmToast(<ul>{errorList}</ul>, { type: 'error', autoClose: false });
@@ -64,7 +64,7 @@ const FastLinkModal: React.FC<Props> = ({ fastLinkModal, handleSuccess, fastLink
   };
 
   return (
-    <Modal {...fastLinkModal.props} title='' size={'fastlink'} canBeClosed loading={!active} type={ModalTypeEnum.NO_HEADER}>
+    <Modal {...fastLinkModal.props} title='' size={'fastlink'} canBeClosed loading={!active} type={ModalTypeEnum.NO_HEADER} yoddle={true}>
       <div className='fastlink-modal-container'>
         <div id='fastlinkContainer' />
         {!active ? <CircularSpinner /> : null}

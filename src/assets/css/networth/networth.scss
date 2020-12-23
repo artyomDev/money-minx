@@ -225,7 +225,7 @@ button:focus {
   font-weight: 500;
   font-size: 15px;
   line-height: 19px;
-  color: $gray;
+  color: $grayText;
   border-bottom: 1.5px solid transparent;
   display: -ms-flexbox;
   display: -webkit-flex;
@@ -338,7 +338,7 @@ a.upgrader-btn {
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
-  color: $gray;
+  color: $grayText;
 }
 
 .money-minx-header .btn-group .profile-toggle.open:after {
@@ -422,7 +422,7 @@ a.upgrader-btn {
 .profilemenu ul li a {
   font-weight: 500;
   font-size: 15px;
-  color: $gray;
+  color: $grayText;
   padding: 14px 25px;
   display: block;
 }
@@ -459,7 +459,7 @@ a.upgrader-btn {
   color: $purple;
 }
 .profilemenu ul.prlist-log li a {
-  color: $redAlert;
+  color: $redText;
 }
 .sidebackdrop {
   position: fixed;
@@ -590,7 +590,7 @@ a.upgrader-btn {
     background-color: transparent !important;
     font-weight: 400;
     font-size: 0.9375rem;
-    color: $gray !important;
+    color: $grayText !important;
     box-shadow: none !important;
 
     &:hover,
@@ -781,7 +781,7 @@ a.upgrader-btn {
   background: none;
   font-weight: 500;
   font-size: 0.875rem;
-  color: $gray;
+  color: $grayText;
   border: 1px solid $grayOpacity24;
   border-radius: 4px;
   width: auto;
@@ -847,7 +847,7 @@ a.upgrader-btn {
   background-color: transparent;
   font-weight: 500;
   font-size: 15px;
-  color: $gray;
+  color: $grayText;
   border: 1px solid $grayOpacity24;
   border-radius: 4px;
   width: auto;
@@ -878,7 +878,7 @@ a.upgrader-btn {
   height: 100%;
   border: 0;
   font-size: 0.875rem;
-  color: $gray;
+  color: $grayText;
   max-width: 100px;
   border-radius: 4px;
   cursor: pointer;
@@ -1081,7 +1081,7 @@ a.upgrader-btn {
   background: $blue;
 }
 .box-g:before {
-  background: $cyan;
+  background: $cyanText;
 }
 .box-r:before {
   background: $red;
@@ -1096,12 +1096,11 @@ a.upgrader-btn {
 .table-holder .table thead th {
   font-weight: 600;
   font-size: 16px;
-  color: $gray;
-  padding: 0;
+  color: $grayText;
+  padding: 0 0 20px 0;
   vertical-align: middle;
   white-space: nowrap;
   border: 0;
-  padding-bottom: 30px;
 }
 .table thead th span {
   font-weight: 600;
@@ -1145,7 +1144,7 @@ a.upgrader-btn {
 .table tbody td.current-m,
 .table tfoot td.current-m,
 .table-holder .table tfoot td.current-m {
-  color: $green;
+  color: $greenText;
 }
 .table thead th:not(:first-child) {
   padding-left: 5px;
@@ -1285,7 +1284,6 @@ a.upgrader-btn {
   font-size: 14px;
   letter-spacing: 0.02em;
   color: $white;
-  padding-left: 20px;
 }
 .checkbox-list:not(.single) li label span:before {
   content: '';
@@ -1383,15 +1381,11 @@ a.upgrader-btn {
     height: 90%;
   }
 
-  h2 {
+  h1 {
     font-weight: 500;
-    font-size: 1.25rem;
+    font-size: 1.25rem !important;
     color: $purple;
     margin-bottom: 1.25rem;
-
-    @media (min-width: 992px) and (max-width: 1118px) {
-      font-size: 1rem;
-    }
 
     img {
       max-width: 20px;
@@ -1426,7 +1420,7 @@ a.upgrader-btn {
   p {
     font-weight: 500;
     font-size: 16px;
-    color: $gray;
+    color: $grayText;
   }
 
   .mm-btn-primary {
@@ -1517,20 +1511,32 @@ a.upgrader-btn {
   display: -webkit-flex;
   display: flex;
   min-height: 100%;
-}
-.graphbox ul {
-  -ms-flex: 0 0 180px;
-  -webkit-flex: 0 0 180px;
-  flex: 0 0 180px;
-  max-width: 180px;
-  padding-top: 16px;
-  border-top: 1px solid $grayOpacity10;
 
-  @media (min-width: $sm) {
-    padding-top: 12px;
-    border-top: none;
+  .graphbox-label {
+    font-weight: 300;
+    font-size: 0.875rem;
+  }
+  .graphbox-amount {
+    font-weight: 200;
+    font-size: 1.5rem;
+    line-height: 1.875rem;
+  }
+
+  ul {
+    -ms-flex: 0 0 180px;
+    -webkit-flex: 0 0 180px;
+    flex: 0 0 180px;
+    max-width: 180px;
+    padding-top: 16px;
+    border-top: 1px solid $grayOpacity10;
+
+    @media (min-width: $sm) {
+      padding-top: 12px;
+      border-top: none;
+    }
   }
 }
+
 .graphbox ul li span {
   font-weight: 300;
   font-size: 0.875rem;
@@ -1546,27 +1552,71 @@ a.upgrader-btn {
 .graphbox ul li + li {
   margin-top: 22px;
 }
-.graphbox ul li {
-  margin-left: -20px;
-  padding-left: 20px;
-}
 .graphbox ul li.inv-data {
   color: $blue;
   border-left: 2px solid $blue;
+  margin-left: 1px;
+  padding-left: 18px;
+
+  @media (min-width: $med) {
+    margin-left: -20px;
+  }
 }
 .graphbox ul li.other-data {
-  color: $cyan;
-  border-left: 2px solid $cyan;
+  color: $cyanText;
+  border-left: 2px solid $cyanText;
+  margin-left: -15px;
+  padding-left: 18px;
+  max-width: 180px;
+
+  @media (min-width: $med) {
+    margin-left: -20px;
+  }
 }
 .graphbox ul li.lty-data {
   color: $red;
   border-left: 2px solid $red;
+  margin-left: 1px;
+  padding-left: 18px;
+
+  @media (min-width: $med) {
+    margin-left: -20px;
+  }
 }
 .graphbox ul li.nw-data {
-  color: $purple;
-  border-left: 2px solid $purple;
-}
+  color: $white;
+  padding: 10px 20px;
+  background: $purple;
+  margin-left: -15px;
+  padding-left: 18px;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+  max-width: 180px;
 
+  .graphbox-amount {
+    font-weight: 300;
+  }
+
+  @media (min-width: $med) {
+    margin-left: -20px;
+  }
+}
+.account-ct-box {
+  .graphbox ul li.inv-data {
+    margin-left: -20px;
+    padding-left: 18px;
+
+    @media (min-width: $med) {
+      margin-left: -20px;
+    }
+  }
+  .graphbox ul li.other-data {
+    margin-left: -20px;
+  }
+  .graphbox ul li.lty-data {
+    margin-left: -20px;
+  }
+}
 .responsive-container {
   overflow: hidden;
   width: 100%;
@@ -1677,7 +1727,7 @@ ul.charttool li.inv-data:before {
   background: $blue;
 }
 ul.charttool li.other-data:before {
-  background: $cyan;
+  background: $cyanText;
 }
 ul.charttool li.lty-data:before {
   background: $red;
@@ -2397,7 +2447,7 @@ $start-width: 100%;
 }
 .date-separator {
   margin: 1rem 0.25rem 1rem 0.50rem;
-  color: $gray;
+  color: $grayText;
   font-size: 0.875rem;
 }
 

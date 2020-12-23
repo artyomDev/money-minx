@@ -76,27 +76,18 @@ export const ActivityTable: React.FC<AccountTransactionTableProps> = ({
                     {formater(item.type)}
                   </div>
                   <div className='col-4 col-md mm-activity-table__body--data d-none d-xl-block'>{item.description}</div>
-                  <div className='col-4 col-md mm-activity-table__body--data'>
-                    {' '}
+                  <div className='col-4 col-md mm-activity-table__body--data'> 
                     <span className='d-block d-md-none'>Amount</span>
-                    {currencySymbol}
-                    {item.amount ? `${numberWithCommas(fNumber(item.amount, 0))}` : 0}
+                    {currencySymbol}{item.amount !== null ? `${numberWithCommas(fNumber(item.amount, 2))}` : ''}
                   </div>
-                  <div className='col-4 col-md mm-activity-table__body--data'>
-                    {' '}
-                    <span className='d-block d-md-none'>Balance</span>
-                    {currencySymbol}
-                    {item.balance ? `${numberWithCommas(fNumber(item.balance, 0))}` : 0}
+                  <div className='col-4 col-md mm-activity-table__body--data'> 
+                    <span className='d-block d-md-none'>Balance</span>{item.balance !== null ? `${currencySymbol}${numberWithCommas(fNumber(item.balance, 2))}` : ''}
                   </div>
-                  <div className='col-4 col-md mm-activity-table__body--data'>
-                    {' '}
-                    <span className='d-block d-md-none'>Income</span>
-                    {item.income ? 'Yes' : 'No'}
+                  <div className='col-4 col-md mm-activity-table__body--data'> 
+                    <span className='d-block d-md-none'>Income</span>{item.income ? 'Yes' : 'No'}
                   </div>
-                  <div className='col-4 col-md mm-activity-table__body--data'>
-                    {' '}
-                    <span className='d-block d-md-none'>Cash Flow</span>
-                    {item.cashFlow ? 'Yes' : 'No'}
+                  <div className='col-4 col-md mm-activity-table__body--data'> 
+                    <span className='d-block d-md-none'>Cash Flow</span>{item.cashFlow ? 'Yes' : 'No'}
                   </div>
                   <div className='col-4 col-md-1 mm-activity-table__body--data'>
                     {item.updatedAt && <Edited className='mm-activity-table__body--data-edited d-none d-xl-inline' />}

@@ -131,9 +131,9 @@ export const CreateNewPasswordMainSection = () => {
 
           <div className='bg-white credentials-wrapper'>
             <div className='credentials-content'>
-              <div className='logo-img-wrapper'>
+              <Link to='/' className='logo-img-wrapper'>
                 <LogoImg className='auth-logo' />
-              </div>
+              </Link>
               <h2>Create new Password</h2>
               <p>One last step. Enter a new password below and you should be good to go.</p>
               <Formik
@@ -175,6 +175,9 @@ export const CreateNewPasswordMainSection = () => {
                     <div className='form-wrap'>
                       <form onSubmit={props.handleSubmit}>
                         <div className='input-wrapper'>
+                          <label htmlFor='password' className='form-subheading'>
+                            New Password
+                          </label>
                           <div className='password-wrap'>
                             <input
                               type={visible.password ? 'text' : 'password'}
@@ -201,8 +204,12 @@ export const CreateNewPasswordMainSection = () => {
                           )}
                         </div>
                         <div className='input-wrapper'>
+                          <label htmlFor='confirm-password' className='form-subheading'>
+                            Confirm Password
+                          </label>
                           <div className='password-wrap confirm'>
                             <input
+                              id='confirm-password'
                               type={visible.confirmPassword ? 'text' : 'password'}
                               className='password'
                               name='confirmPassword'

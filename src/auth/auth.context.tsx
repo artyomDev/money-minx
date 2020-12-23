@@ -11,7 +11,7 @@ import { auth, subscription } from './auth-context.types';
 const initialState: AuthType = {
   email: '',
   expires: undefined,
-  onboarded: false,
+  onboarded: undefined,
   user: undefined,
   token: undefined,
   roles: undefined,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export type PlaceholderType = 'chart' | 'investment' | 'other' | 'liabilities' | 'networth' | 'manual';
+export type PlaceholderType = 'chart' | 'investment' | 'other' | 'liabilities' | 'networth' | 'manual' | 'acctDetail';
 
 export interface PlaceholderProps {
     type: PlaceholderType;
@@ -17,7 +17,8 @@ export const Placeholder: React.FC<PlaceholderProps> = ({ type }) => {
           other: 'You don\'t have any other assets yet. Get started by adding an account.',
           liabilities: 'You don\'t have any liabilities assets yet. Get started by adding an account.',
           networth: 'Add your first account to start calculating your net worth.',
-          manual: 'You don\'t have any manual accounts yet. Get started by adding an account.'
+          manual: 'You don\'t have any manual accounts yet. Get started by adding an account.',
+          acctDetail: 'We don\' have details on this account yet. Check back soon.',
         }
         let message = '';
         switch (type) {
@@ -39,6 +40,9 @@ export const Placeholder: React.FC<PlaceholderProps> = ({ type }) => {
           case 'manual':
             message = messagesObject.manual;
             break;
+          case 'acctDetail':
+            message = messagesObject.acctDetail;
+            break;
         }
         setMessage(message)
     }, [type]);
@@ -46,9 +50,10 @@ export const Placeholder: React.FC<PlaceholderProps> = ({ type }) => {
     return (
         <div className='networth-placeholder'>
             <p>{message}</p>
+          {type !== 'acctDetail' ?
             <Link to='/connect-account' className='mm-btn-animate mm-btn-primary'>
-                Add an account
-            </Link>
+              Add an account
+            </Link> : null}
         </div>
     )
 }

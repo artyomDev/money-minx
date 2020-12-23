@@ -10,10 +10,10 @@ import { fetchConnectionInfo } from 'auth/auth.service';
 import { ReactComponent as LogoImg } from 'assets/icons/logo.svg';
 import { useAuthState, useAuthDispatch } from 'auth/auth.context';
 import { ReactComponent as SecurityIcon } from 'assets/images/signup/security.svg';
+import { logger } from 'common/logger.helper';
 
 import AccountSettingForm from './inc/account-setting-form';
 import AccountSettingSidebarSkeleton from './inc/account-setting-sidebar-skeleton';
-import { logger } from 'common/logger.helper';
 
 interface Props {
   setFinish?: () => void;
@@ -89,10 +89,14 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
       const firstNonOverriddenAccount = curProviderAccounts?.find((acc) => acc.accountDetails?.overridden !== true);
 
       if (firstNonOverriddenAccount) {
-        setCurrentAccount(firstNonOverriddenAccount);
+        return setCurrentAccount(firstNonOverriddenAccount);
+      }
+
+      if (curProviderAccounts && clickEvent) {
+        return setCurrentAccount(curProviderAccounts[0]);
       }
     }
-  }, [providerName, accountsByProviderName]);
+  }, [providerName, accountsByProviderName, clickEvent]);
 
   /**
    * set completed account id's
@@ -177,9 +181,9 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
       )}
 
       <div className='credentials-content'>
-        <div className='logo-img-wrapper'>
+        <Link to='/net-worth' className='logo-img-wrapper'>
           <LogoImg className='auth-logo' />
-        </div>
+        </Link>
         {selectedAccount ? (
           selectedAccount.isManual ? (
             <div className='top-content-wrap'>

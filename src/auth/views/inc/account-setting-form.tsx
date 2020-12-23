@@ -3,11 +3,11 @@ import { Formik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import ReactDatePicker from 'react-datepicker';
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import useToast from 'common/hooks/useToast';
 import { MMCategories } from 'auth/auth.enum';
-import { getMomentDate, getUTC } from 'common/moment.helper';
+import { logger } from 'common/logger.helper';
 import { fNumber } from 'common/number.helper';
 import { useAuthState } from 'auth/auth.context';
 import MMToolTip from 'common/components/tooltip';
@@ -17,7 +17,10 @@ import { enumerateStr } from 'common/common-helper';
 import { StringKeyObject, TRef } from 'common/common.types';
 import useAccountType from 'auth/hooks/useAccountType';
 import useLoanAccount from 'auth/hooks/useLoanAccount';
+import useSearchParam from 'auth/hooks/useSearchParam';
 import useAccountFilter from 'auth/hooks/useAccountFilter';
+import { appRouteConstants } from 'app/app-route.constant';
+import { getMomentDate, getUTC } from 'common/moment.helper';
 import useAccountSubtype from 'auth/hooks/useAccountSubtype';
 import { loginValidationSchema } from 'auth/auth.validation';
 import { CurrencyOptions } from 'auth/enum/currency-options';
@@ -53,6 +56,7 @@ const AccountSettingForm: React.FC<Props> = ({
   formRef,
 }) => {
   const history = useHistory();
+  const location = useLocation();
   const { mmToast } = useToast();
   const { accounts } = useAuthState();
   const [accountType, setAccountType] = useState('');
@@ -67,6 +71,9 @@ const AccountSettingForm: React.FC<Props> = ({
   const { accountFilters, error: filterError } = useAccountFilter(accountType, accountSubtype);
 
   const deleteAccountModal = useModal();
+
+  const from = useSearchParam('from');
+  const isFromFastlink = from === 'fastLink';
 
   /**
    * Set account type and account subtype
@@ -256,7 +263,16 @@ const AccountSettingForm: React.FC<Props> = ({
           return closeSidebar?.();
         } else {
           if (isLastAccount()) {
-            return history.push('/net-worth?from=accountSettings');
+            location.pathname = appRouteConstants.auth.NET_WORTH;
+            location.search = 'from=accountSettings';
+
+            location.state = {
+              isFromFastlink,
+            };
+
+            logger.log('Location here', location);
+
+            return history.push(location);
           }
 
           return handleReload?.();
@@ -306,10 +322,12 @@ const AccountSettingForm: React.FC<Props> = ({
                 name='accountName'
                 placeholder='Sapphire Credit Card'
               />
-              <div className='d-flex align-items-center justify-content-between'>
-                <p>Last 4 Account Number</p>
-                <p>x{values.accountNumber.slice(4)}</p>
-              </div>
+              {values.accountNumber ?
+                <div className='d-flex align-items-center justify-content-between'>
+                  <p>Last 4 Account Number</p>
+                  <p>{values.accountNumber.slice(4)}</p>
+                </div>
+                : null}
               <div className='account-category'>
                 <span className='form-subheading'>
                   Account Category
@@ -345,7 +363,6 @@ const AccountSettingForm: React.FC<Props> = ({
                       onChange={handleAccountChange}
                       value={values.mmAccountType}
                       name='mmAccountType'
-                      single={true}
                     />
                   </li>
 
@@ -357,7 +374,6 @@ const AccountSettingForm: React.FC<Props> = ({
                         onChange={handleSubAccountChange}
                         value={values.mmAccountSubType}
                         name='mmAccountSubType'
-                        single={true}
                       />
                     </div>
                   </li>
@@ -368,7 +384,6 @@ const AccountSettingForm: React.FC<Props> = ({
                       onChange={handleSelectChange}
                       value={values.currency}
                       name='currency'
-                      single={true}
                     />
                   </li>
 
@@ -379,7 +394,7 @@ const AccountSettingForm: React.FC<Props> = ({
                       onChange={handleSelectChange}
                       value={values.liquidity}
                       name='liquidity'
-                      single={true}
+                      sort={false}
                     />
                   </li>
                 </ul>
@@ -997,7 +1012,9 @@ const AccountSettingForm: React.FC<Props> = ({
                 </div>
               </div>
             </form>
-            <DeleteAccountModal deleteAccountModal={deleteAccountModal} deleteAccountById={deleteAccountById} />
+            <div className='delete-account-modal'>
+              <DeleteAccountModal deleteAccountModal={deleteAccountModal} deleteAccountById={deleteAccountById} />
+            </div>
           </>
         );
       }}
