@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
+import CircularSpinner from 'common/components/spinner/circular-spinner';
+import DefaultAvatar from 'assets/icons/default-avatar.svg';
+import FastLinkModal from 'yodlee/fast-link.modal';
+import LoadingScreen from 'common/loading-screen';
+import useToast from 'common/hooks/useToast';
+import useAccounts from 'auth/hooks/useAccounts';
+import useAnalytics from 'common/hooks/useAnalytics';
+import useGetSubscription from 'auth/hooks/useGetSubscription';
+import useCurrentSubscription from 'auth/hooks/useCurrentSubscription';
 import {
   AccountRowProps,
   AccountCardProps,
@@ -10,28 +19,19 @@ import {
   SubscriptionConnectionWarningProps,
 } from 'setting/setting.type';
 import { Account } from 'auth/auth.types';
-import useToast from 'common/hooks/useToast';
 import { events } from '@mm/data/event-list';
 import { STATUS_CODE } from 'app/app.status';
-import useAccounts from 'auth/hooks/useAccounts';
-import LoadingScreen from 'common/loading-screen';
-import FastLinkModal from 'yodlee/fast-link.modal';
 import { useModal } from 'common/components/modal';
 import { getFastlinkUpdate } from 'api/request.api';
-import useAnalytics from 'common/hooks/useAnalytics';
 import { groupByProviderName } from 'auth/auth.helper';
 import { getRelativeDate } from 'common/moment.helper';
 import { FastLinkOptionsType } from 'yodlee/yodlee.type';
 import { appRouteConstants } from 'app/app-route.constant';
-import DefaultAvatar from 'assets/icons/default-avatar.svg';
 import { Placeholder } from 'networth/views/inc/placeholder';
-import useGetSubscription from 'auth/hooks/useGetSubscription';
 import { pricingDetailConstant } from 'common/common.constant';
 import { fNumber, numberWithCommas } from 'common/number.helper';
 import { useAuthDispatch, useAuthState } from 'auth/auth.context';
-import useCurrentSubscription from 'auth/hooks/useCurrentSubscription';
 import { ReactComponent as IconEdit } from 'assets/icons/icon-edit.svg';
-import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { ReactComponent as DeleteIcon } from 'assets/icons/icon-delete.svg';
 import { ReactComponent as BackIcon } from 'assets/images/subscription/back-btn.svg';
 import { ReactComponent as DefaultProviderLogo } from 'assets/icons/mm-default-provider.svg';
@@ -416,8 +416,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
                         </span>
                       </div>
                     ) : (
-                      ''
-                    )}
+                        ''
+                      )}
                   </div>
                   <div className='col-12 col-md-6 mt-2 text-md-right'>
                     <button
@@ -483,8 +483,8 @@ export const AccountRow: React.FC<AccountRowProps> = ({ account, reviewSubscript
           {deleting ? (
             <span className='spinner-grow spinner-grow-sm m-1' role='status' aria-hidden='true' />
           ) : (
-            <DeleteIcon className='ml-2 ml-md-3 trash-icon' onClick={() => deleteAccount(account.id)} />
-          )}
+              <DeleteIcon className='ml-2 ml-md-3 trash-icon' onClick={() => deleteAccount(account.id)} />
+            )}
         </div>
       </div>
     </div>
@@ -522,7 +522,7 @@ const AccountDialogBox: React.FC<AccountDialogBoxProps> = ({
 }) => {
   const disable =
     availableManualAccounts === 'Unlimited' ||
-    (manualAccountList.length <= availableManualAccounts && accountList.length <= availableConnectedAccounts)
+      (manualAccountList.length <= availableManualAccounts && accountList.length <= availableConnectedAccounts)
       ? false
       : true;
   const connectedAccountDiff = accountList.length - parseInt(availableConnectedAccounts as string, 10);

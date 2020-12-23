@@ -4,12 +4,14 @@ import { Link, useHistory } from 'react-router-dom';
 import useSettings from 'setting/hooks/useSettings';
 import SettingModal from 'allocation/modal/setting-modal';
 import ChartShareModal from 'allocation/modal/chart-share-modal';
+import DefaultAvatar from 'assets/icons/default-avatar.svg';
 import SelectAccountModal from 'allocation/modal/select-account.modal';
 import { shortId } from 'common/common-helper';
 import { useModal } from 'common/components/modal';
 import { getStringDate, getMonthYear } from 'common/moment.helper';
 import { MMPieChart } from 'common/components/pie-chart';
 import { getCurrencySymbol } from 'common/currency-helper';
+import { groupByProviderName } from 'auth/auth.helper';
 import { fNumber, numberWithCommas } from 'common/number.helper';
 import { Account } from 'auth/auth.types';
 import { AllocationSectionEnum } from 'allocation/allocation.enum';
@@ -24,7 +26,7 @@ import { ReactComponent as AllocationLegendSVG } from 'assets/images/allocation/
 import AllocationLegend from './allocation-legend';
 import { SelectedAllocations } from './previous-allocation';
 
-const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, chartData, filter }) => {
+const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, chartData, filter, accountWithIssues }) => {
   const chartShareModal = useModal();
   const chartSettingModal = useModal();
   const selectAccountModal = useModal();
@@ -33,6 +35,7 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
   const [currencySymbol, setCurrencySymbol] = useState<string>('');
   const [hidden, setHidden] = useState<string[]>(['']);
   const [multiAccounts, setMutiAccounts] = useState<Account[]>([]);
+  const [processingCollapse, setProcessingCollapse] = useState<boolean>(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -89,6 +92,8 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
     }
   }
 
+  const accountsByProvider = groupByProviderName(accountWithIssues);
+
   return (
     <div className='content-wrapper'>
       <div className='container'>
@@ -109,18 +114,44 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
                   role='button'
                 >
                   Previous Allocation
-            </div>
+                </div>
                 <div
                   className={getSectionTitleClass(AllocationSectionEnum.SIMILAR_ALLOCATION)}
                   onClick={() => changeAllocationSection(AllocationSectionEnum.SIMILAR_ALLOCATION)}
                   role='button'
                 >
                   Similar Allocation
-            </div>
+              </div>
               </div>
               <div className='mm-allocation-overview__line' />
             </div>
-
+            {accountWithIssues.length > 0 &&
+              <div className='card mm-setting-card mt-0 processing-card'>
+                <div className='title-section'>
+                  <span className={['processing', processingCollapse ? 'processing-collapse' : ''].join(' ')} onClick={() => setProcessingCollapse(!processingCollapse)}>Processing</span>
+                  <span className='desc'>These accounts are still processing and will be ready soon</span>
+                </div>
+                <div className={processingCollapse ? 'd-none' : ''}>
+                  {Object.entries(accountsByProvider).map(([providerName, accounts], index) => (
+                    <div key={index} className='content-section my-3'>
+                      <div className='d-flex flex-direction-row justify-content-between'>
+                        <img
+                          src={accounts[0].providerLogo || DefaultAvatar}
+                          className='mr-3 mr-md-4 accounts-provider-logo my-1'
+                          alt={`${providerName} logo`}
+                        />
+                        <div className='provider-name my-1'>{providerName}</div>
+                      </div>
+                      {accounts.map((item, key) => (
+                        <div key={key}>
+                          <div className='account-name m-b-2'>{item.accountName}</div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            }
             <div className='row'>
               <div className={getSectionClass(AllocationSectionEnum.MY_ALLOCATION)}>
                 <div className='mm-allocation-overview__block d-lg-block'>

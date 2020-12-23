@@ -18,7 +18,7 @@ const Allocation: React.FC<AllocationProps> = () => {
   const [openRightNav, setOpenRightNav] = useState<boolean>(false);
 
   const [filter, setFilter] = useState(AllocationsFilter.TYPE);
-  const { fetching, allocations, allocationChartData } = useAllocation(filter);
+  const { fetching, allocations, allocationChartData, accountWithIssues } = useAllocation(filter);
 
   if (!allocations || !allocationChartData) {
     return (
@@ -77,8 +77,8 @@ const Allocation: React.FC<AllocationProps> = () => {
       <AppSidebar openLeft={openLeftNav} openRight={openRightNav} />
       <div className='mm-slider-bg-overlay' onClick={closeRightNav} />
       <AllocationSubNavigation onTypeChange={handleTypeChange} filter={filter} />
-      <hr className='mt-0 mb-4' />
-      <AllocationOverview allocations={allocations} chartData={allocationChartData} filter={filter} />
+      <hr className={['mt-0', accountWithIssues.length > 0 ? '' : 'mb-4'].join(' ')} />
+      <AllocationOverview allocations={allocations} chartData={allocationChartData} filter={filter} accountWithIssues={accountWithIssues} />
       <AppFooter />
     </div>
   );

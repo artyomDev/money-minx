@@ -1,13 +1,12 @@
-import moment from 'moment';
-import { Formik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import ReactDatePicker from 'react-datepicker';
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
+import moment from 'moment';
+import { Formik } from 'formik';
 import useToast from 'common/hooks/useToast';
 import { MMCategories } from 'auth/auth.enum';
-import { logger } from 'common/logger.helper';
 import { fNumber } from 'common/number.helper';
 import { useAuthState } from 'auth/auth.context';
 import MMToolTip from 'common/components/tooltip';
@@ -33,7 +32,6 @@ import { SelectInput } from 'common/components/input/select.input';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { ReactComponent as ZillowImage } from 'assets/images/zillow.svg';
 import { ReactComponent as InfoIcon } from 'assets/images/signup/info.svg';
-// import { ReactComponent as NotLinked } from 'assets/icons/not-linked.svg';
 import { EmployerMatchLimitOptions } from 'auth/enum/employer-match-limit-options';
 import { CalculateRealEstateReturnOptions } from 'auth/enum/calculate-real-estate-return-options';
 
@@ -164,7 +162,7 @@ const AccountSettingForm: React.FC<Props> = ({
     <Formik
       innerRef={formRef}
       initialValues={
-        {
+        ({
           currency: currentFormFields?.currency || CurrencyOptions.USD,
           mmCategory: accountCategory || currentAccount?.category?.mmCategory || '',
           accountName: currentAccount?.accountName || '',
@@ -207,7 +205,7 @@ const AccountSettingForm: React.FC<Props> = ({
           estimatedAnnualRevenues: currentFormFields?.estimatedAnnualRevenues || '',
           employerMatchContribution: currentFormFields?.employerMatchContribution || true,
           estimatedAnnualPrincipalReduction: currentFormFields?.estimatedAnnualPrincipalReduction || '',
-        } as Record<string, any>
+        } as any) as Record<string, any>
       }
       enableReinitialize
       validationSchema={loginValidationSchema}
@@ -270,8 +268,6 @@ const AccountSettingForm: React.FC<Props> = ({
               isFromFastlink,
             };
 
-            logger.log('Location here', location);
-
             return history.push(location);
           }
 
@@ -322,12 +318,12 @@ const AccountSettingForm: React.FC<Props> = ({
                 name='accountName'
                 placeholder='Sapphire Credit Card'
               />
-              {values.accountNumber ?
+              {values.accountNumber ? (
                 <div className='d-flex align-items-center justify-content-between'>
                   <p>Last 4 Account Number</p>
                   <p>{values.accountNumber.slice(4)}</p>
                 </div>
-                : null}
+              ) : null}
               <div className='account-category'>
                 <span className='form-subheading'>
                   Account Category
@@ -580,8 +576,12 @@ const AccountSettingForm: React.FC<Props> = ({
                     >
                       {loanAccounts?.map((loanAccount, index) => {
                         return (
-                          <option key={index} value={loanAccount} aria-selected={values.associatedLoan === loanAccount}>
-                            {loanAccount}
+                          <option
+                            key={index}
+                            value={loanAccount.accountName}
+                            aria-selected={values.associatedLoan === loanAccount}
+                          >
+                            {loanAccount.accountName}
                           </option>
                         );
                       })}

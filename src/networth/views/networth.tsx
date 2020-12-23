@@ -144,7 +144,7 @@ const Networth = () => {
                             <span className='graphbox-amount'>
                               {currencySymbol}
                               {numberWithCommas(fNumber(currentNetworth, 0))}
-                              </span>
+                            </span>
                           </li>
                         )}
                         {(fCategories.length === 0 || fCategories.includes('Investment Assets')) && (

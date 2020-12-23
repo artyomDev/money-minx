@@ -22,7 +22,7 @@ export const urls = {
     COMPLETE_PROFILE: '/account/me/complete',
     RESET_PASSWORD: '/profile/password/reset',
     LOAN_ACCOUNT: '/account/me/loan-accounts',
-    ACCOUNT_REFRESH: '/account/me?refresh=true',
+    ACCOUNT_REFRESH: '/account/me?connectionInfo=true&refresh=true',
     FORGOT_PASSWORD: '/profile/password/forgot',
     ACCOUNT_HOLDINGS: '/account-details/holdings',
     ACCOUNT_ACTIVITY: '/account-details/transactions',

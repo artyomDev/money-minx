@@ -1,16 +1,26 @@
 import React from 'react';
 
-import { ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Area, ReferenceArea } from 'recharts';
-import CircularSpinner from 'common/components/spinner/circular-spinner';
-import { fNumber, numberWithCommas } from 'common/number.helper';
-import { NetworthTooltipPayloadItem, NetworthBarGraphProps } from 'networth/networth.type';
-import { formatter, getInterval } from 'common/bar-graph-helper';
+import {
+  Bar,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ComposedChart,
+  CartesianGrid,
+  ReferenceArea,
+  ResponsiveContainer,
+} from 'recharts';
 import { BarChartColors } from 'common/color';
+import { fNumber, numberWithCommas } from 'common/number.helper';
+import { formatter, getInterval } from 'common/bar-graph-helper';
+import CircularSpinner from 'common/components/spinner/circular-spinner';
+import { NetworthTooltipPayloadItem, NetworthBarGraphProps } from 'networth/networth.type';
 
 const CustomTooltip = (props: any) => {
   const { active, payload, currencySymbol } = props;
   if (active) {
-    let networth = undefined;
+    let networth;
     for (let i = 0; i < payload.length; i++) {
       if (payload[i].name === 'networth') {
         networth = payload[i];
@@ -22,29 +32,18 @@ const CustomTooltip = (props: any) => {
     }
     return (
       <div className='bar-tooltip'>
-        { payload.map((item: NetworthTooltipPayloadItem, index: number) => (
+        {payload.map((item: NetworthTooltipPayloadItem, index: number) => (
           <div key={index}>
             <div className='item-name'>
               <div style={{ backgroundColor: item.color }} />
-              {item.name === 'investmentAssets' &&
-                <span>Investment Assets</span>
-              }
-              {item.name === 'otherAssets' &&
-                <span>Other Assets</span>
-              }
-              {item.name === 'liabilities' &&
-                <span>Liabilities Assets</span>
-              }
-              {item.name === 'networth' &&
-                <span>Net Worth</span>
-              }
+              {item.name === 'investmentAssets' && <span>Investment Assets</span>}
+              {item.name === 'otherAssets' && <span>Other Assets</span>}
+              {item.name === 'liabilities' && <span>Liabilities Assets</span>}
+              {item.name === 'networth' && <span>Net Worth</span>}
             </div>
-            <div className='item-value'>
-              {`${currencySymbol}${numberWithCommas(fNumber(item.value, 0))}`}
-            </div>
+            <div className='item-value'>{`${currencySymbol}${numberWithCommas(fNumber(item.value, 0))}`}</div>
           </div>
         ))}
-
       </div>
     );
   }
@@ -53,20 +52,29 @@ const CustomTooltip = (props: any) => {
 
 const renderCustomRALabel = (props: any) => {
   const { x, y } = props.viewBox;
-  return <text style={{
-    fontFamily: 'Mulish',
-    lineHeight: '150%',
-    fontSize: '11px',
-    fontWeight: 'bold',
-    fontStyle: 'normal',
-    textAlign: 'center',
-    letterSpacing: '0.2em',
-    textTransform: 'uppercase'
-  }} x={x + 15} y={y + 25} fill='#534CEA' fillOpacity='0.4'>projected</text>;
+  return (
+    <text
+      style={{
+        fontFamily: 'Mulish',
+        lineHeight: '150%',
+        fontSize: '11px',
+        fontWeight: 'bold',
+        fontStyle: 'normal',
+        textAlign: 'center',
+        letterSpacing: '0.2em',
+        textTransform: 'uppercase',
+      }}
+      x={x + 15}
+      y={y + 25}
+      fill='#534CEA'
+      fillOpacity='0.4'
+    >
+      projected
+    </text>
+  );
 };
 
 const NetworthBarGraph: React.FC<NetworthBarGraphProps> = ({ networth, fCategories, currencySymbol }) => {
-
   if (!networth.length) {
     return <CircularSpinner />;
   }
@@ -94,13 +102,24 @@ const NetworthBarGraph: React.FC<NetworthBarGraphProps> = ({ networth, fCategori
     _interval = getInterval(max + _interval / 2);
   }
 
+  const networthWithAbsoluteLiabilities = networth.map((networthItem) => {
+    return {
+      ...networthItem,
+      liabilities: Math.abs(+networthItem.liabilities),
+    };
+  });
+
+  const hasCategoryFiltered = (key: string) => {
+    return fCategories.length === 0 || fCategories.includes(key);
+  };
+
   return (
     <div className='responsive-container'>
       <ResponsiveContainer width='100%' height='100%'>
         <ComposedChart
           width={800}
           height={354}
-          data={networth}
+          data={networthWithAbsoluteLiabilities}
           barGap={2}
           barCategoryGap={20}
           margin={{
@@ -123,7 +142,14 @@ const NetworthBarGraph: React.FC<NetworthBarGraphProps> = ({ networth, fCategori
             </linearGradient>
           </defs>
           <CartesianGrid stroke='#969eac1a' vertical={false} />
-          <XAxis dataKey='interval' tickSize={0} tickMargin={10} tick={{ fontSize: 14 }} stroke='#969eac' axisLine={{ stroke: 'transparent' }} />
+          <XAxis
+            dataKey='interval'
+            tickSize={0}
+            tickMargin={10}
+            tick={{ fontSize: 14 }}
+            stroke='#969eac'
+            axisLine={{ stroke: 'transparent' }}
+          />
           <YAxis
             orientation='right'
             minTickGap={10}
@@ -136,20 +162,20 @@ const NetworthBarGraph: React.FC<NetworthBarGraphProps> = ({ networth, fCategori
             tickFormatter={(tick) => formatter(tick, currencySymbol)}
             domain={['auto', _interval * 4]}
           />
-          <ReferenceArea
-            x1={first_projection}
-            label={renderCustomRALabel}
-            fill='url(#colorPr)'
-          />
-          <Tooltip
-            separator=''
-            cursor={false}
-            content={<CustomTooltip currencySymbol={currencySymbol} />}
-          />
-          {(fCategories.length === 0 || fCategories.length === 3) && <Area dataKey='networth' type='monotone' stroke='#534cea' strokeOpacity='0' fill='url(#colorUv)' />}
-          {(fCategories.length === 0 || fCategories.includes('Investment Assets')) && <Bar dataKey='investmentAssets' barSize={10} fill={BarChartColors.BLUE} radius={[2, 2, 0, 0]} />}
-          {(fCategories.length === 0 || fCategories.includes('Other Assets')) && <Bar dataKey='otherAssets' barSize={10} fill={BarChartColors.CYAN} radius={[2, 2, 0, 0]} />}
-          {(fCategories.length === 0 || fCategories.includes('Liabilities')) && <Bar dataKey='liabilities' barSize={10} fill={BarChartColors.RED} radius={[2, 2, 0, 0]} />}
+          <ReferenceArea x1={first_projection} label={renderCustomRALabel} fill='url(#colorPr)' />
+          <Tooltip separator='' cursor={false} content={<CustomTooltip currencySymbol={currencySymbol} />} />
+          {(fCategories.length === 0 || fCategories.length === 3) && (
+            <Area dataKey='networth' type='monotone' stroke='#534cea' strokeOpacity='0' fill='url(#colorUv)' />
+          )}
+          {hasCategoryFiltered('Investment Assets') && (
+            <Bar dataKey='investmentAssets' barSize={10} fill={BarChartColors.BLUE} radius={[2, 2, 0, 0]} />
+          )}
+          {hasCategoryFiltered('Other Assets') && (
+            <Bar dataKey='otherAssets' barSize={10} fill={BarChartColors.CYAN} radius={[2, 2, 0, 0]} />
+          )}
+          {hasCategoryFiltered('Liabilities') && (
+            <Bar dataKey='liabilities' barSize={10} fill={BarChartColors.RED} radius={[2, 2, 0, 0]} />
+          )}
         </ComposedChart>
       </ResponsiveContainer>
     </div>

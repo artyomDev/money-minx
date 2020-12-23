@@ -159,21 +159,21 @@ const AccountDetail: React.FC = () => {
       return mmToast('Error Occurred to Get Fastlink', { type: 'error' });
     }
 
-    const fastLinkOptions: FastLinkOptionsType = {
+    const fLinkOptions: FastLinkOptionsType = {
       fastLinkURL: data.fastLinkUrl,
       token: data.accessToken,
       config: data.params,
     };
 
-    setFastLinkOptions(fastLinkOptions);
+    setFastLinkOptions(fLinkOptions);
 
     event(events.connectAccount);
 
     return fastlinkModal.open();
   };
 
-  const clickElement = (dropdownToggle: any) => {
-    dropdownToggle.current?.click();
+  const clickElement = (dToggle: any) => {
+    dToggle.current?.click();
   };
 
   const fetchAccountHoldings = async (

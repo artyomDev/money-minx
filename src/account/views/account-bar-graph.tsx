@@ -1,25 +1,25 @@
 import React from 'react';
-import { ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceArea } from 'recharts';
 
+import { BarChartColors } from 'common/color';
+import { AccountCategory } from 'networth/networth.enum';
 import { AccountBarGraphProps } from 'account/account.type';
 import { fNumber, numberWithCommas } from 'common/number.helper';
 import { formatter, getInterval } from 'common/bar-graph-helper';
-import { AccountCategory } from 'networth/networth.enum';
-import { BarChartColors } from 'common/color';
+import { ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceArea } from 'recharts';
 
 const CustomTooltip = (props: any) => {
   const { active, payload, currencySymbol } = props;
   if (active) {
     return (
       <div className='bar-tooltip'>
-        <div className='item-name'>
-          {payload?.[0]?.payload.interval}
-        </div>
+        <div className='item-name'>{payload?.[0]?.payload.interval}</div>
         <div className='item-value'>
-          {payload?.[0]?.payload.value ? `${currencySymbol}${numberWithCommas(fNumber(payload?.[0]?.payload.value, 0))}` : 0}
+          {payload?.[0]?.payload.value
+            ? `${currencySymbol}${numberWithCommas(fNumber(payload?.[0]?.payload.value, 0))}`
+            : 0}
         </div>
       </div>
-    )
+    );
   }
 
   return null;
@@ -28,50 +28,58 @@ const CustomTooltip = (props: any) => {
 const renderCustomRALabel = (props: any) => {
   const { x, y } = props.viewBox;
 
-  return <text style={{
-    fontFamily: 'Mulish',
-    lineHeight: '150%',
-    fontSize: '11px',
-    fontWeight: 'bold',
-    fontStyle: 'normal',
-    textAlign: 'center',
-    letterSpacing: '0.2em',
-    textTransform: 'uppercase'
-  }} x={x + 15} y={y + 25} fill='#534CEA' fillOpacity='0.4'>projected</text>;
+  return (
+    <text
+      style={{
+        fontFamily: 'Mulish',
+        lineHeight: '150%',
+        fontSize: '11px',
+        fontWeight: 'bold',
+        fontStyle: 'normal',
+        textAlign: 'center',
+        letterSpacing: '0.2em',
+        textTransform: 'uppercase',
+      }}
+      x={x + 15}
+      y={y + 25}
+      fill='#534CEA'
+      fillOpacity='0.4'
+    >
+      projected
+    </text>
+  );
 };
 
 const AccountBarGraph: React.FC<AccountBarGraphProps> = ({ data, curInterval, currencySymbol, mmCategory }) => {
-
   let max = 0;
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].value > max) {
-      max = data[i].value;
+  for (const accountChartItem of data) {
+    if (accountChartItem.value > max) {
+      max = accountChartItem.value;
     }
   }
 
-  // let first_projection = undefined;
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i].type === 'projection') {
-  //     first_projection = data[i].interval;
-  //     break;
-  //   }
-  // }
+  const dataWithAbsoluteValues = data.map((accountChartItem) => {
+    return {
+      ...accountChartItem,
+      value: Math.abs(+accountChartItem.value),
+    };
+  });
 
   let _interval = getInterval(max);
   if (max > _interval * 3.5) {
     _interval = getInterval(max + _interval / 2);
   }
 
-  const getBarColor = (mmCategory: string) => {
-    if (mmCategory === AccountCategory.INVESTMENT_ASSETS) {
+  const getBarColor = (mmCat: string) => {
+    if (mmCat === AccountCategory.INVESTMENT_ASSETS) {
       return BarChartColors.BLUE;
     }
-    if (mmCategory === AccountCategory.OTHER_ASSETS) {
+    if (mmCat === AccountCategory.OTHER_ASSETS) {
       return BarChartColors.CYAN;
     }
 
     return BarChartColors.RED;
-  }
+  };
 
   return (
     <div className='account-responsive-container'>
@@ -79,7 +87,7 @@ const AccountBarGraph: React.FC<AccountBarGraphProps> = ({ data, curInterval, cu
         <ComposedChart
           width={800}
           height={354}
-          data={data}
+          data={dataWithAbsoluteValues}
           barGap={2}
           barCategoryGap={20}
           margin={{
@@ -102,7 +110,14 @@ const AccountBarGraph: React.FC<AccountBarGraphProps> = ({ data, curInterval, cu
             </linearGradient>
           </defs>
           <CartesianGrid stroke='#969eac1a' vertical={false} />
-          <XAxis dataKey='interval' tickSize={0} tickMargin={10} tick={{ fontSize: 14 }} stroke='#969eac' axisLine={{ stroke: 'transparent' }} />
+          <XAxis
+            dataKey='interval'
+            tickSize={0}
+            tickMargin={10}
+            tick={{ fontSize: 14 }}
+            stroke='#969eac'
+            axisLine={{ stroke: 'transparent' }}
+          />
           <YAxis
             orientation='right'
             minTickGap={10}
@@ -110,22 +125,13 @@ const AccountBarGraph: React.FC<AccountBarGraphProps> = ({ data, curInterval, cu
             tickSize={0}
             tickMargin={10}
             tick={{ fontSize: 14 }}
-            interval="preserveStartEnd"
+            interval='preserveStartEnd'
             stroke='#969eac'
             tickFormatter={(tick) => formatter(tick, currencySymbol)}
-            domain={[0, _interval * 4]}
+            domain={['auto', _interval * 4]}
           />
-          <ReferenceArea
-            x1={curInterval}
-            y1={0}
-            label={renderCustomRALabel}
-            fill='url(#colorPr)'
-          />
-          <Tooltip
-            separator=''
-            cursor={false}
-            content={<CustomTooltip currencySymbol={currencySymbol} />}
-          />
+          <ReferenceArea x1={curInterval} y1={0} label={renderCustomRALabel} fill='url(#colorPr)' />
+          <Tooltip separator='' cursor={false} content={<CustomTooltip currencySymbol={currencySymbol} />} />
           <Bar dataKey='value' barSize={10} fill={getBarColor(mmCategory)} radius={[2, 2, 0, 0]} />
         </ComposedChart>
       </ResponsiveContainer>

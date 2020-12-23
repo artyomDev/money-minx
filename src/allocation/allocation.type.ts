@@ -1,4 +1,5 @@
 import { AllocationsFilter } from './allocation.enum';
+import { Account } from 'auth/auth.types';
 
 export interface AllocationProps { }
 
@@ -28,6 +29,7 @@ export interface AllocationOverviewProps {
   chartData: ChartData;
   allocations: Allocations;
   filter: AllocationsFilter;
+  accountWithIssues: Account[];
 }
 
 export interface SelectedAllocationProps {
