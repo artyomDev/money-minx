@@ -2,29 +2,31 @@ import { Table } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
-import AccountAddedModal from 'auth/views/inc/account-added-modal';
-import BlurChart from 'assets/images/networth/chart-blur.png';
-import CircularSpinner from 'common/components/spinner/circular-spinner';
-import DefaultAvatar from 'assets/icons/default-avatar.svg';
-import GALink from 'common/components/ga-link';
-import MeasureIcon from 'assets/images/networth/measure.svg';
-import NetworthLayout from 'networth/networth.layout';
-import SignUpDoneModal from 'auth/views/inc/signup-done.modal';
-import useProfile from 'auth/hooks/useProfile';
-import useSearchParam from 'auth/hooks/useSearchParam';
-import useSettings from 'setting/hooks/useSettings';
-import useInitialModal from 'auth/hooks/useInitialModal';
-import useNetworth from 'networth/hooks/useNetworth';
-import useAnalytics from 'common/hooks/useAnalytics';
 import { events } from '@mm/data/event-list';
+import GALink from 'common/components/ga-link';
+import useProfile from 'auth/hooks/useProfile';
 import { useAuthState } from 'auth/auth.context';
+import useMounted from 'common/hooks/useMounted';
 import { useAlert } from 'common/components/alert';
 import { useModal } from 'common/components/modal';
+import useSettings from 'setting/hooks/useSettings';
+import useNetworth from 'networth/hooks/useNetworth';
+import useAnalytics from 'common/hooks/useAnalytics';
+import NetworthLayout from 'networth/networth.layout';
+import useSearchParam from 'auth/hooks/useSearchParam';
 import { isCurrent, gc } from 'common/interval-parser';
+import { groupByProviderName } from 'auth/auth.helper';
+import useInitialModal from 'auth/hooks/useInitialModal';
 import { AccountCategory } from 'networth/networth.enum';
 import { appRouteConstants } from 'app/app-route.constant';
 import { getCurrencySymbol } from 'common/currency-helper';
+import DefaultAvatar from 'assets/icons/default-avatar.svg';
+import MeasureIcon from 'assets/images/networth/measure.svg';
+import BlurChart from 'assets/images/networth/chart-blur.png';
+import SignUpDoneModal from 'auth/views/inc/signup-done.modal';
 import { fNumber, numberWithCommas } from 'common/number.helper';
+import AccountAddedModal from 'auth/views/inc/account-added-modal';
+import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { useNetworthState, useNetworthDispatch } from 'networth/networth.context';
 import { setToggleInvestment, setToggleOther, setToggleLiabilities, setToggleNet } from 'networth/networth.actions';
 
@@ -33,7 +35,6 @@ import { Placeholder } from './inc/placeholder';
 import NetworthFilter from './inc/networth-filter';
 import NetworthBarGraph from './networth-bar-graph';
 import NetworthSkeleton from './inc/networth-skeleton';
-import { groupByProviderName } from 'auth/auth.helper';
 
 interface IState {
   state: { isFromFastlink: boolean };
@@ -67,7 +68,9 @@ const Networth = () => {
 
   const dispatch = useNetworthDispatch();
   const [loadCounter, setCounter] = useState(0);
+  const isMounted = useMounted();
 
+  const current = isMounted.current;
   const from = useSearchParam('from');
   const isFromFastlink = state?.isFromFastlink;
   const isSignupModal = !isFromFastlink && from === 'accountSettings' && onboarded !== undefined && onboarded === false;
@@ -77,10 +80,10 @@ const Networth = () => {
   useInitialModal(isSignupModal, signupDoneModal);
 
   useEffect(() => {
-    if (data) {
+    if (data && current) {
       setCurrencySymbol(getCurrencySymbol(data.currency));
     }
-  }, [data]);
+  }, [data, current]);
 
   if (!networth?.length || !accounts) {
     return <NetworthSkeleton />;
@@ -95,7 +98,9 @@ const Networth = () => {
   const investmentAssets = accounts[AccountCategory.INVESTMENT_ASSETS];
 
   const handleLoad = () => {
-    setCounter((c) => c + 1);
+    if (current) {
+      setCounter((c) => c + 1);
+    }
   };
 
   const gotoConnectAccount = () => {
@@ -119,16 +124,24 @@ const Networth = () => {
   };
 
   const toggleInvestment = () => {
-    dispatch(setToggleInvestment(!fToggleInvestment));
+    if (current) {
+      dispatch(setToggleInvestment(!fToggleInvestment));
+    }
   };
   const toggleOther = () => {
-    dispatch(setToggleOther(!fToggleOther));
+    if (current) {
+      dispatch(setToggleOther(!fToggleOther));
+    }
   };
   const toggleLiabilities = () => {
-    dispatch(setToggleLiabilities(!fToggleLiabilities));
+    if (current) {
+      dispatch(setToggleLiabilities(!fToggleLiabilities));
+    }
   };
   const toggleNet = () => {
-    dispatch(setToggleNet(!fToggleNet));
+    if (current) {
+      dispatch(setToggleNet(!fToggleNet));
+    }
   };
 
   return (
@@ -191,8 +204,8 @@ const Networth = () => {
                       </div>
                     </div>
                   ) : (
-                      <Placeholder type='chart' />
-                    )}
+                    <Placeholder type='chart' />
+                  )}
                 </div>
               </div>
 
@@ -221,10 +234,16 @@ const Networth = () => {
                 </div>
               </div>
             </div>
-            {accountWithIssues && accountWithIssues.length > 0 &&
+            {accountWithIssues && accountWithIssues.length > 0 && (
               <div className='card mm-setting-card mt-0 processing-card'>
                 <div className='title-section'>
-                  <span className={['processing', processingCollapse ? 'processing-collapse' : ''].join(' ')} onClick={() => setProcessingCollapse(!processingCollapse)}>Processing</span>
+                  <span
+                    className={['processing', processingCollapse ? 'processing-collapse' : ''].join(' ')}
+                    onClick={() => setProcessingCollapse(!processingCollapse)}
+                    role='button'
+                  >
+                    Processing
+                  </span>
                   <span className='desc'>These accounts are still processing and will be ready soon</span>
                 </div>
                 <div className={processingCollapse ? 'd-none' : ''}>
@@ -247,7 +266,7 @@ const Networth = () => {
                   ))}
                 </div>
               </div>
-            }
+            )}
             {(fCategories.length === 0 || fCategories.includes('Investment Assets')) && (
               <div className='row mb-40'>
                 <div className='col-12'>
@@ -273,27 +292,29 @@ const Networth = () => {
                             <tbody>
                               {investmentAssets
                                 ? investmentAssets.map((iAsset, index) => {
-                                  return (
-                                    <tr key={index} onClick={() => handleAccountDetail(iAsset.accountId)}>
-                                      <td><span>{iAsset.accountName}</span></td>
-                                      <td className={`hide-type`}>{iAsset.accountType}</td>
-                                      {iAsset.balances.map((b, idx) => (
-                                        <td
-                                          key={`${index}-${idx}`}
-                                          className={[b.type === `projection` && `projection`, gc(b.interval)].join(
-                                            ' '
-                                          )}
-                                        >
-                                          <span className={gc(b.interval)}>{b.interval}</span>
-                                          {currencySymbol}
-                                          {numberWithCommas(fNumber(b.balance, 2))}
+                                    return (
+                                      <tr key={index} onClick={() => handleAccountDetail(iAsset.accountId)}>
+                                        <td>
+                                          <span>{iAsset.accountName}</span>
                                         </td>
-                                      ))}
-                                    </tr>
-                                  );
-                                })
+                                        <td className={`hide-type`}>{iAsset.accountType}</td>
+                                        {iAsset.balances.map((b, idx) => (
+                                          <td
+                                            key={`${index}-${idx}`}
+                                            className={[b.type === `projection` && `projection`, gc(b.interval)].join(
+                                              ' '
+                                            )}
+                                          >
+                                            <span className={gc(b.interval)}>{b.interval}</span>
+                                            {currencySymbol}
+                                            {numberWithCommas(fNumber(b.balance, 2))}
+                                          </td>
+                                        ))}
+                                      </tr>
+                                    );
+                                  })
                                 : // show place holder here
-                                null}
+                                  null}
                             </tbody>
                           ) : null}
                           <tfoot className={'projection'}>
@@ -330,8 +351,8 @@ const Networth = () => {
                         </Table>
                       </div>
                     ) : (
-                        <Placeholder type='investment' />
-                      )}
+                      <Placeholder type='investment' />
+                    )}
                   </div>
                 </div>
               </div>
@@ -399,8 +420,8 @@ const Networth = () => {
                         </Table>
                       </div>
                     ) : (
-                        <Placeholder type='other' />
-                      )}
+                      <Placeholder type='other' />
+                    )}
                   </div>
                 </div>
               </div>
@@ -468,8 +489,8 @@ const Networth = () => {
                         </Table>
                       </div>
                     ) : (
-                        <Placeholder type='liabilities' />
-                      )}
+                      <Placeholder type='liabilities' />
+                    )}
                   </div>
                 </div>
               </div>
@@ -571,8 +592,8 @@ const Networth = () => {
                         </Table>
                       </div>
                     ) : (
-                        <Placeholder type='networth' />
-                      )}
+                      <Placeholder type='networth' />
+                    )}
                   </div>
                 </div>
               </div>
