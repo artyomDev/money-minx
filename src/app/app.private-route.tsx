@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { useAuthState } from 'auth/auth.context';
-
+import { storage } from './app.storage';
 import { appRouteConstants } from './app-route.constant';
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
-  const { isAuthenticated } = useAuthState();
+  const isAuthenticated = storage.accessToken();
+
   return (
     <Route
       {...rest}
@@ -17,6 +17,7 @@ const PrivateRoute = ({ component: Component, ...rest }: any) => {
           <Redirect
             to={{
               pathname: appRouteConstants.auth.LOGIN,
+              search: '?expired=true',
               state: { from: props.location },
             }}
           />

@@ -6,12 +6,12 @@ import useToast from 'common/hooks/useToast';
 import { loadStripe } from '@stripe/stripe-js';
 import useAnalytics from 'common/hooks/useAnalytics';
 import { postSubscriptionCheckout } from 'api/request.api';
-import useGetSubscription from 'auth/hooks/useGetSubscription';
+import useSubscriptions from 'auth/hooks/useSubscriptions';
+import usePixel, { EPixelTrack } from 'common/hooks/usePixel';
 import { pricingDetailConstant } from 'common/common.constant';
 import useCurrentSubscription from 'auth/hooks/useCurrentSubscription';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { ReactComponent as PricingTickIcon } from 'assets/images/pricing/tick-icon.svg';
-import usePixel, { EPixelTrack } from 'common/hooks/usePixel';
 import { ReactComponent as PricingTickIconCS } from 'assets/images/pricing/tick-icon-cs.svg';
 
 const stripePromise = loadStripe(appEnv.STRIPE_PUBLIC_KEY);
@@ -22,25 +22,25 @@ export const PlanOverview = () => {
   const { fbq } = usePixel();
   const [type, setType] = useState<string>('month');
 
-  const { fetchingSubscription, subError, subscription } = useGetSubscription();
+  const { loading: fetchingSubscription, error: subError, subscriptions } = useSubscriptions();
   const { fetchingCurrentSubscription, currentSubError, currentSubscription } = useCurrentSubscription();
 
-  const loading = fetchingCurrentSubscription || fetchingSubscription || !subscription || subError || currentSubError;
+  const loading = fetchingCurrentSubscription || fetchingSubscription || !subscriptions || subError || currentSubError;
 
   useEffect(() => {
-    if (currentSubscription && subscription) {
-      const currentType = subscription.find((sub: any) => sub.priceId === currentSubscription.priceId)?.duration;
+    if (currentSubscription && subscriptions) {
+      const currentType = subscriptions.find((sub: any) => sub.priceId === currentSubscription.priceId)?.duration;
       if (currentType) {
         setType(currentType);
       }
     }
-  }, [currentSubscription, subscription]);
+  }, [currentSubscription, subscriptions]);
 
   if (loading) {
     return <CircularSpinner />;
   }
 
-  const isCurrentPlan = (priceId: string) => currentSubscription.priceId === priceId;
+  const isCurrentPlan = (priceId: string) => currentSubscription?.priceId === priceId;
   const ac = (priceId: string) => {
     if (currentSubscription?.subscriptionStatus !== 'trialing' && isCurrentPlan(priceId)) {
       return 'mm-plan-overview__plan-btn--current';
@@ -92,8 +92,8 @@ export const PlanOverview = () => {
     }
   };
 
-  const monthlyPricingList = subscription?.filter((sub: any) => sub.duration === 'month' && sub.active === true);
-  const annualPricingList = subscription?.filter((sub: any) => sub.duration === 'year' && sub.active === true);
+  const monthlyPricingList = subscriptions?.filter((sub: any) => sub.duration === 'month' && sub.active === true);
+  const annualPricingList = subscriptions?.filter((sub: any) => sub.duration === 'year' && sub.active === true);
 
   const planBtnClasses = 'mm-btn-animate trial-btn ml-3 btn-xs-block';
 
@@ -218,8 +218,8 @@ export const PlanOverview = () => {
                       {currentSubscription?.subscriptionStatus === 'trialing'
                         ? 'Choose Plan'
                         : isCurrentPlan(pt.priceId)
-                          ? 'Current Plan'
-                          : 'Change Plan'}
+                        ? 'Current Plan'
+                        : 'Change Plan'}
                     </button>
                   </div>
                 </div>

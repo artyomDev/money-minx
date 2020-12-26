@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Plan } from 'setting/setting.type';
 import { events } from '@mm/data/event-list';
 import GALink from 'common/components/ga-link';
+import useSubscriptions from 'auth/hooks/useSubscriptions';
 import { pricingDetailConstant } from 'common/common.constant';
-import useGetSubscription from 'auth/hooks/useGetSubscription';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { ReactComponent as PricingTickIcon } from 'assets/images/pricing/tick-icon.svg';
 import { ReactComponent as PricingTickIconCS } from 'assets/images/pricing/tick-icon-cs.svg';
@@ -12,14 +12,14 @@ import { ReactComponent as PricingTickIconCS } from 'assets/images/pricing/tick-
 const SubscriptionPlans = () => {
   const [type, setType] = useState<string>('monthly');
 
-  const { fetchingSubscription, subError, subscription } = useGetSubscription();
+  const { loading: fetchingSubscription, error: subError, subscriptions } = useSubscriptions();
 
-  if (fetchingSubscription && !subscription && subError) {
+  if (fetchingSubscription && !subscriptions && subError) {
     return <CircularSpinner />;
   }
 
-  const monthlyPricingList = subscription?.filter((sub: any) => sub.duration === 'month' && sub.active === true);
-  const annualPricingList = subscription?.filter((sub: any) => sub.duration === 'year' && sub.active === true);
+  const monthlyPricingList = subscriptions?.filter((sub: any) => sub.duration === 'month' && sub.active === true);
+  const annualPricingList = subscriptions?.filter((sub: any) => sub.duration === 'year' && sub.active === true);
 
   const pricingList = type === 'monthly' ? monthlyPricingList : annualPricingList;
 
@@ -138,7 +138,11 @@ const SubscriptionPlans = () => {
                 </ul>
                 <GALink
                   to={`/auth/signup?priceId=${pt.priceId}&planName=${pt.name}&planPrice=${pt.price}`}
-                  eventArgs={{ ...events.trialFromPricing, action:`Clicked on start ${pt.name} plan`, value: pt.price }}
+                  eventArgs={{
+                    ...events.trialFromPricing,
+                    action: `Clicked on start ${pt.name} plan`,
+                    value: pt.price,
+                  }}
                 >
                   <button className='mm-btn-animate trial-btn ml-3 btn-xs-block'>Start 14 day trial</button>
                 </GALink>

@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import AppHeader from 'common/app.header';
 import AppFooter from 'common/app.footer';
 import AppSidebar from 'common/app.sidebar';
+
 import PlanOverview from './pages/plan-overview';
 import SettingOverview from './pages/setting-overview';
 import ProfileOverview from './pages/profile-overview';
@@ -55,7 +56,7 @@ const Settings: React.FC<SettingsProps> = () => {
 
   const closeRightNav = () => {
     setOpenRightNav(false);
-  }
+  };
 
   return (
     <div className='mm-setting'>
@@ -65,7 +66,7 @@ const Settings: React.FC<SettingsProps> = () => {
         open={openRightNav}
       />
       <AppSidebar openLeft={openLeftNav} openRight={openRightNav} />
-      <div className='mm-slider-bg-overlay' onClick={closeRightNav} />
+      <div className='mm-slider-bg-overlay' onClick={closeRightNav} role='button' />
       <div className={containerClass}>
         <SettingTitleSection handlePageSelect={handlePageSelect} pageTitle={page} />
         {renderTabContent()}

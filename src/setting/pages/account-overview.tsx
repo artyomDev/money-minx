@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
-import CircularSpinner from 'common/components/spinner/circular-spinner';
 import DefaultAvatar from 'assets/icons/default-avatar.svg';
 import FastLinkModal from 'yodlee/fast-link.modal';
 import LoadingScreen from 'common/loading-screen';
@@ -33,7 +32,7 @@ import { fNumber, numberWithCommas } from 'common/number.helper';
 import { useAuthDispatch, useAuthState } from 'auth/auth.context';
 import { ReactComponent as IconEdit } from 'assets/icons/icon-edit.svg';
 import { ReactComponent as DeleteIcon } from 'assets/icons/icon-delete.svg';
-import { ReactComponent as BackIcon } from 'assets/images/subscription/back-btn.svg';
+import { ReactComponent as BackArrow } from 'assets/images/subscription/back-arrow.svg';
 import { ReactComponent as DefaultProviderLogo } from 'assets/icons/mm-default-provider.svg';
 import { ReactComponent as SubscriptionWarning } from 'assets/images/subscription/warning.svg';
 import { deleteAccounts, deleteAccountById, fetchConnectionInfo, getRefreshedAccount } from 'auth/auth.service';
@@ -44,7 +43,7 @@ export const AccountOverview: React.FC<AccountOverviewProps> = ({ reviewSubscrip
   const { accounts } = useAuthState();
   const dispatch = useAuthDispatch();
   const { fetchingCurrentSubscription, currentSubscription } = useCurrentSubscription();
-  const { fetchingSubscription, subscription } = useGetSubscription(currentSubscription?.priceId);
+  const { fetchingSubscription, subscriptionDetail: subscription } = useGetSubscription(currentSubscription?.priceId);
 
   const accountLength = accounts.length;
   useEffect(() => {
@@ -58,21 +57,21 @@ export const AccountOverview: React.FC<AccountOverviewProps> = ({ reviewSubscrip
 
   const loading = fetchingCurrentSubscription || fetchingSubscription;
 
-  if (loading || !accounts.length) {
-    return <CircularSpinner />;
+  if (loading || !accountLength) {
+    return <LoadingScreen />;
   }
 
   const manualAccounts = accounts.filter((acc) => acc.isManual);
   const connectedAccounts = accounts.filter((acc) => !acc.isManual);
 
-  const numberOfConnectedAccounts = subscription?.details?.[pricingDetailConstant.CONNECTED_ACCOUNT] || 0;
-  const numberOfManualAccounts = subscription?.details?.[pricingDetailConstant.MANUAL_ACCOUNT] || 0;
+  const numberOfConnectedAccounts = subscription?.details?.[pricingDetailConstant.CONNECTED_ACCOUNT] || '0';
+  const numberOfManualAccounts = subscription?.details?.[pricingDetailConstant.MANUAL_ACCOUNT] || '0';
 
   const verifyAccountNumbers = (event: React.ChangeEvent<any>) => {
     event.preventDefault();
     if (
       numberOfConnectedAccounts === 'Unlimited' ||
-      (manualAccounts.length <= numberOfManualAccounts && connectedAccounts.length <= numberOfConnectedAccounts)
+      (manualAccounts.length <= +numberOfManualAccounts && connectedAccounts.length <= +numberOfConnectedAccounts)
     ) {
       history.push(appRouteConstants.networth.NET_WORTH);
       return;
@@ -220,7 +219,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
   const [loading, setLoading] = useState(false);
   const { fetchLatestProviderAccounts, fetchAccounts, loading: fetchingNewAccounts } = useAccounts();
 
-  const needUpgrade = accountList.length >= availableAccounts;
+  const needUpgrade = accountList.length >= +availableAccounts;
   const accountsByProvider = groupByProviderName(accountList);
 
   const handleConnectAccountSuccess = async () => {
@@ -416,8 +415,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
                         </span>
                       </div>
                     ) : (
-                        ''
-                      )}
+                      ''
+                    )}
                   </div>
                   <div className='col-12 col-md-6 mt-2 text-md-right'>
                     <button
@@ -483,8 +482,8 @@ export const AccountRow: React.FC<AccountRowProps> = ({ account, reviewSubscript
           {deleting ? (
             <span className='spinner-grow spinner-grow-sm m-1' role='status' aria-hidden='true' />
           ) : (
-              <DeleteIcon className='ml-2 ml-md-3 trash-icon' onClick={() => deleteAccount(account.id)} />
-            )}
+            <DeleteIcon className='ml-2 ml-md-3 trash-icon' onClick={() => deleteAccount(account.id)} />
+          )}
         </div>
       </div>
     </div>
@@ -522,7 +521,7 @@ const AccountDialogBox: React.FC<AccountDialogBoxProps> = ({
 }) => {
   const disable =
     availableManualAccounts === 'Unlimited' ||
-      (manualAccountList.length <= availableManualAccounts && accountList.length <= availableConnectedAccounts)
+    (manualAccountList.length <= availableManualAccounts && accountList.length <= availableConnectedAccounts)
       ? false
       : true;
   const connectedAccountDiff = accountList.length - parseInt(availableConnectedAccounts as string, 10);
@@ -532,21 +531,16 @@ const AccountDialogBox: React.FC<AccountDialogBoxProps> = ({
     <div className='action-overlay'>
       <div className='subscription-bottom-text'>
         <div className='subs-content one'>
-          <a
-            href='link12'
-            onClick={(event) => {
-              verifyAccountNumbers(event);
-            }}
-          >
-            <span className='back-btn'>
-              <BackIcon />
+          <a href='/subscription'>
+            <span className='btn-change-plan'>
+              <BackArrow /> <span className='hide-sm'>Change Plan</span>
             </span>
           </a>
         </div>
         <div className='subs-content three'>
           <p>
-            You need to delete {connectedAccountDiff > 0 ? connectedAccountDiff : 0} connected accounts and{' '}
-            {manualAccountDiff > 0 ? manualAccountDiff : 0} manual accounts to be able to use this plan.
+            Remove {connectedAccountDiff > 0 ? connectedAccountDiff : 0} connected accounts and{' '}
+            {manualAccountDiff > 0 ? manualAccountDiff : 0} manual accounts to keep current plan.
           </p>
         </div>
         <div className='subs-content four'>

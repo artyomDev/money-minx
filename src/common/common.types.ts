@@ -12,3 +12,10 @@ export enum FileType {
   SVG = 'SVG',
   PNG = 'PNG',
 }
+
+export enum ERequestStatus {
+  INITIAL,
+  PROCESSING,
+  WITH_DATA,
+  WITH_ERROR,
+}

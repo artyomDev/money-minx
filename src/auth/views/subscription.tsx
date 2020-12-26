@@ -1,17 +1,16 @@
-import useToast from 'common/hooks/useToast';
 import { useHistory } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
 import React, { useEffect, useState } from 'react';
 
 import appEnv from 'app/app.env';
+import useToast from 'common/hooks/useToast';
+import { loadStripe } from '@stripe/stripe-js';
 import { appRouteConstants } from 'app/app-route.constant';
+import useSubscriptions from 'auth/hooks/useSubscriptions';
 import { pricingDetailConstant } from 'common/common.constant';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
 import { getAccountsCount, postSubscriptionCheckout } from 'api/request.api';
 import { ReactComponent as PricingTickIcon } from 'assets/images/pricing/tick-icon.svg';
 import { ReactComponent as SubscriptionWarning } from 'assets/images/subscription/warning.svg';
-
-import useGetSubscription from '../hooks/useGetSubscription';
 
 const stripePromise = loadStripe(appEnv.STRIPE_PUBLIC_KEY);
 
@@ -46,17 +45,16 @@ const SubscriptionPlansTable = () => {
   const history = useHistory();
   const { mmToast } = useToast();
   const [type, setType] = useState<string>('monthly');
+  const { loading, error, subscriptions } = useSubscriptions();
   const [connectedAccountState, setConnectedAccounts] = useState<number>(0);
   const [manualAccountState, setManualAccounts] = useState<number>(0);
 
-  const { fetchingSubscription, subError, subscription } = useGetSubscription();
-
-  if (fetchingSubscription && !subscription && subError) {
+  if (loading && !subscriptions && error) {
     return <CircularSpinner />;
   }
 
-  const monthlyPricingList = subscription?.filter((sub: any) => sub.duration === 'month' && sub.active === true);
-  const annualPricingList = subscription?.filter((sub: any) => sub.duration === 'year' && sub.active === true);
+  const monthlyPricingList = subscriptions?.filter((sub: any) => sub.duration === 'month' && sub.active === true);
+  const annualPricingList = subscriptions?.filter((sub: any) => sub.duration === 'year' && sub.active === true);
 
   const pricingList = type === 'monthly' ? monthlyPricingList : annualPricingList;
 
@@ -84,8 +82,8 @@ const SubscriptionPlansTable = () => {
       subscriptionPriceId: priceId,
     };
 
-    const { data, error } = await postSubscriptionCheckout(payload);
-    if (error) {
+    const { data, error: apiError } = await postSubscriptionCheckout(payload);
+    if (apiError) {
       return mmToast('Can not stripe checkout id', { type: 'error' });
     }
 

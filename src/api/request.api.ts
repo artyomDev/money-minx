@@ -46,7 +46,7 @@ export const patchChangePassword = <T>(payload: T): TApiResponse => {
   return http.patch(urls.auth.UPDATE_PASSWORD, payload);
 };
 
-export const getSubscription = <P>(params?: P) => {
+export const getSubscription = <P>(params?: P): TApiResponse => {
   return http.get(urls.subscription.SUB, params);
 };
 
@@ -54,7 +54,7 @@ export const postSubscriptionCheckout = <T>(payload: T): TApiResponse => {
   return http.post(urls.subscription.STRIPE_CHECKOUT, payload);
 };
 
-export const getCurrentSubscription = () => {
+export const getCurrentSubscription = (): TApiResponse => {
   return http.get(urls.subscription.CURRENT_SUB);
 };
 

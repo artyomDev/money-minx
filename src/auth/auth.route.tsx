@@ -1,6 +1,7 @@
 import React from 'react';
-import { NotFound } from 'website/views';
 import { Switch, Redirect, Route } from 'react-router-dom';
+
+import { NotFound } from 'website/views';
 
 import { authRouteConstants } from './authRouteConstants';
 import { Login, Signup, ExpiredLink, ConnectAccount, AccountSetting, CreateNewPassword } from './views';
