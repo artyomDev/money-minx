@@ -12,4 +12,5 @@ export const auth = {
 
 export const subscription = {
   SET_SUBSCRIPTION_DETAIL: 'SET_SUBSCRIPTION_DETAIL',
+  SET_CURRENT_SUBSCRIPTION: 'SET_CURRENT_SUBSCRIPTION',
 };

@@ -65,6 +65,10 @@ const StripeCheckoutSuccess = () => {
   }
 
   const redirectToNetworth = async () => {
+    if (!currentSubscription) {
+      return;
+    }
+
     const { priceId } = currentSubscription;
     const {
       data: { connectedAccounts, manualAccounts },

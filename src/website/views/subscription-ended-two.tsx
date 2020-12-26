@@ -1,13 +1,13 @@
 import React from 'react';
-import {AccountOverview} from '../../setting/pages/account-overview';
 
+import { AccountOverview } from 'setting/pages/account-overview';
 
 const SubscriptionEnded = () => {
   return (
     <section>
       <div className='subscription-ended bottom py-5'>
         <div className='container'>
-          <AccountOverview reviewSubscriptionFlag={true}/>
+          <AccountOverview reviewSubscriptionFlag={true} />
         </div>
       </div>
     </section>
@@ -15,4 +15,3 @@ const SubscriptionEnded = () => {
 };
 
 export default SubscriptionEnded;
-

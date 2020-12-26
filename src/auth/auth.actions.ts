@@ -1,11 +1,20 @@
 import { auth, subscription } from './auth-context.types';
-import { Account, ILoginResponse, SubscriptionDetail } from './auth.types';
+import { Account, ICurrentSubscription, ILoginResponse, SubscriptionDetail } from './auth.types';
 
 export const setSubscriptionDetail = (subscriptionDetail?: SubscriptionDetail) => {
   return {
     type: subscription.SET_SUBSCRIPTION_DETAIL,
     payload: {
       subscriptionDetail,
+    },
+  };
+};
+
+export const setCurSubscription = (currentSubscription: ICurrentSubscription) => {
+  return {
+    type: subscription.SET_CURRENT_SUBSCRIPTION,
+    payload: {
+      currentSubscription,
     },
   };
 };

@@ -1,5 +1,6 @@
 import { FormikProps } from 'formik';
 import { StringKeyObject } from 'common/common.types';
+import { StripeSubscriptionStatus } from 'setting/setting.enum';
 
 import { AuthState, ProviderAccountStatus, ProviderAggregationSource, RoleEnum } from './auth.enum';
 
@@ -128,6 +129,19 @@ export interface SubscriptionDetail {
   priceId: string;
 }
 
+export interface ICurrentSubscription {
+  cancelAt: string | null;
+  createdAt: string;
+  customerId: string;
+  id: number;
+  name: string;
+  priceId: string;
+  subscriptionEnd: number;
+  subscriptionId: string;
+  subscriptionStatus: StripeSubscriptionStatus;
+  updatedAt: string | null;
+}
+
 export interface AuthType {
   email: string;
   token?: string;
@@ -139,7 +153,7 @@ export interface AuthType {
   isSigningIn: boolean;
   accounts: Account[];
   isAuthenticated: boolean;
-  currentSubscription?: any;
+  currentSubscription?: ICurrentSubscription;
   subscriptionDetail?: SubscriptionDetail;
 }
 

@@ -20,6 +20,7 @@ const initialState: AuthType = {
   isAuthenticated: false,
   authState: AuthState.INITIAL,
   subscriptionDetail: undefined,
+  currentSubscription: undefined,
 };
 
 const AuthStateContext = createContext<AuthType | undefined>(undefined);
@@ -113,6 +114,10 @@ function authReducer(state: AuthType = initialState, action: any) {
       return { ...state, subscriptionDetail: action.payload.subscriptionDetail };
     }
 
+    case subscription.SET_CURRENT_SUBSCRIPTION: {
+      return { ...state, currentSubscription: action.payload.currentSubscription };
+    }
+
     default: {
       return { ...state };
     }
@@ -121,6 +126,7 @@ function authReducer(state: AuthType = initialState, action: any) {
 
 function AuthProvider({ children }: Children) {
   const [state, dispatch] = React.useReducer(authReducer, initialState);
+
   return (
     <AuthStateContext.Provider value={state}>
       <AuthDispatchContext.Provider value={dispatch}>{children}</AuthDispatchContext.Provider>

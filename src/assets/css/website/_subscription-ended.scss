@@ -144,6 +144,30 @@ ul.subscribed-list li .account-wrap {
     }
   }
 }
+.btn-change-plan {
+  border: 1px solid $purple;
+  border-radius: 4px;
+  height: 48px;
+  padding: 13px;
+  font-weight: normal;
+
+  .back-arrow {
+    padding-right: 4px;
+  }
+
+  &:hover {
+    color: $white;
+    background-color: $purple;
+    stroke: $white;
+    fill: $white;
+
+    .back-arrow {
+      stroke: $white;
+      fill: $white;
+    }
+  }
+}
+
 
 .subscription-bottom-text {
   display: table;
@@ -192,7 +216,7 @@ ul.subscribed-list li .account-wrap {
 }
 .subs-content.three {
   display: none;
-  width: 78%;
+  width: 62%;
   vertical-align: middle;
 
   @media (min-width:$md) {
@@ -207,7 +231,7 @@ ul.subscribed-list li .account-wrap {
 }
 .subs-content.one {
   display: table-cell;
-  width: 12%;
+  width: 28%;
   vertical-align: middle;
 }
 
@@ -222,7 +246,7 @@ ul.subscribed-list li .account-wrap {
   background: $purple;
 }
 .subscription-bottom-text.positive .subs-content.three {
-  width: 63%;
+  width: 60%;
 }
 .subscription-bottom-text.positive .subs-content.two {
   width: 3%;
