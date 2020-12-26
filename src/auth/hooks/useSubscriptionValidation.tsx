@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 
 import { isEmpty } from 'lodash';
+import useMounted from 'common/hooks/useMounted';
 import { appRouteConstants } from 'app/app-route.constant';
 import { Account, SubscriptionDetail } from 'auth/auth.types';
 import { pricingDetailConstant } from 'common/common.constant';
@@ -12,6 +13,7 @@ import { setCurSubscription, setSubscriptionDetail } from 'auth/auth.actions';
 const useSubscriptionValidation = () => {
   const { currentSubscription, subscriptionDetail, onboarded, accounts } = useAuthState();
   const dispatch = useAuthDispatch();
+  const mounted = useMounted().current;
   const [loading, setLoading] = useState<boolean>(false);
   const [accessibleRoute, setAccessibleRoutes] = useState('');
 
@@ -59,7 +61,7 @@ const useSubscriptionValidation = () => {
   useEffect(() => {
     (async () => {
       let priceId: string = '';
-      if (!hasCurrentSubscription) {
+      if (!hasCurrentSubscription && mounted) {
         setLoading(true);
         const { data, error } = await getCurrentSubscription();
         setLoading(false);
@@ -68,7 +70,7 @@ const useSubscriptionValidation = () => {
           dispatch(setCurSubscription(data));
         }
       }
-      if (!hasSubscriptionDetail && priceId) {
+      if (!hasSubscriptionDetail && priceId && mounted) {
         setLoading(true);
         const { data, error } = await getSubscription({ priceId });
         setLoading(false);
@@ -78,7 +80,7 @@ const useSubscriptionValidation = () => {
         }
       }
     })();
-  }, [hasCurrentSubscription, hasSubscriptionDetail, dispatch]);
+  }, [hasCurrentSubscription, hasSubscriptionDetail, dispatch, mounted]);
 
   useLayoutEffect(() => {
     let route: string = '';

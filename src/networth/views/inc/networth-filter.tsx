@@ -7,6 +7,7 @@ import useSettings from 'setting/hooks/useSettings';
 import { Account } from 'auth/auth.types';
 import { getAccount } from 'api/request.api';
 import { getCurrencySymbol } from 'common/currency-helper';
+import { numberWithCommas, fNumber } from 'common/number.helper';
 import { arrGroupBy, enumerateStr, serialize } from 'common/common-helper';
 import { AccountCategory, TimeIntervalEnum } from 'networth/networth.enum';
 import { initialState, useNetworthDispatch, useNetworthState } from 'networth/networth.context';
@@ -21,28 +22,28 @@ import {
   setFilterTimeInterval,
 } from 'networth/networth.actions';
 import { NetworthFilterProps, NetworthState, TFilterKey } from 'networth/networth.type';
-
-import { numberWithCommas, fNumber } from '../../../common/number.helper';
+import useMounted from 'common/hooks/useMounted';
 
 const NetworthFilter = (props: NetworthFilterProps) => {
   const dispatch = useNetworthDispatch();
   const [currentAccount, setCurrentAccount] = useState<Account[]>();
   const { data } = useSettings();
+  const isMounted = useMounted().current;
 
   const networthState = useNetworthState();
   const { fCategories, fTypes, fAccounts, fFromDate, fToDate, fTimeInterval, networth } = networthState;
 
   useEffect(() => {
     const fetchCurrentAccount = async () => {
-      const { data, error } = await getAccount();
+      const { data: account, error } = await getAccount();
 
-      if (!error) {
-        setCurrentAccount(data);
+      if (!error && isMounted) {
+        setCurrentAccount(account);
       }
     };
 
     fetchCurrentAccount();
-  }, []);
+  }, [isMounted]);
 
   const fromInterval = networth?.[0].interval || '';
   const fromDate = parseDateFromString(fromInterval);
@@ -186,7 +187,9 @@ const NetworthFilter = (props: NetworthFilterProps) => {
                             <span>{getRelativeDate(account.balancesFetchedAt)}</span>
                           </div>
                           <div className='account-filter-dd-balance'>
-                            {data?.currency ? getCurrencySymbol(data.currency) : ''}{numberWithCommas(fNumber(account.balance, 2))}</div>
+                            {data?.currency ? getCurrencySymbol(data.currency) : ''}
+                            {numberWithCommas(fNumber(account.balance, 2))}
+                          </div>
                         </div>
                       </li>
                     );
@@ -309,7 +312,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
           </Dropdown>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

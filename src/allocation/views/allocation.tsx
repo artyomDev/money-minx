@@ -38,18 +38,18 @@ const Allocation: React.FC<AllocationProps> = () => {
                 <div className='row'>
                   <div className='col-xl-4'>
                     <Skeleton width={375} height={810} />
-                  </div >
+                  </div>
                   <div className='col-xl-4'>
                     <Skeleton width={375} height={810} />
-                  </div >
+                  </div>
                   <div className='col-xl-4'>
                     <Skeleton width={375} height={810} />
-                  </div >
-                </div >
-              </div >
-            </section >
-          </div >
-        </div >
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
       </div>
     );
   }
@@ -65,7 +65,7 @@ const Allocation: React.FC<AllocationProps> = () => {
 
   const closeRightNav = () => {
     setOpenRightNav(false);
-  }
+  };
 
   return (
     <div className='mm-setting mm-allocation'>
@@ -75,10 +75,15 @@ const Allocation: React.FC<AllocationProps> = () => {
         open={openRightNav}
       />
       <AppSidebar openLeft={openLeftNav} openRight={openRightNav} />
-      <div className='mm-slider-bg-overlay' onClick={closeRightNav} />
+      <div className='mm-slider-bg-overlay' onClick={closeRightNav} role='button' />
       <AllocationSubNavigation onTypeChange={handleTypeChange} filter={filter} />
       <hr className={['mt-0', accountWithIssues.length > 0 ? '' : 'mb-4'].join(' ')} />
-      <AllocationOverview allocations={allocations} chartData={allocationChartData} filter={filter} accountWithIssues={accountWithIssues} />
+      <AllocationOverview
+        allocations={allocations}
+        chartData={allocationChartData}
+        filter={filter}
+        accountWithIssues={accountWithIssues}
+      />
       <AppFooter />
     </div>
   );

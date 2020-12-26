@@ -128,16 +128,19 @@ const Networth = () => {
       dispatch(setToggleInvestment(!fToggleInvestment));
     }
   };
+
   const toggleOther = () => {
     if (current) {
       dispatch(setToggleOther(!fToggleOther));
     }
   };
+
   const toggleLiabilities = () => {
     if (current) {
       dispatch(setToggleLiabilities(!fToggleLiabilities));
     }
   };
+
   const toggleNet = () => {
     if (current) {
       dispatch(setToggleNet(!fToggleNet));
