@@ -18,10 +18,12 @@
             padding-left: 60px;
             padding-right: 60px;
         }
-        @media (min-width: $desk) {
-            max-width: 665px;
-        }
     }
+  .account-setting-form {
+    @media (min-width: $desk) {
+      max-width: 600px;
+    }
+  }
 }
 
 .credentials-wrapper li {

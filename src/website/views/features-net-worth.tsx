@@ -34,14 +34,20 @@ export const FeaturesNetWorthTopSection = () => {
             <h1>Net Worth Calculator</h1>
             <div className='p-b-10'>
               <p className='text'>
-                Money Minx allows you to track all of your assets and liabilities in one place to help you track your net worth.
-                We are still in Beta but already support over 21,000 institutions worldwide so you can automatically track your accounts.{' '}
+                Money Minx lets you track all of your assets and liabilities in one place so you have a quick and easy way to
+                monitor your net worth and progress toward your financial goal.
               </p>
               <p className='text'>
-                We are currently working on allowing you to automatically track your cryptos, precious metals like gold, currencies, real estate and more.{' '}
+                We are currently in Beta and already support over 21,000 institutions worldwide. That makes it easy for you to
+                connect your accounts and automatically track your balances.
               </p>
               <p className='text'>
-                You can also use our manual accounts feature to track anything you want by adding accounts, positions and transactions on your own..
+                Our next priority is building support to help you track your cryptos, precious metals, currencies, real estate
+                and more. This is in the works and will be available soon.
+              </p>
+              <p className='text'>
+                If you don't want to connect your accounts for automatic updating, you can always use our manual accounts
+                feature to track anything you want. Simply add accounts, positions and transactions on your own.
               </p>
             </div>
             <Link to='/signup'>
@@ -60,9 +66,7 @@ export const FeaturesNetWorthTopSection = () => {
               <span className='logo-icon'>
                 <AboutWealthFrontIcon />
               </span>
-              <span className='company-name'>
-                Wealthfront
-              </span>
+              <span className='company-name'>Wealthfront</span>
               <ul className='account-list'>
                 <li>
                   <span className='switch-icon'>
@@ -79,9 +83,9 @@ export const FeaturesNetWorthTopSection = () => {
               </ul>
             </div>
             <div className='account-wrap bg-white border small-box'>
-                <span className='logo-icon'>
-                  <img alt='Peer Street' src={PeerStreetLogo} />
-                </span>
+              <span className='logo-icon'>
+                <img alt='Peer Street' src={PeerStreetLogo} />
+              </span>
               <span className='company-name'>Peer Street</span>
               <ul className='account-list'>
                 <li>
@@ -108,18 +112,18 @@ export const FeaturesNetWorthTopSection = () => {
 export const FeaturesNetWorthNetWorthSection = () => {
   return (
     <section className='feature-section feature-section-reversed'>
-        <div className='row'>
-          <div className='col-lg-7 feature-image'>
-            <img src={LiquidNetWorth} alt='Calculate liquid net worth'/>
-          </div>
-          <div className='col-lg-5 feature-content'>
-              <h2>Liquid Net Worth</h2>
-              <p>
-                Classify your assets into investment assets and other assets, set liquidity levels and always know what your current liquid
-                net worth is.
-              </p>
-          </div>
+      <div className='row'>
+        <div className='col-lg-7 feature-image'>
+          <img src={LiquidNetWorth} alt='Calculate liquid net worth' />
         </div>
+        <div className='col-lg-5 feature-content'>
+          <h2>Liquid Net Worth</h2>
+          <p>
+            Classify your assets into investment assets and other assets, set liquidity levels and always know what your
+            current liquid net worth is.
+          </p>
+        </div>
+      </div>
     </section>
   );
 };
@@ -130,11 +134,12 @@ export const FeaturesNetWorthProjections = () => {
         <div className='col-lg-5 feature-content'>
           <h2>Future Net Worth</h2>
           <p>
-            Money Minx will use the data your provide and estimated returns to give you a sense of what your net worth will look like into the future.
+            Money Minx will use the data your provide and estimated returns to give you a sense of what your net worth
+            will look like into the future.
           </p>
         </div>
         <div className='col-lg-7 feature-image'>
-          <img src={HomeNetWorthProjections} alt='Calculate future projection'/>
+          <img src={HomeNetWorthProjections} alt='Calculate future projection' />
         </div>
       </div>
     </section>

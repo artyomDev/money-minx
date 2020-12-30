@@ -35,17 +35,17 @@ const AppSidebar: React.FC<NetworthSidebarProps> = ({ openLeft, openRight }) => 
         <hr className='sidebar-custom-hr' />
         <ul className='prlist-pro mb-0'>
           <li>
-            <Link to='/settings?active=Profile'>
-              <Profile />
-              <i className='icon-profile' />
-              Profile
-            </Link>
-          </li>
-          <li>
             <Link to='/settings?active=Settings'>
               <Settings />
               <i className='icon-settings' />
               Settings
+            </Link>
+          </li>
+          <li>
+            <Link to='/settings?active=Profile'>
+              <Profile />
+              <i className='icon-profile' />
+              Profile
             </Link>
           </li>
           <li>

@@ -92,7 +92,7 @@ export const HomeTestimonials = () => {
               <p>I am most looking forward to seeing the fancy charts telling me where my money is at!</p>
             </div>
             <img className='testimonial-user' src={Joe} alt='Joe Magnotti'/>
-            <div className='testimonial-name'>Joe Magnotti <span>Empire Flippers</span></div>
+            <div className='testimonial-name'>Joe M. <span>Empire Flippers</span></div>
           </div>
           <div className='testimonial-block'>
             <Quotes className='testimonial-quote'/>
@@ -100,7 +100,7 @@ export const HomeTestimonials = () => {
               <p>I am most excited to see the accumulated value of my portfolio with a future forecast.</p>
             </div>
             <img className='testimonial-user' src={Faraz} alt='Faraz Sharafi'/>
-            <div className='testimonial-name'>Faraz Sharafi <span>Intuit</span></div>
+            <div className='testimonial-name'>Faraz S. <span>Intuit</span></div>
           </div>
           <div className='testimonial-block'>
             <Quotes className='testimonial-quote'/>
@@ -108,7 +108,7 @@ export const HomeTestimonials = () => {
               <p>I am looking forward to learning about my income projections based on my dividend portfolio.</p>
             </div>
             <img className='testimonial-user' src={Zahid} alt='Zahid Lilani'/>
-            <div className='testimonial-name'>Zahid Lilani <span>Dividend.fun</span></div>
+            <div className='testimonial-name'>Zahid L. <span>Dividend.fun</span></div>
           </div>
         </div>
       </div>
@@ -118,14 +118,14 @@ export const HomeTestimonials = () => {
 export const HomeNetWorthSection = () => {
   return (
     <section className='feature-section feature-text-left'>
-      <span className='highlighted-text p-b-9'>A few of our many features</span>
+      <span className='highlighted-text p-b-9'>Highlighted Features</span>
         <div className='row'>
           <div className='col-lg-5 feature-content'>
               <a href='/features/net-worth'>
                 <h2>Net Worth Calculator</h2>
               </a>
               <p>
-                Stay up-to-date with your assets and liabilities. Track your wealth by using our Net Worth Calculator.
+                Stay up-to-date with your assets and liabilities. Track your wealth with our Net Worth Calculator.
               </p>
             </div>
           <div className='col-lg-7 feature-image'>
@@ -239,7 +239,7 @@ export const HomeComingSoonSection = () => {
   return (
     <section>
       <div className='mm-home-feature-section'>
-        <div className='highlighted-text p-b-12 text-on-darkBG'>And Much More Coming Soon!</div>
+        <div className='highlighted-text p-b-12 text-on-darkBG'>More Features Coming Soon</div>
         <div className='row mm-home-feature-wrapper'>
           <div className='col-12 col-md-6 col-xl-4'>
             <div className='feature-content'>

@@ -86,7 +86,7 @@
       max-width:100%;
       word-break:break-word;
       padding-top: 1rem;
-      color: #969eac;
+      color: #697588;
       font-weight: 300;
       line-height: 150%;
     }
@@ -126,7 +126,7 @@
     .img-desc {
       padding-top: 1rem;
       display: block;
-      color: #969eac;
+      color: #697588;
     }
     .sec-title {
       font-size: 1.25rem;
@@ -135,12 +135,12 @@
       line-height: 1.5625rem;
     }
     .sec-text {
-      color: #969eac;
+      color: #697588;
       text-align: left;
       font-weight: 300;
     }
     .footer-table {
-      background-color: #969eac;
+      background-color: #697588;
       margin-top: 30px;
       padding: 40px 60px 60px 40px;
       color: #ffffff;
@@ -192,7 +192,7 @@
     }
     .quick-response-title {
       padding: 1rem 4rem;
-      color: #969eac;
+      color: #697588;
       font-size: 1rem;
       line-height: 150%;
     }
@@ -367,75 +367,64 @@
         </tr>
         <tr>
           <td class="text">
-            Your Money Minx trial ends in {{daysLeft}} days. Log in to your account and hit subscribe to keep your
-            access going.
+            Your Money Minx trial is about to end. We hope you’ve had a chance to check out all the features that make your net worth calculation and diversified investment tracking simple and easy.
           </td>
         </tr>
         <tr>
-          <td style="padding: 2rem 0;">
-            <a href="{{accountLink}}" class="btn-primary">Go to My Account</a>
+          <td class="text">
+            If you like what you've seen and want to keep going (and take advantge of all our soon to be released features) you'll need to select one of our paid plans. Otherwise your trial will end in 3 days and you won’t be able to access your account any longer.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2rem 0 1rem 0;">
+            <a href="https://app.moneyminx.com/settings?active=Accounts" class="btn-primary">Choose a Plan</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="text">
+            We hope you choose a plan that works best for you and take your investing to the next level! Let me know if you have any question about our plans or need assistance.
+          </td>
+        </tr>
+        <tr>
+          <td class="text">
+            Best,<br>
+            The Money Minx Team
           </td>
         </tr>
       </table>
     </td>
   </tr>
+
   <!--quick snapshot-->
-  <!--title-->
-  <tr>
-    <td class="quick-response-title">Here is a quick snapshot of your account:</td>
-  </tr>
-
-  <!--investment data-->
-  <tr>
-    <td class="wrapper">
-      <table class="summary-table">
-        <tr>
-          <td class="text-cyan">Investment Asset</td>
-          <td class="text-blue">Other Asset</td>
-        </tr>
-        <tr>
-          <td class="text-digit">{{investmentAsset}}</td>
-          <td class="text-digit">{{otherAssets}}</td>
-        </tr>
-        <tr class="space-above">
-          <td class="text-red">Liabilities</td>
-          <td class="text-purple">Net Worth</td>
-        </tr>
-        <tr>
-          <td class="text-digit">{{liabilities}}</td>
-          <td class="text-digit">{{netWorth}}</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-
-  <!--quick snapshot ended-->
   <tr>
     <td style="padding-top: 1rem;">
       <table class="why-table">
         <tr>
           <td colspan="3">
-            <h5 class="sec-title">Investors are using Money Minx to:</h5>
+            <h5 class="sec-title">Here is a quick snapshot of your account:</h5>
           </td>
         </tr>
+        <!--investment data-->
         <tr>
-          <td class="col-3 benefits d-table-row">
-            <a class="d-table-cell" href="https://app.moneyminx.com">
-              <img src="http://cdn.mcauto-images-production.sendgrid.net/6a5998a60b8f24e4/de901416-9e0a-4b96-bff6-913a765522ce/300x300.png" width="100" alt="Skip monthly spreadsheet update" />
-            </a>
-            <span class="img-desc d-table-cell">Skip monthly spreadsheet update</span>
-          </td>
-          <td class="col-3 benefits d-table-row">
-            <a class="d-table-cell" href="https://app.moneyminx.com">
-              <img src="http://cdn.mcauto-images-production.sendgrid.net/6a5998a60b8f24e4/32adac8c-bbb2-4599-aa04-bbf576ac05f4/300x300.png" width="100"alt="Visualize data" />
-            </a>
-            <span class="img-desc d-table-cell">Visualize their data in awesome charts, graphs and tools.</span>
-          </td>
-          <td class="col-3 benefits d-table-row">
-            <a class="d-table-cell" href="https://app.moneyminx.com">
-              <img src="http://cdn.mcauto-images-production.sendgrid.net/6a5998a60b8f24e4/fd502ed7-c8b8-4cb8-968d-70a5b5641f7e/300x300.png" width="100" alt="Check and balance" />
-            </a>
-            <span class="img-desc d-table-cell">See where they are doing good or where they are falling short.</span>
+          <td class="wrapper">
+            <table class="summary-table">
+              <tr>
+                <td class="text-cyan">Investment Assets</td>
+                <td class="text-blue">Other Assets</td>
+              </tr>
+              <tr>
+                <td class="text-digit">{{investmentAsset}}</td>
+                <td class="text-digit">{{otherAssets}}</td>
+              </tr>
+              <tr class="space-above">
+                <td class="text-red">Liabilities</td>
+                <td class="text-purple">Net Worth</td>
+              </tr>
+              <tr>
+                <td class="text-digit">{{liabilities}}</td>
+                <td class="text-digit">{{netWorth}}</td>
+              </tr>
+            </table>
           </td>
         </tr>
         <tr>
@@ -490,7 +479,7 @@
   <!--get started row-->
   <tr>
     <td class="get-started-data">
-      <a href="https://app.moneyminx.com" class="btn-primary">Go to My Account</a>
+      <a href="https://app.moneyminx.com/settings?active=Accounts" class="btn-primary">Choose a Plan</a>
     </td>
   </tr>
   <tr>
@@ -516,7 +505,7 @@
     </td>
   </tr>
   <tr style="padding-top: 1rem;">
-    <td style="padding-top: 1rem;" class="copy">© 2020 Money Minx. All rights reserved.</td>
+    <td style="padding-top: 1rem;" class="copy">© 2020-2021 Money Minx. All Rights Reserved.</td>
     <td style="padding-top: 1rem;" class="links">
       <table>
         <tr>

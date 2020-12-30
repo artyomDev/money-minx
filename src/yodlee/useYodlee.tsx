@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { TokenType, YodleeHookType } from './yodlee.type';
 
@@ -38,7 +37,7 @@ const useYodlee: YodleeHookType = ({
       script.onload = () => setReady(true);
       script.onerror = () => setError('Yodlee FastLink library could not be loaded!');
 
-      let s = document.getElementById('yodlee-fastlink-script');
+      const s = document.getElementById('yodlee-fastlink-script');
       if (!s) {
         body.appendChild(script);
         setScriptTagCreated(true);

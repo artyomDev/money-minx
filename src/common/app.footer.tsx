@@ -7,7 +7,7 @@ const AppFooter = () => {
       <div className='row'>
         <div className='footer-table-wrapper'>
           <div className='footer-content'>
-            <div className='copyright-text'>© 2020 Money Minx. All rights reserved.</div>
+            <div className='copyright-text'>© 2020-{(new Date().getFullYear())} Money Minx. All Rights Reserved.</div>
           </div>
           <div className='footer-content right-content'>
             <ul className='footer-list'>

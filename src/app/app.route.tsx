@@ -24,7 +24,6 @@ import {
 } from 'website/views';
 import { ForgotPassword } from 'auth/views';
 import NetworthRoute from 'networth/networth.route';
-// import AuthorizedRoute from 'routes/authorized.route';
 import AllocationRoute from 'allocation/allocation.route';
 
 import {
@@ -76,13 +75,13 @@ function AppRoute() {
           <AuthRoute />
         </Route>
 
-        <Route path={ACCOUNT}>
+        <PrivateRoute path={ACCOUNT}>
           <AccountRoute />
-        </Route>
+        </PrivateRoute>
 
-        <Route path={ALLOCATION}>
+        <PrivateRoute path={ALLOCATION}>
           <AllocationRoute />
-        </Route>
+        </PrivateRoute>
 
         <Route exact path={'/about'} component={About} />
         <Route exact path={LOGIN} component={Login} />
@@ -93,16 +92,18 @@ function AppRoute() {
         <Route exact path={'/terms'} component={TermNService} />
         <Route exact path={SECURITY} component={Security} />
         <Route exact path={FORGOT_PASSWORD} component={ForgotPassword} />
+        <Route exact path={TOKEN_EXPIRED} component={TokenExpired} />
+
+        <Route exact path={FEATURES_CRYPTOS} component={FeaturesCryptos} />
+        <Route exact path={FEATURES_NET_WORTH} component={FeaturesNetWorth} />
+        <Route exact path={FEATURES_ALLOCATIONS} component={FeaturesAllocations} />
+        <Route exact path={FEATURES_SYNCED_MANUAL} component={FeaturesSyncedManual} />
+        <Route exact path={FEATURES_MULTICURRENCY} component={FeaturesMulticurrency} />
+        <Route exact path={FEATURES_TRANSACTION_HISTORY} component={FeaturesTransactionHistory} />
+
         <PrivateRoute exact path={SETTINGS} component={Setting} />
         <PrivateRoute exact path={SUBSCRIPTION} component={Subscription} />
         <PrivateRoute exact path={REVIEW} component={SubscriptionReview} />
-        <PrivateRoute exact path={FEATURES_NET_WORTH} component={FeaturesNetWorth} />
-        <PrivateRoute exact path={FEATURES_ALLOCATIONS} component={FeaturesAllocations} />
-        <PrivateRoute exact path={FEATURES_SYNCED_MANUAL} component={FeaturesSyncedManual} />
-        <PrivateRoute exact path={FEATURES_CRYPTOS} component={FeaturesCryptos} />
-        <PrivateRoute exact path={FEATURES_MULTICURRENCY} component={FeaturesMulticurrency} />
-        <PrivateRoute exact path={FEATURES_TRANSACTION_HISTORY} component={FeaturesTransactionHistory} />
-        <PrivateRoute exact path={TOKEN_EXPIRED} component={TokenExpired} />
         <PrivateRoute exact path={STRIPE_SUCCESS} component={StripeSuccess} />
         <PrivateRoute exact path={STRIPE_FAILURE} component={StripeFailure} />
         <PrivateRoute exact path={RESET_PASSWORD} component={ResetPassword} />

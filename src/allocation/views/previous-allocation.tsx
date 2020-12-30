@@ -126,8 +126,8 @@ export const SelectedAllocations: React.FC<SelectedAllocationProps> = ({ filter,
         <div className='mm-allocation-overview__block--title'>Previous allocations</div>
         <p className='mm-allocation-overview__block--subtitle'>Use the arrows above to see your previous allocations</p>
         <div className='mm-allocation-overview__block--action'>
-          <SettingsIcon className='mr-3' onClick={() => chartSettingModal.open()} />
-          <Share onClick={() => chartShareModal.open()} />
+          <SettingsIcon title='Chart Settings' className='mr-3' onClick={() => chartSettingModal.open()} />
+          <Share title='Share Chart' onClick={() => chartShareModal.open()} />
         </div>
       </div>
       {!isDateValid ? (

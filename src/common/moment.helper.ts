@@ -7,14 +7,18 @@ import moment from 'moment';
  * @if the date is in invalid format then it might cause problem with parsing
  */
 export const getMonthYear = (inputDate?: any) => {
-  if (inputDate && hasMonthYear(inputDate)) {
+  if (inputDate && hasInterval(inputDate)) {
+    if (inputDate.toString().includes('Q')) {
+      return moment(inputDate, 'Q YYYY').format('MMM YYYY');
+    }
+
     return moment(inputDate, 'MMM YYYY').format('MMM YYYY');
   }
 
   return moment(inputDate).format('MMM YYYY');
 };
 
-export const hasMonthYear = (input: any) => {
+export const hasInterval = (input: any) => {
   if (2 === input.toString().split(' ').length) {
     return true;
   }
@@ -23,7 +27,7 @@ export const hasMonthYear = (input: any) => {
 };
 
 export const parseDateFromString = (dateString: string) => {
-  if (dateString.includes('Q')) {
+  if (dateString.toString().includes('Q')) {
     const qDate = moment(dateString, 'Q YYYY').toDate();
 
     return qDate;

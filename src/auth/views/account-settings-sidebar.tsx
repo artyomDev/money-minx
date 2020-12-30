@@ -3,9 +3,11 @@ import React, { createRef, useCallback, useEffect, useState } from 'react';
 
 import { Dictionary } from 'lodash';
 import { Account } from 'auth/auth.types';
+import { setAccountSuccess } from 'auth/auth.actions';
 import { groupByProviderName } from 'auth/auth.helper';
 import useSearchParam from 'auth/hooks/useSearchParam';
 import { fetchConnectionInfo } from 'auth/auth.service';
+import { getLatestProviderAccounts } from 'api/request.api';
 import { ReactComponent as LogoImg } from 'assets/icons/logo.svg';
 import { useAuthState, useAuthDispatch } from 'auth/auth.context';
 import { ReactComponent as SecurityIcon } from 'assets/images/signup/security.svg';
@@ -40,7 +42,7 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
    * i.e reload counter will be 0
    */
   useEffect(() => {
-    if (!isFromFastlink || reloadCounter) {
+    if (!isFromFastlink && reloadCounter) {
       const getUser = async () => {
         await fetchConnectionInfo({ dispatch });
       };
@@ -48,6 +50,21 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
       getUser();
     }
   }, [dispatch, reloadCounter, isFromFastlink]);
+
+  /**
+   * @if from fastlink and hit next so that reload counter is increased
+   * Call the latest provider accounts
+   */
+  useEffect(() => {
+    (async () => {
+      if (isFromFastlink && reloadCounter) {
+        const { error, data } = await getLatestProviderAccounts();
+        if (!error) {
+          dispatch(setAccountSuccess(data));
+        }
+      }
+    })();
+  }, [dispatch, isFromFastlink, reloadCounter]);
 
   /**
    * if accounts
@@ -208,7 +225,15 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
                           className={getProviderClass(pName)}
                         >
                           <Link to='#'>
-                            {account.providerLogo ? <img src={account.providerLogo} alt={pName} /> : pName}
+                            {account.providerName ? (
+                              account.providerLogo ? (
+                                <img src={account.providerLogo} alt={pName} />
+                              ) : (
+                                pName
+                              )
+                            ) : (
+                              <LogoImg className='auth-logo' />
+                            )}
                           </Link>
                         </li>
                       );
@@ -230,7 +255,7 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
           <AccountSettingForm
             currentAccount={selectedAccount ? selectedAccount : currentAccount}
             handleReload={() => setReloadCounter((c) => c + 1)}
-            isFromAccount={selectedAccount ? true : false}
+            isFromAccount={!!selectedAccount}
             closeSidebar={closeSidebar}
           />
 

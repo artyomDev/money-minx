@@ -6,7 +6,8 @@
     "originalBalance",
     "maturityDate",
     "paymentsPerYear",
-    "principalBalance"
+    "principalBalance",
+    "associatedRealEstate"
   ],
   "startup": ["postMoneyValuation", "currentValuation", "investedDate", "amountInvested"],
   "investment": ["termForInvestment", "investedDate", "amountInvested", "currentMarketValue", "targetInterestRate"],
@@ -29,6 +30,8 @@
     "country",
     "useZestimate",
     "ownEstimate",
+    "estimatedMonthlyIncome",
+    "estimatedMonthlyExpenses",
     "associatedMortgage",
     "principalBalance",
     "calculatedEquity",

@@ -61,7 +61,7 @@ export const FeaturesSyncedManualBottomSection = () => {
     <section className='feature-section feature-section-reversed'>
       <div className='row'>
         <div className='col-lg-7 feature-image'>
-          <img src={ManualAccountsImg} alt={'Sync 21k institutions'} />
+          <img src={ManualAccountsImg} alt={'Sync 21k institutions'} className='features-manual-account'/>
         </div>
         <div className='col-lg-5 feature-content'>
           <h2>Manual Accounts</h2>

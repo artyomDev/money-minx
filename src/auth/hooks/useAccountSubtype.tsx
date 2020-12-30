@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+
 import { getAccountSubType } from 'api/request.api';
 
-const useAccountSubtype = (accountType: string) => {
+const useAccountSubtype = (accountType: string, isManual = false) => {
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [subType, setSubType] = useState<string[]>(['']);
@@ -10,7 +11,7 @@ const useAccountSubtype = (accountType: string) => {
     if (accountType) {
       const fetchAccountSubType = async () => {
         setLoading(true);
-        const { data, error: err } = await getAccountSubType(accountType);
+        const { data, error: err } = await getAccountSubType(accountType, isManual);
         if (err) {
           setError(err);
         } else {
@@ -18,9 +19,10 @@ const useAccountSubtype = (accountType: string) => {
         }
         setLoading(false);
       };
+
       fetchAccountSubType();
     }
-  }, [accountType]);
+  }, [accountType, isManual]);
 
   return { loading, subType, error };
 };

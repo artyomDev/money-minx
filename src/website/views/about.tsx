@@ -172,7 +172,7 @@ export const AboutNetWorthSection = () => {
         <div className='col-xl-5'>
           <div className='networth-text'>
             <p>
-              <span className='highlighted-text'>One of our many features</span>
+              <span className='highlighted-text'>Feature Highlight</span>
             </p>
             <h2>Net Worth Calculator</h2>
             <p className='text'>

@@ -1,24 +1,23 @@
 import Form from 'react-bootstrap/Form';
-import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-import MMToolTip from 'common/components/tooltip';
 import useToast from 'common/hooks/useToast';
-import { appRouteConstants } from 'app/app-route.constant';
+import { MMCategories } from 'auth/auth.enum';
+import MMToolTip from 'common/components/tooltip';
+import { enumerateStr } from 'common/common-helper';
+import useAccountType from 'auth/hooks/useAccountType';
 import { Modal, ModalType } from 'common/components/modal';
 import { CurrencyOptions } from 'auth/enum/currency-options';
-import { enumerateStr } from 'common/common-helper';
-import { getConnectionInfo, postManualAccount } from 'api/request.api';
-import { SelectInput } from 'common/components/input/select.input';
-import { AccountTypeSelectInput } from './account-type-select.input';
-import { ReactComponent as InfoIcon } from 'assets/images/signup/info.svg';
-import { MMCategories } from 'auth/auth.enum';
-import { storage } from 'app/app.storage';
-import useAccountType from 'auth/hooks/useAccountType';
 import useAccountSubtype from 'auth/hooks/useAccountSubtype';
+import { SelectInput } from 'common/components/input/select.input';
+import { getConnectionInfo, postManualAccount } from 'api/request.api';
+import { ReactComponent as InfoIcon } from 'assets/images/signup/info.svg';
+
+import { AccountTypeSelectInput } from './account-type-select.input';
 
 interface SettingModalProps {
   manualAccountModal: ModalType;
+  handleSuccess: () => void;
 }
 
 const initialValues = {
@@ -30,15 +29,14 @@ const initialValues = {
   currency: 'USD',
 };
 
-const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal }) => {
-  const history = useHistory();
+const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, handleSuccess }) => {
   const { mmToast } = useToast();
-  const [values, setValues] = useState(initialValues);
-  const { data: accountTypes } = useAccountType();
-  const { subType: accountSubTypes } = useAccountSubtype(values.mmAccountType);
   const curArr = enumerateStr(CurrencyOptions);
+  const [values, setValues] = useState(initialValues);
+  const { data: accountTypes } = useAccountType(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(true);
+  const { subType: accountSubTypes } = useAccountSubtype(values.mmAccountType, true);
 
   const handleChange = (e: React.ChangeEvent<any>) => {
     if (e.target.name === 'mmAccountType') {
@@ -56,7 +54,7 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal })
 
   const setAccountCategory = (cat: string) => {
     return setValues({ ...values, mmCategory: cat });
-  }
+  };
 
   const handleCancel = () => {
     manualAccountModal.close();
@@ -65,18 +63,17 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal })
 
   const handleSubmit = async () => {
     setLoading(true);
-    const { data: res, error: err } = await postManualAccount(values);
+    const { error: err } = await postManualAccount(values);
     if (!err) {
       await getConnectionInfo();
       setValues(initialValues);
       setLoading(false);
       mmToast('Add Success', { type: 'success' });
       manualAccountModal.close();
-      storage.set('isNew', 'true');
-      return history.push(appRouteConstants.account.ACCOUNT.replace(':accountId', res.id));
+
+      return handleSuccess();
     }
 
-    console.log(err);
     setLoading(false);
     mmToast(' Add Failed', { type: 'error' });
   };
@@ -110,7 +107,7 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal })
             <div className='account-category'>
               <span className='form-subheading'>
                 Account Category
-                  <MMToolTip
+                <MMToolTip
                   placement='top'
                   message='Investment Assets are accounts you track as investments and may consider adding or reducing to your position, Other Assets are worth money but you do not trade them such as your checking account or primary residence, Liabilities are things you owe like loans, mortgages and credit cards.'
                 >
@@ -177,12 +174,7 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal })
               </Form.Group>
               <Form.Group controlId='ManualAccountForm.Currency' className='child'>
                 <Form.Label className='form-subheading'>Currency</Form.Label>
-                <SelectInput
-                  args={curArr}
-                  onChange={handleChange}
-                  value={values.currency}
-                  name='currency'
-                />
+                <SelectInput args={curArr} onChange={handleChange} value={values.currency} name='currency' />
               </Form.Group>
             </div>
           </Form>
@@ -201,10 +193,10 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal })
                   <span className='ml-1'>Adding...</span>
                 </>
               ) : (
-                  <>
-                    Add<span className='hide-sm ml-1'>Account</span>
-                  </>
-                )}
+                <>
+                  Add<span className='hide-sm ml-1'>Account</span>
+                </>
+              )}
             </button>
           </div>
         </div>

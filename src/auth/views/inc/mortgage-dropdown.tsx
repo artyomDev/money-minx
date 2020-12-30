@@ -13,10 +13,11 @@ interface MortgageDropdownProps {
 const MortgageDropdown = (props: MortgageDropdownProps) => {
   const [show, setShow] = useState(false);
   const { value, onChange, mortgageList, name } = props;
+  const displayName = mortgageList.find((m) => +m.id === +value)?.accountName;
 
   return (
     <Dropdown className='drop-box dropdown-select-input' onToggle={(nextShow) => setShow(nextShow)} show={show}>
-      <Dropdown.Toggle className='dropdown-toggle'>{value}</Dropdown.Toggle>
+      <Dropdown.Toggle className='dropdown-toggle'>{displayName || ''}</Dropdown.Toggle>
       <Dropdown.Menu className='mm-dropdown-menu'>
         <ul className='checkbox-list single'>
           {mortgageList?.map((mortgage, index) => {

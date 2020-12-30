@@ -34,38 +34,38 @@ export enum CurrencyOptions {
   ZAR = 'ZAR',
 }
 
-export enum CurrencySymbols {
-  'USD' = '$', // US Dollar
-  'EUR' = '€', // Euro
-  'GBP' = '£', // British Pound Sterling
-  'CAD' = '$', // Canadian Dollar
-  'JPY' = '¥', // Japanese Yen
-  'AUD' = '$', // Australian Dollar
-  'CHF' = 'Fr', // Swiss Franc
-  'INR' = '₹', // Indian Rupee
-  'SGD' = '$', // Singapore Dollar
-  'ILS' = '₪', // Israeli New Sheqel
-  'KRW' = '₩', // South Korean Won
-  'PHP' = '₱', // Philippine Peso
-  'PLN' = 'zł', // Polish Zloty
-  'THB' = '฿', // Thai Baht
-  'BGN' = 'Лв', // Bulgarian lev
-  'CZK' = 'Kč', // Czech koruna
-  'DKK' = 'Kr', // Danish krone
-  'HUF' = 'Ft', // Hungarian forint
-  'RON' = 'lei', // Romanian leu
-  'SEK' = 'kr', // Swedish krona
-  'ISK' = 'Íkr', // Icelandic króna
-  'NOK' = 'kr', // Norwegian krone
-  'HRK' = 'kn', // Croatian kuna
-  'RUB' = '₽', // Russian ruble
-  'TRY' = '₺', // Turkish lira
-  'BRL' = 'R$', // Brazilian Real
-  'CNY' = '¥', // Renminbi
-  'HKD' = '$', // Honk Kong Dollar
-  'IDR' = 'Rp', // Indonesian rupiah
-  'MXN' = '$', // Mexican peso
-  'MYR' = 'RM', // Malaysian ringgit
-  'NZD' = '$', // New Zealand dollar
-  'ZAR' = 'R', // South African rand
-}
+export const CurrencySymbols: Record<string, string> = {
+  USD: '$', // US Dollar
+  EUR: '€', // Euro
+  GBP: '£', // British Pound Sterling
+  CAD: '$', // Canadian Dollar
+  JPY: '¥', // Japanese Yen
+  AUD: '$', // Australian Dollar
+  CHF: 'Fr', // Swiss Franc
+  INR: '₹', // Indian Rupee
+  SGD: '$', // Singapore Dollar
+  ILS: '₪', // Israeli New Sheqel
+  KRW: '₩', // South Korean Won
+  PHP: '₱', // Philippine Peso
+  PLN: 'zł', // Polish Zloty
+  THB: '฿', // Thai Baht
+  BGN: 'Лв', // Bulgarian lev
+  CZK: 'Kč', // Czech koruna
+  DKK: 'Kr', // Danish krone
+  HUF: 'Ft', // Hungarian forint
+  RON: 'lei', // Romanian leu
+  SEK: 'kr', // Swedish krona
+  ISK: 'Íkr', // Icelandic króna
+  NOK: 'kr', // Norwegian krone
+  HRK: 'kn', // Croatian kuna
+  RUB: '₽', // Russian ruble
+  TRY: '₺', // Turkish lira
+  BRL: 'R$', // Brazilian Real
+  CNY: '¥', // Renminbi
+  HKD: '$', // Honk Kong Dollar
+  IDR: 'Rp', // Indonesian rupiah
+  MXN: '$', // Mexican peso
+  MYR: 'RM', // Malaysian ringgit
+  NZD: '$', // New Zealand dollar
+  ZAR: 'R', // South African rand
+};

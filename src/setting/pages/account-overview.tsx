@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import DefaultAvatar from 'assets/icons/default-avatar.svg';
 import FastLinkModal from 'yodlee/fast-link.modal';
 import LoadingScreen from 'common/loading-screen';
+import moment from 'moment';
 import useToast from 'common/hooks/useToast';
 import useAccounts from 'auth/hooks/useAccounts';
 import useAnalytics from 'common/hooks/useAnalytics';
@@ -19,7 +20,6 @@ import {
 } from 'setting/setting.type';
 import { Account } from 'auth/auth.types';
 import { events } from '@mm/data/event-list';
-import { STATUS_CODE } from 'app/app.status';
 import { useModal } from 'common/components/modal';
 import { getFastlinkUpdate } from 'api/request.api';
 import { groupByProviderName } from 'auth/auth.helper';
@@ -204,7 +204,6 @@ export interface AccountByStatus {
 }
 
 export const AccountCard: React.FC<AccountCardProps> = ({ accountList, availableAccounts, reviewSubscriptionFlag }) => {
-  const location = useLocation();
   const history = useHistory();
   const { event } = useAnalytics();
   const { mmToast } = useToast();
@@ -217,7 +216,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
   });
   const fastlinkModal = useModal();
   const [loading, setLoading] = useState(false);
-  const { fetchLatestProviderAccounts, fetchAccounts, loading: fetchingNewAccounts } = useAccounts();
+  const { loading: fetchingNewAccounts } = useAccounts();
 
   const needUpgrade = accountList.length >= +availableAccounts;
   const accountsByProvider = groupByProviderName(accountList);
@@ -225,22 +224,12 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
   const handleConnectAccountSuccess = async () => {
     setLoading(true);
     const { error } = await getRefreshedAccount({ dispatch });
-    if (STATUS_CODE.SERVER_ACCEPTED === error?.code) {
-      await fetchAccounts();
-      setLoading(false);
 
-      return history.push(appRouteConstants.auth.NET_WORTH);
-    }
-    await fetchLatestProviderAccounts();
     setLoading(false);
 
     if (error) {
       mmToast('Error Occurred on Fetching user Details', { type: 'error' });
     }
-    location.pathname = appRouteConstants.auth.ACCOUNT_SETTING;
-    location.search = 'from=fastLink';
-
-    return history.push(location);
   };
 
   const handleConnectAccount = async (accId: number) => {
@@ -270,15 +259,20 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
   };
 
   for (let p_name in accountsByProvider) {
-    let status = accountsByProvider[p_name][0].providerAccount?.status;
+    const status = accountsByProvider[p_name][0].providerAccount?.status;
+    const nextUpdateScheduled = accountsByProvider[p_name][0].providerAccount?.dataset?.[0]?.nextUpdateScheduled;
     if (
       status === 'LOGIN_IN_PROGRESS' ||
       status === 'IN_PROGRESS' ||
       status === 'PARTIAL_SUCCESS' ||
-      status === 'SUCCESS'
+      (status === 'SUCCESS' && nextUpdateScheduled >= moment().toISOString())
     ) {
       accountsByStatus.success.push({ provider_name: p_name, accounts: accountsByProvider[p_name] });
-    } else if (status === 'USER_INPUT_REQUIRED') {
+    } else if (
+      status === 'USER_INPUT_REQUIRED' ||
+      (status === 'SUCCESS' && nextUpdateScheduled < moment().toISOString()) ||
+      (status === 'SUCCESS' && nextUpdateScheduled === null)
+    ) {
       accountsByStatus.warning.push({ provider_name: p_name, accounts: accountsByProvider[p_name] });
     } else {
       accountsByStatus.error.push({ provider_name: p_name, accounts: accountsByProvider[p_name] });
@@ -343,8 +337,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
               <div className={['card mm-setting-card', getStatusClassName(status)].join(' ')}>
                 {status === 'error' && (
                   <div className='row pb-3 align-items-center no-gutters fix-connection-sec'>
-                    <div className='col-6 text-danger pl-3'>
-                      <span>Connection error</span>
+                    <div className='col-6 text-danger'>
+                      <span>Connection Error</span>
                     </div>
                     <div className='col-6 mt-2 text-md-right'>
                       <button
@@ -359,8 +353,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
                 )}
                 {status === 'warning' && (
                   <div className='row pb-3 align-items-center no-gutters fix-connection-sec'>
-                    <div className='col-12 col-md-6 text-warning pl-3'>
-                      <span>Needs more info</span>
+                    <div className='col-12 col-md-6 text-warning'>
+                      <span>Needs Attention</span>
                     </div>
                     <div className='col-12 col-md-6 mt-2 text-md-right'>
                       <button
@@ -469,7 +463,9 @@ export const AccountRow: React.FC<AccountRowProps> = ({ account, reviewSubscript
             <input type='checkbox' className='mm-switch-input' id={`mc3-${account.id}`} name='Switch' />
             <label className='mm-switch' htmlFor={`mc3-${account.id}`}></label>
           </span>*/}
-        {account.accountName} {account.accountNumber ? ` (${account.accountNumber.slice(-4)})` : null}
+        <Link className='gray-links' to={`/account-details/${account.id}`} aria-label='Account Details'>
+          {account.accountName} {account.accountNumber ? ` (${account.accountNumber.slice(-4)})` : null}
+        </Link>
       </div>
       <div className='col-3 col-md-2'>${numberWithCommas(fNumber(account.balance, 2))}</div>
       <div className='col-3 col-md-2'>

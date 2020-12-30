@@ -172,6 +172,8 @@ textarea.form-control {
 .drop-box.dropdown {
   border-radius: 4px;
   color: $grayText;
+  width: calc(50% - 4px);
+  margin-bottom: 0.75rem;
 
   &:hover,
   &:focus,
@@ -185,6 +187,10 @@ textarea.form-control {
     &:hover {
       color: $darkGray;
     }
+  }
+
+  @media (min-width: $md) {
+    width: unset;
   }
 }
 

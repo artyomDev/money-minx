@@ -120,9 +120,9 @@ export const LoginMainSection = () => {
               <div className='auth-left-content'>
                 <h1>Three easy steps to get started with Money Minx</h1>
                 <ul>
-                  <li>Find your accounts</li>
-                  <li>Connect it securely to Money Minx</li>
-                  <li>Let Money Minx do the rest</li>
+                  <li>Find your accounts.</li>
+                  <li>Connect securely to Money Minx.</li>
+                  <li>Let Money Minx do the rest.</li>
                 </ul>
                 <div className='guide-bottom'>
                   <h2>Serious about security</h2>
@@ -197,9 +197,9 @@ export const LoginMainSection = () => {
                           const subscriptionDetails = await getSubscription({ priceId: data.priceId });
                           mmToast('Sign in Success', { type: 'success' });
                           if (
-                            autoAccounts >=
-                              subscriptionDetails?.data?.details[pricingDetailConstant.CONNECTED_ACCOUNT] ||
-                            manualAccounts >= subscriptionDetails?.data?.details[pricingDetailConstant.MANUAL_ACCOUNT]
+                            +autoAccounts >
+                              +subscriptionDetails?.data?.details[pricingDetailConstant.CONNECTED_ACCOUNT] ||
+                            +manualAccounts > +subscriptionDetails?.data?.details[pricingDetailConstant.MANUAL_ACCOUNT]
                           ) {
                             history.push(appRouteConstants.subscription.REVIEW);
                           } else if (!onboarded) return history.push(appRouteConstants.networth.NET_WORTH);

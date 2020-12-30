@@ -126,7 +126,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
   return (
     <div className='row'>
       <div className='col-12 dropdowns-container'>
-        <div className='dflex-center mb-15'>
+        <div className='dflex-center justify-space-between flex-wrap-custom mb-15'>
           {hasFiltered() ? (
             <button className='btn btn-outline-danger clear-filter' onClick={clearNetworthFilter}>
               Clear Filters
@@ -226,65 +226,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
               </ul>
             </Dropdown.Menu>
           </Dropdown>
-        </div>
-
-        {
-          // since filter date will be current timezone string
-          // no need to parse this to utc for setting up simply date must work
-        }
-        <div className='dflex-center mb-15'>
-          <ReactDatePicker
-            selected={fFromDate ? new Date(fFromDate) : fromDate}
-            onChange={(date) => onChange('start', date)}
-            // selectsStart
-            startDate={fFromDate ? new Date(fFromDate) : fromDate}
-            dateFormat='MM/yyyy'
-            showMonthYearPicker
-            minDate={new Date('1900-01-01')}
-            maxDate={new Date()}
-            className='m-l-3'
-            // selectsRange
-            customInput={
-              <div className='drop-box'>
-                <div className='date-box'>
-                  <input
-                    type='text'
-                    className={['month_year', fc('fFromDate')].join(' ')}
-                    value={fFromDate ? getMonthYear(fFromDate) : getMonthYear(fromDate)}
-                    aria-label='From Date Filter'
-                    readOnly
-                  />
-                </div>
-              </div>
-            }
-          />
-          <span className='date-separator'>to</span>
-          <ReactDatePicker
-            selected={fToDate ? new Date(fToDate) : null}
-            onChange={(date) => onChange('end', date)}
-            // selectsStart
-            startDate={fToDate ? new Date(fToDate) : null}
-            dateFormat='MM/yyyy'
-            showMonthYearPicker
-            minDate={fFromDate ? new Date(fFromDate) : null}
-            maxDate={new Date()}
-            className='m-l-1'
-            // selectsRange
-            customInput={
-              <div className='drop-box'>
-                <div className='date-box'>
-                  <input
-                    type='text'
-                    className={['month_year', fc('fToDate')].join(' ')}
-                    value={getMonthYear(fToDate)}
-                    aria-label='To Date Filter'
-                    readOnly
-                  />
-                </div>
-              </div>
-            }
-          />
-          <Dropdown className='drop-box m-l-2'>
+          <Dropdown className='drop-box'>
             <Dropdown.Toggle variant='' className={fc('fTimeInterval')}>
               {fTimeInterval || 'Monthly'}
             </Dropdown.Toggle>
@@ -310,7 +252,64 @@ const NetworthFilter = (props: NetworthFilterProps) => {
               </ul>
             </Dropdown.Menu>
           </Dropdown>
+          {
+            // since filter date will be current timezone string
+            // no need to parse this to utc for setting up simply date must work
+          }
+            <ReactDatePicker
+              selected={fFromDate ? new Date(fFromDate) : fromDate}
+              onChange={(date) => onChange('start', date)}
+              // selectsStart
+              startDate={fFromDate ? new Date(fFromDate) : fromDate}
+              dateFormat='MM/yyyy'
+              showMonthYearPicker
+              minDate={new Date('1900-01-01')}
+              maxDate={new Date()}
+              className='ml-md-3'
+              // selectsRange
+              customInput={
+                <div className='drop-box'>
+                  <div className='date-box'>
+                    <input
+                      type='text'
+                      className={['month_year', fc('fFromDate')].join(' ')}
+                      value={fFromDate ? getMonthYear(fFromDate) : getMonthYear(fromDate)}
+                      aria-label='From Date Filter'
+                      readOnly
+                    />
+                  </div>
+                </div>
+              }
+            />
+            <span className='date-separator'>to</span>
+            <ReactDatePicker
+              selected={fToDate ? new Date(fToDate) : null}
+              onChange={(date) => onChange('end', date)}
+              // selectsStart
+              startDate={fToDate ? new Date(fToDate) : null}
+              dateFormat='MM/yyyy'
+              showMonthYearPicker
+              minDate={fFromDate ? new Date(fFromDate) : null}
+              maxDate={new Date()}
+              className='mr-md-3'
+              // selectsRange
+              customInput={
+                <div className='drop-box'>
+                  <div className='date-box'>
+                    <input
+                      type='text'
+                      className={['month_year', fc('fToDate')].join(' ')}
+                      value={getMonthYear(fToDate)}
+                      aria-label='To Date Filter'
+                      readOnly
+                    />
+                  </div>
+                </div>
+              }
+            />
         </div>
+
+
       </div>
     </div>
   );

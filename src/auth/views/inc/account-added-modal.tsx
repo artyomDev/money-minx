@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuthState } from 'auth/auth.context';
 import { Modal, ModalType } from 'common/components/modal';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
+import { ReactComponent as LogoImg } from 'assets/icons/logo.svg';
 
 interface Props {
   accountAddedModal: ModalType;
@@ -21,7 +22,7 @@ const AccountAddedModal: React.FC<Props> = ({ accountAddedModal, handleSuccess }
     <Modal {...accountAddedModal.props} title='Account Added!' size='lg' onSuccess={handleSuccess} canBeClosed>
       <div className='modal-wrapper signup-modal'>
         <div className='signup-done-modal-logo'>
-          <img src={account.providerLogo} alt={`${account.accountName}`} />
+          {account.providerLogo ? <img src={account.providerLogo} alt={`${account.accountName}`} /> : <LogoImg className='icon auth-logo' />}
         </div>
         <p>
           Money Minx works best when you add all of your accounts so you see your full financial picture. Do you want to

@@ -6,14 +6,16 @@
     .mm-allocation-sub-header {
         flex-wrap: nowrap;
         overflow-x: auto;
+      margin: 0 auto;
     }
     &__row {
         padding: 1.25rem 1rem;
     }
     .mm-allocation-radios {
-        border: 1.5px solid $grayOpacity20;
-        height: 3.125rem;
-        border-radius: 4px;
+      border: 1.5px solid $grayOpacity20;
+      height: 3.125rem;
+      border-radius: 4px;
+
         label {
             border: none;
             margin-bottom: 0;
@@ -703,7 +705,7 @@
         position: absolute;
         border-radius: 4px;
         background-color: $pink;
-        box-shadow: 0px 4px 8px rgba($red, 0.3);
+        box-shadow: 0 4px 8px rgba($red, 0.3);
         &::after {
             top: 50%;
             content: '';

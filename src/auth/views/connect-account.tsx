@@ -24,6 +24,7 @@ import { useAuthDispatch, useAuthState } from 'auth/auth.context';
 import { ReactComponent as LogoImg } from 'assets/icons/logo.svg';
 import { ReactComponent as LoginLockIcon } from 'assets/images/login/lock-icon.svg';
 import { ReactComponent as LoginShieldIcon } from 'assets/images/login/shield-icon.svg';
+import { ReactComponent as SSLSecure } from 'assets/icons/ssl-secure.svg';
 import { getAccount, getCurrentSubscription, getFastlink, getSubscription } from 'api/request.api';
 
 import ConnectAccountSteps from './inc/connect-steps';
@@ -218,9 +219,9 @@ export const ConnectAccountMainSection = () => {
             <div className='auth-left-content'>
               <h1>Three easy steps to get started with Money Minx</h1>
               <ul>
-                <li>Find your accounts</li>
-                <li>Connect it securely to Money Minx</li>
-                <li>Let Money Minx do the rest</li>
+                <li>Find your accounts.</li>
+                <li>Connect securely to Money Minx.</li>
+                <li>Let Money Minx do the rest.</li>
               </ul>
               <div className='guide-bottom'>
                 <h2>Serious about security</h2>
@@ -245,71 +246,73 @@ export const ConnectAccountMainSection = () => {
               <Link to='/net-worth' className='logo-img-wrapper'>
                 <LogoImg className='auth-logo' />
               </Link>
-              <h2>Connect accounts</h2>
+              <h2>Add an account</h2>
               <p>
-                We partnered with financial technology industry veterans, to facilitate aggregation of your accounts.
-                Your account credentials are never shared with Money Minx.
+                Money Minx is your place to track everything. Add your accounts, credit cards, investments, collectables, real estate and more. Get started by clicking on one of the buttons below.
               </p>
-              <div className='connect-account-buttons'>
-                <button
-                  className='connect-account-btn mm-btn-primary mm-btn-animate d-flex align-items-center justify-content-center'
-                  type='button'
-                  onClick={checkConnectedAccountLimit}
-                >
-                  {autoLoading && (
-                    <span className='spinner-grow spinner-grow-sm mr-2' role='status' aria-hidden='true' />
-                  )}
-                  Add Banks and Investments
-                </button>
-                <MMToolTip placement='top' message='Stay tuned, crypto accounts are almost ready.'>
+
+              <div className='add-account-card'>
+                <div className='card-body'>
+                  <span className='title'>Banks, Cards, Loans, Investments & More</span>
+                  <p className='description'>Connect via our aggregation partner to your accounts. Your login credentials are never shared with Money Minx.</p>
+                  <div className='add-card-bottom'>
                   <button
-                    className='connect-account-btn mm-btn-primary mm-btn-animate mm-btn-crypto d-flex align-items-center justify-content-center'
+                    className='connect-account-btn mm-btn-primary mm-btn-animate'
                     type='button'
-                    onClick={handleCryptoExchange}
+                    onClick={checkConnectedAccountLimit}
                   >
-                    {zaboLoading && (
+                    {autoLoading && (
                       <span className='spinner-grow spinner-grow-sm mr-2' role='status' aria-hidden='true' />
                     )}
-                    Add Crypto Exchanges
+                    Add Connected Account
                   </button>
-                </MMToolTip>
-                <span className='badge badge-pill badge-primary mm-coming-soon'>Coming Soon!</span>
+                  <SSLSecure className='hide-sm'/>
+                  </div>
+                </div>
               </div>
-              <div className='manual-account-section'>
-                <h2>
-                  <span className='manual-heading'>Add a manual account instead</span>
-                </h2>
-                <p>
-                  If your financial institution is not supported or if you want to track a non traditional asset or
-                  liability you can add the details manually.
-                </p>
-                <button
-                  className='connect-account-btn btn-outline-primary mm-btn-animate d-flex align-items-center justify-content-center'
-                  type='submit'
-                  onClick={checkManualAccountLimit}
-                >
-                  {manualLoading && (
-                    <span className='spinner-grow spinner-grow-sm mr-2' role='status' aria-hidden='true' />
-                  )}
-                  Add Manual Account
-                </button>
-                {/*<h2>
-                  <span className='manual-heading'>Add real estate</span>
-                </h2>
-                <div className='zillow-wrap d-block d-md-flex'>
-                  <button className='connect-account-btn btn-outline-primary mm-btn-animate' type='submit'>
-                    Add Real Estate
-                  </button>
-                  <span className='zillow-img'>
-                    <ZillowIcon className='mt-2' />
-                  </span>
-                </div>*/}
+              <div className='add-account-card small crypto'>
+                <div className='card-body'>
+                  <span className='title'>Crypto Exchanges</span>
+                  <p className='description'>Add your crypto wallets, Bitcoin, Ethereum and other coins. <span className='badge badge-pill badge-primary mm-coming-soon'>Coming Soon!</span></p>
+                  <div className='add-card-bottom'>
+                    <MMToolTip placement='top' message='Stay tuned, crypto accounts are almost ready.'>
+                      <button
+                        className='connect-account-btn mm-btn-primary mm-btn-animate mm-btn-crypto d-flex align-items-center justify-content-center'
+                        type='button'
+                        onClick={handleCryptoExchange}
+                      >
+                        {zaboLoading && (
+                          <span className='spinner-grow spinner-grow-sm mr-2' role='status' aria-hidden='true' />
+                        )}
+                        Add Crypto Exchange
+                      </button>
+                    </MMToolTip>
+                  </div>
+                </div>
+              </div>
+              <div className='add-account-card small'>
+                <div className='card-body'>
+                  <span className='title'>Manual Accounts</span>
+                  <p className='description'>No logins needed, add balances and transactions on your own.</p>
+                  <div className='add-card-bottom'>
+                    <button
+                      className='connect-account-btn btn-outline-primary mm-btn-animate d-flex align-items-center justify-content-center'
+                      type='submit'
+                      onClick={checkManualAccountLimit}
+                    >
+                      {manualLoading && (
+                        <span className='spinner-grow spinner-grow-sm mr-2' role='status' aria-hidden='true' />
+                      )}
+                      Add Manual Account
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <ManualAccountModal manualAccountModal={manualAccountModal} />
+      <ManualAccountModal manualAccountModal={manualAccountModal} handleSuccess={handleConnectAccountSuccess} />
       {!onboarded ? <ConnectAccountSteps isConnectAccount /> : null}
       <FastLinkModal
         fastLinkModal={fastlinkModal}

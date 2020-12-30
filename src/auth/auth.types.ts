@@ -193,6 +193,7 @@ export interface DeleteAccountPayload {
 }
 
 export interface Mortgage {
+  id: number | string;
   accountName: string;
   balance: number;
   principalBalance: number;
@@ -208,3 +209,8 @@ export interface LoanAccount {
 
 export type loanAccounts = LoanAccount[];
 
+export interface IRealEstateAccount {
+  id: number | string;
+  balance: number | string;
+  accountName: string;
+}

@@ -21,18 +21,19 @@ const FastLinkModal: React.FC<Props> = ({ fastLinkModal, handleSuccess, fastLink
   const onSuccess = async (args: any) => {
     logger.log('fastlink onsuccess arguments', args);
     mmToast('Successfully Logged in with Yodlee', { type: 'success' });
+    handleSuccess();
 
-    return handleSuccess();
+    return fastLinkModal.close();
   };
 
   const onError = (err: any) => {
     logger.log('fastlink onerror log', err);
     const errorList = err
       ? Object.keys(err).map((ek, i) => (
-        <li key={i}>
-          {[ek]}:{err[ek]}
-        </li>
-      ))
+          <li key={i}>
+            {[ek]}:{err[ek]}
+          </li>
+        ))
       : null;
 
     return mmToast(<ul>{errorList}</ul>, { type: 'error', autoClose: false });
@@ -64,7 +65,15 @@ const FastLinkModal: React.FC<Props> = ({ fastLinkModal, handleSuccess, fastLink
   };
 
   return (
-    <Modal {...fastLinkModal.props} title='' size={'fastlink'} canBeClosed loading={!active} type={ModalTypeEnum.NO_HEADER} yoddle={true}>
+    <Modal
+      {...fastLinkModal.props}
+      title=''
+      size={'fastlink'}
+      canBeClosed
+      loading={!active}
+      type={ModalTypeEnum.NO_HEADER}
+      yoddle={true}
+    >
       <div className='fastlink-modal-container'>
         <div id='fastlinkContainer' />
         {!active ? <CircularSpinner /> : null}

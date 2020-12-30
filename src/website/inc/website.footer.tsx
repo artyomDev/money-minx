@@ -1,6 +1,5 @@
 import React from 'react';
 
-import footerData from '@mm/data/footer.data.json';
 import SignupToday from 'website/partials/signup-today.footer';
 import { ReactComponent as TwitterIcon } from 'assets/icons/twitter.svg';
 import { ReactComponent as YoutubeIcon } from 'assets/icons/youtube.svg';
@@ -137,11 +136,18 @@ const WebsiteFooter: React.FC<WebsiteFooter> = ({ isSignupToday = true }) => {
             </div>
             <div className='col-lg-6'>
               <div className='info-copyright-wrapper'>
-                <div className='info-wrapper light py-2'>{footerData.moneyminxInfo}</div>
+                <div className='info-wrapper light py-2'>
+                  Money Minx is a financial publisher that does not offer any personal financial advice or advocate the
+                  purchase or sale of any security or investment for any specific individual. Members should be aware that
+                  investment markets have inherent risks, and past performance does not guarantee future results.
+                  Money Minx has advertising relationships with some of the offers listed on this website.
+                  Money Minx attempts to take a reasonable and good faith approach to maintaining objectivity towards
+                  providing referrals that are in the best interest of readers. Money Minx strives to keep its information
+                  accurate and up to date.</div>
                 <div className='social-links-wrapper d-flex flex-row'>
                   <SocialList />
                 </div>
-                <div className='copyright-wrapper'>{footerData.copyrightText.replace(':year', '2020')}</div>
+                <div className='copyright-wrapper'>© 2020-{(new Date().getFullYear())} Money Minx. All Rights Reserved.</div>
               </div>
             </div>
           </div>

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 
 import { isEmpty } from 'lodash';
 import useMounted from 'common/hooks/useMounted';
+import useSearchParam from 'auth/hooks/useSearchParam';
 import { appRouteConstants } from 'app/app-route.constant';
 import { Account, SubscriptionDetail } from 'auth/auth.types';
 import { pricingDetailConstant } from 'common/common.constant';
@@ -14,6 +15,7 @@ const useSubscriptionValidation = () => {
   const { currentSubscription, subscriptionDetail, onboarded, accounts } = useAuthState();
   const dispatch = useAuthDispatch();
   const mounted = useMounted().current;
+  const from = useSearchParam('from');
   const [loading, setLoading] = useState<boolean>(false);
   const [accessibleRoute, setAccessibleRoutes] = useState('');
 
@@ -85,6 +87,10 @@ const useSubscriptionValidation = () => {
   useLayoutEffect(() => {
     let route: string = '';
     (() => {
+      if (!hasAllValues && !onboarded) {
+        route = appRouteConstants.auth.CONNECT_ACCOUNT;
+      }
+
       if (hasAllValues && !loading) {
         if (isPlanExpired) {
           route = appRouteConstants.subscription.SUBSCRIPTION;
@@ -99,7 +105,7 @@ const useSubscriptionValidation = () => {
           }
         }
 
-        if (isPlanExist && onboarded && !isPlanExceeds) {
+        if (isPlanExist && (onboarded || from === 'accountSettings') && !isPlanExceeds) {
           route = 'all';
 
           return route;
@@ -112,7 +118,7 @@ const useSubscriptionValidation = () => {
     })();
 
     setAccessibleRoutes(route);
-  }, [isPlanExpired, isPlanExist, onboarded, isPlanExceeds, hasAllValues, loading]);
+  }, [isPlanExpired, isPlanExist, onboarded, isPlanExceeds, hasAllValues, loading, from]);
 
   return {
     loading,

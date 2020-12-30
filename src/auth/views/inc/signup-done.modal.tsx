@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Modal } from 'common/components/modal';
+import { useAuthDispatch, useAuthState } from 'auth/auth.context';
 import { ReactComponent as SignupModalLogo } from 'assets/images/signup/signup-modal-logo.svg';
+
+import { setLoginSuccess } from '../../auth.actions';
 
 interface Props {
   signupModal: any;
@@ -10,6 +13,19 @@ interface Props {
 }
 
 const SignUpDoneModal: React.FC<Props> = ({ signupModal, handleSuccess }) => {
+  const dispatch = useAuthDispatch();
+  const { expires, token } = useAuthState();
+
+  useEffect(() => {
+    dispatch(
+      setLoginSuccess({
+        expires: expires!,
+        token: token!,
+        onboarded: true,
+      })
+    );
+  }, [dispatch, expires, token]);
+
   return (
     <Modal {...signupModal.props} title='Welcome to Money Minx' size='lg' onSuccess={handleSuccess} canBeClosed>
       <div className='modal-wrapper signup-modal'>

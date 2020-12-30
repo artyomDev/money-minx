@@ -155,9 +155,9 @@ export const SignupMainSection = () => {
             <div className='auth-left-content'>
               <h1>Three easy steps to get started with Money Minx</h1>
               <ul>
-                <li>Find your accounts</li>
-                <li>Connect it securely to Money Minx</li>
-                <li>Let Money Minx do the rest</li>
+                <li>Find your accounts.</li>
+                <li>Connect securely to Money Minx.</li>
+                <li>Let Money Minx do the rest.</li>
               </ul>
               <div className='guide-bottom'>
                 <h2>Serious about security</h2>

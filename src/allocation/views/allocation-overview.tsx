@@ -160,8 +160,8 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
                     <div className='mm-allocation-overview__block--title'>Current allocation</div>
                     <p className='mm-allocation-overview__block--subtitle'>Current allocation based on your holdings</p>
                     <div className='mm-allocation-overview__block--action'>
-                      <SettingsIcon className='mr-3' onClick={() => chartSettingModal.open()} />
-                      <Share onClick={() => chartShareModal.open()} />
+                      <SettingsIcon title='Chart Settings' className='mr-3' onClick={() => chartSettingModal.open()} />
+                      <Share title='Share Chart' onClick={() => chartShareModal.open()} />
                     </div>
                   </div>
                   <div className='allocation-content'>
@@ -265,7 +265,7 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
                       Here’s how investors with similar profiles are currently allocated
                     </p>
                     <div className='mm-allocation-overview__block--action'>
-                      <Share />
+                      <Share title='Share Chart'/>
                     </div>
                   </div>
                   <div className='text-center text-md-left d-xl-block d-md-flex align-items-md-center justify-content-md-center mm-allocation-overview__block-chart-overview'>
