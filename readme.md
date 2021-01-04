@@ -2,7 +2,8 @@
 
 ## MoneyMinx Frontend Application
 
-[![CircleCI](https://circleci.com/gh/Money-Minx/mm-frontend.svg?style=svg&circle-token=74eebd24d6beb116aeac5a2498366d1da543759a)](<LINK>)
+[![Actions Status](https://github.com/Money-Minx/mm-frontend/workflows/Deploy%20to%20Moneyminx%20Prod%20S3/badge.svg)](https://github.com/Money-Minx/mm-frontend/actions)
+[![Actions Status](https://github.com/Money-Minx/mm-frontend/workflows/Deploy%20to%20Moneyminx%20Dev%20S3/badge.svg)](https://github.com/Money-Minx/mm-frontend/actions)
 
 ## Technologies
 
