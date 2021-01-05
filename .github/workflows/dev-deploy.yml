@@ -37,4 +37,5 @@ jobs:
           aws-region: us-east-1
 
       - name: Upload to s3
-        run: aws s3 sync build s3://moneyminx-frontend
+        run: |
+          aws s3 sync --delete build s3://moneyminx-frontend

@@ -107,7 +107,11 @@ export const ProfileOverview = () => {
     setProgress(Math.round((count / propertyCount) * 100));
   };
 
-  const fullName = `${user.firstName || ''} ${user.lastName || ''}`;
+  let fullName = `${user.firstName || ''} ${user.lastName || ''}`;
+  if (!user.firstName && !user.lastName) {
+    fullName = user.username || 'Investor';
+  }
+
   const { profileDetails } = user;
   getProfileProgress(user);
 
@@ -116,7 +120,7 @@ export const ProfileOverview = () => {
       <div className='card mm-setting-card'>
         <div className='card-body d-flex justify-content-between align-items-center'>
           <div className='mm-profile-overview__title'>
-            {fullName || 'Investor'}
+            {fullName}
             <span className='text-primary px-2'>#{user.id}</span>
             <MMToolTip
               placement='top'

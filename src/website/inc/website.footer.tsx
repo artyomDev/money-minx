@@ -147,7 +147,7 @@ const WebsiteFooter: React.FC<WebsiteFooter> = ({ isSignupToday = true }) => {
                 <div className='social-links-wrapper d-flex flex-row'>
                   <SocialList />
                 </div>
-                <div className='copyright-wrapper'>© 2020-{(new Date().getFullYear())} Money Minx. All Rights Reserved.</div>
+                <div className='copyright-wrapper'>© 2020-{(new Date().getFullYear())} Money Minx, LLC. All Rights Reserved.</div>
               </div>
             </div>
           </div>
