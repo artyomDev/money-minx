@@ -142,8 +142,8 @@ const AccountDetail: React.FC = () => {
     }
   };
 
-  const handleConnectAccount = async (accId: number) => {
-    const { data, error } = await getFastlinkUpdate(accId);
+  const handleConnectAccount = async (accId: number, update: boolean, refresh: boolean) => {
+    const { data, error } = await getFastlinkUpdate(accId, update, refresh);
 
     if (error) {
       return mmToast('Error Occurred to Get Fastlink', { type: 'error' });
@@ -425,7 +425,9 @@ const AccountDetail: React.FC = () => {
                               AccountDetails?.providerAccount?.status === 'PARTIAL_SUCCESS' ||
                               (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
                                 AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled >=
-                                  moment().toISOString()) ? (
+                                  moment().toISOString()) ||
+                              (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
+                                AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled === null) ? (
                                 <>
                                   <CheckCircleGreen />
                                   <span className='good'>Good</span>
@@ -433,9 +435,7 @@ const AccountDetail: React.FC = () => {
                               ) : AccountDetails?.providerAccount?.status === 'USER_INPUT_REQUIRED' ||
                                 (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
                                   AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled <
-                                    moment().toISOString()) ||
-                                (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
-                                  AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled === null) ? (
+                                    moment().toISOString()) ? (
                                 <div
                                   className='attention-section'
                                   onMouseEnter={() => setPopup(true)}
@@ -446,7 +446,7 @@ const AccountDetail: React.FC = () => {
                                   {popup && (
                                     <Popup
                                       AccountDetails={AccountDetails}
-                                      handleConnectAccount={() => handleConnectAccount(AccountDetails.id)}
+                                      handleConnectAccount={() => handleConnectAccount(AccountDetails.id, true, false)}
                                     />
                                   )}
                                 </div>
@@ -461,7 +461,7 @@ const AccountDetail: React.FC = () => {
                                   {popup && (
                                     <Popup
                                       AccountDetails={AccountDetails}
-                                      handleConnectAccount={() => handleConnectAccount(AccountDetails.id)}
+                                      handleConnectAccount={() => handleConnectAccount(AccountDetails.id, true, false)}
                                     />
                                   )}
                                 </div>
@@ -661,10 +661,7 @@ const Popup: React.FC<PopupProps> = ({ AccountDetails, handleConnectAccount }) =
     <div className='popup'>
       <span className='pb-2'>Connection Status</span>
       <span className='pb-2'>
-        Last updated{' '}
-        {AccountDetails?.providerAccount?.updatedAt
-          ? getRelativeDate(AccountDetails?.providerAccount?.updatedAt.toString())
-          : getRelativeDate(AccountDetails?.providerAccount?.createdAt.toString())}
+        Last updated {getRelativeDate(AccountDetails?.providerAccount?.dataset[0]?.lastUpdated.toString())}
       </span>
       <span className='pt-2 pb-3'>Reauthorize your connection to continue syncing your account</span>
       <button type='button' className='mm-btn-animate mm-btn-primary' onClick={handleConnectAccount}>

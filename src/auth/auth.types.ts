@@ -50,6 +50,7 @@ export interface ProviderAccount {
   requestId: string;
   status: ProviderAccountStatus;
   updatedAt: string | Date;
+  lastUpdated: string | Date;
 }
 
 export interface Account {

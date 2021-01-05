@@ -165,12 +165,14 @@
             width: 100%;
         }
         &--action {
-            float: none;
-            display: block;
-            margin: 0;
-            border-bottom: 1px solid $grayOpacity20;
-            padding-bottom: 16px;
-            @media (min-width: 675px) and (max-width: 1199px) {
+          float: none;
+          display: block;
+          margin: 0;
+          border-bottom: 1px solid $grayOpacity20;
+          padding-bottom: 16px;
+          min-height: 43px;
+
+          @media (min-width: 675px) and (max-width: 1199px) {
                 float: right;
                 display: inline-block;
                 margin: 0.5rem 0 0 0;

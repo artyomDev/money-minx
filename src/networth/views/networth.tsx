@@ -247,7 +247,7 @@ const Networth = () => {
                   >
                     Processing
                   </span>
-                  <span className='desc'>These accounts are still processing and will be ready soon</span>
+                  <span className='desc'>These accounts may need your attention</span>
                 </div>
                 <div className={processingCollapse ? 'd-none' : ''}>
                   {Object.entries(accountsByProvider).map(([providerName, accounts], index) => (

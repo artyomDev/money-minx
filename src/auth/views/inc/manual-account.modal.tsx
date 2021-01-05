@@ -134,7 +134,6 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
               <Form.Label className='form-subheading'>Account Name</Form.Label>
               <Form.Control
                 type='text'
-                placeholder='Lego Collection'
                 onChange={handleChange}
                 name='accountName'
                 value={values.accountName}
@@ -166,7 +165,6 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
                 <Form.Control
                   name='balance'
                   type='number'
-                  placeholder='100.00'
                   onChange={handleChange}
                   value={values.balance}
                   required

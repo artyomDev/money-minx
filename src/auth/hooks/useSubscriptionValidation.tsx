@@ -87,8 +87,12 @@ const useSubscriptionValidation = () => {
   useLayoutEffect(() => {
     let route: string = '';
     (() => {
-      if (!hasAllValues && !onboarded) {
+      if (!onboarded) {
         route = appRouteConstants.auth.CONNECT_ACCOUNT;
+      }
+
+      if (from === 'accountSettings') {
+        route = 'all';
       }
 
       if (hasAllValues && !loading) {

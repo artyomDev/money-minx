@@ -338,7 +338,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                 onChange={props.handleChange}
                 value={values.accountName}
                 name='accountName'
-                placeholder='Sapphire Credit Card'
               />
               {values.accountNumber ? (
                 <div className='d-flex align-items-center justify-content-between'>
@@ -590,7 +589,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                       onChange={handleChange}
                       name='estimatedAnnualRevenues'
                       value={values.estimatedAnnualRevenues}
-                      placeholder='12,000'
                       step='any'
                     />
                   </li>
@@ -617,13 +615,12 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                       type='text'
                       name='streetAddress'
                       onChange={handleChange}
-                      placeholder='123 5th Avenue'
                       value={values.streetAddress}
                     />
                   </li>
                   <li className={`${hc('city')}`}>
                     <span className='form-subheading'>City</span>
-                    <input type='text' name='city' onChange={handleChange} placeholder='New York' value={values.city} />
+                    <input type='text' name='city' onChange={handleChange} value={values.city} />
                   </li>
                   <li className={`${hc('state')}`}>
                     <span className='form-subheading'>State</span>
@@ -631,7 +628,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                       type='text'
                       name='state'
                       onChange={handleChange}
-                      placeholder='New York'
                       value={values.state}
                     />
                   </li>
@@ -641,7 +637,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                       type='text'
                       name='zipCode'
                       onChange={handleChange}
-                      placeholder='10030'
                       value={values.zipCode}
                     />
                   </li>
@@ -651,7 +646,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                       type='text'
                       name='country'
                       onChange={handleChange}
-                      placeholder='United States'
                       value={values.country}
                     />
                   </li>
@@ -703,7 +697,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                           type='number'
                           name='employerMatch'
                           onChange={handleChange}
-                          placeholder='50'
                           step='any'
                         />
                         <span className='input-add-on'>%</span>
@@ -745,7 +738,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                           type='number'
                           name='employerMatchLimit'
                           onChange={handleChange}
-                          placeholder='5'
                           value={values.employerMatchLimit}
                           step='any'
                         />
@@ -896,7 +888,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                   <Form.Control
                     onChange={handleChange}
                     type='number'
-                    placeholder='5'
                     name='estimatedAnnualReturns'
                     value={values.estimatedAnnualReturns}
                     step='any'
@@ -914,7 +905,6 @@ const AccountSettingForm: React.FC<Props> = ({ currentAccount, handleReload, clo
                   <Form.Control
                     onChange={handleChange}
                     type='number'
-                    placeholder='5'
                     name='estimatedAnnualPrincipalReduction'
                     value={values.estimatedAnnualPrincipalReduction}
                     step='any'

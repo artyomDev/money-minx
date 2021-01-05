@@ -232,8 +232,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
     }
   };
 
-  const handleConnectAccount = async (accId: number) => {
-    const { data, error } = await getFastlinkUpdate(accId);
+  const handleConnectAccount = async (accId: number, update: boolean, refresh: boolean) => {
+    const { data, error } = await getFastlinkUpdate(accId, update, refresh);
 
     if (error) {
       return mmToast('Error Occurred to Get Fastlink', { type: 'error' });
@@ -265,13 +265,13 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
       status === 'LOGIN_IN_PROGRESS' ||
       status === 'IN_PROGRESS' ||
       status === 'PARTIAL_SUCCESS' ||
-      (status === 'SUCCESS' && nextUpdateScheduled >= moment().toISOString())
+      (status === 'SUCCESS' && nextUpdateScheduled >= moment().toISOString()) ||
+      (status === 'SUCCESS' && nextUpdateScheduled === null)
     ) {
       accountsByStatus.success.push({ provider_name: p_name, accounts: accountsByProvider[p_name] });
     } else if (
       status === 'USER_INPUT_REQUIRED' ||
-      (status === 'SUCCESS' && nextUpdateScheduled < moment().toISOString()) ||
-      (status === 'SUCCESS' && nextUpdateScheduled === null)
+      (status === 'SUCCESS' && nextUpdateScheduled < moment().toISOString())
     ) {
       accountsByStatus.warning.push({ provider_name: p_name, accounts: accountsByProvider[p_name] });
     } else {
@@ -344,7 +344,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
                       <button
                         type='button'
                         className='btn btn-outline-primary mm-button btn-lg'
-                        onClick={() => handleConnectAccount(group.accounts[0].id)}
+                        onClick={() => handleConnectAccount(group.accounts[0].id, true, false)}
                       >
                         Fix Connection
                       </button>
@@ -360,7 +360,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
                       <button
                         type='button'
                         className='btn btn-outline-primary mm-button btn-lg'
-                        onClick={() => handleConnectAccount(group.accounts[0].id)}
+                        onClick={() => handleConnectAccount(group.accounts[0].id, true, false)}
                       >
                         Fix Connection
                       </button>
@@ -369,7 +369,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
                 )}
 
                 <div className={['row pb-2 pt-1 align-items-center', status === 'error' ? 'pt-4' : ''].join(' ')}>
-                  <div className='col-10 col-md-7'>
+                  <div className='col-12 col-md-6'>
                     <div>
                       <img
                         src={group.accounts[0].providerLogo || DefaultAvatar}
@@ -379,13 +379,9 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
                       <span className='mm-account-overview__block-title'>{group.provider_name}</span>
                     </div>
                   </div>
-                  {/* TODO Refresh single account when API is ready
-                        <div className='col-2 col-md-1 order-md-2 text-right'>
-                          <Refresh />
-                        </div>*/}
-                  <div className='col-12 col-md-5 order-md-1 text-md-right pt-2 pt-md-0'>
+                  <div className='col-12 col-md-6 order-md-1 text-md-right pt-2 pt-md-0'>
                     <small className='text--grayText'>
-                      Last updated {getRelativeDate(accountList[0].balancesFetchedAt)}
+                      Last updated {getRelativeDate(group.accounts[0]?.providerAccount.dataset[0].lastUpdated)}
                     </small>
                   </div>
                 </div>
@@ -402,7 +398,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accountList, available
                       <div className='mm-account-overview__update-link mb-3 mb-md-0'>
                         <span
                           className='purple-links update-credentials'
-                          onClick={() => handleConnectAccount(group.accounts[0].id)}
+                          onClick={() => handleConnectAccount(group.accounts[0].id, true, false)}
                           role='button'
                         >
                           Update Credentials

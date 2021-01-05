@@ -183,10 +183,9 @@ export const SignupMainSection = () => {
               <Link to='/' className='logo-img-wrapper'>
                 <LogoImg className='auth-logo' />
               </Link>
-              <h2>Track your net worth and portfolio in one place</h2>
+              <h2>Sign up for Money Minx</h2>
               <p>
-                All of your accounts in one place, start with our free for life account and upgrade only when you need
-                more.
+                Create an account to get started with your Money Minx trial.
               </p>
               <div className='form-wrap'>
                 <Formik
@@ -288,7 +287,7 @@ export const SignupMainSection = () => {
                         </div>
                         <div className='align-items-center'>
                           <label htmlFor='password-field' className='form-subheading'>
-                            Password
+                            Set Password
                           </label>
                           <div className='password-wrap'>
                             <input

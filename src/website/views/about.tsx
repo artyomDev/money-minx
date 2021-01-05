@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import WebsiteLayout from 'website/website.layout';
-import OwnerOneImg from 'assets/images/about/hussein.png';
+/*import OwnerOneImg from 'assets/images/about/hussein.png';
 import OwnerTwoImg from 'assets/images/about/jessica.png';
-import OwnerLeftImg from 'assets/images/about/owner-left-img.png';
+import OwnerLeftImg from 'assets/images/about/owner-left-img.png';*/
 import PeerStreetLogo from 'assets/images/subscription/peerstreetlogo.png';
 import { ReactComponent as AboutSwitchIcon } from 'assets/images/about/switch.svg';
 import { ReactComponent as AboutNetWorthChart } from 'assets/images/about/networth.svg';
 import { ReactComponent as AboutWealthFrontIcon } from 'assets/images/about/wealthfront.svg';
-import { ReactComponent as OwnerTwitterIcon } from 'assets/images/about/owner-twitter-icon.svg';
+/*import { ReactComponent as OwnerTwitterIcon } from 'assets/images/about/owner-twitter-icon.svg';*/
 
 
 const About = () => {
@@ -21,7 +21,7 @@ const About = () => {
       </Helmet>
       <div className='mm-new-container'>
         <AboutTopSection />
-        <AboutOwnerSection />
+       {/* <AboutOwnerSection />*/}
         <AboutNetWorthSection />
       </div>
     </WebsiteLayout>
@@ -111,7 +111,7 @@ export const AboutTopSection = () => {
   );
 };
 
-export const AboutOwnerSection = () => {
+/*export const AboutOwnerSection = () => {
   return (
     <section>
       <div className='mm-about-owner-section bg-white'>
@@ -163,7 +163,7 @@ export const AboutOwnerSection = () => {
       </div>
     </section>
   );
-};
+};*/
 
 export const AboutNetWorthSection = () => {
   return (

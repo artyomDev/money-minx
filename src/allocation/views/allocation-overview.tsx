@@ -129,7 +129,7 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
               <div className='card mm-setting-card mt-0 processing-card'>
                 <div className='title-section'>
                   <span className={['processing', processingCollapse ? 'processing-collapse' : ''].join(' ')} onClick={() => setProcessingCollapse(!processingCollapse)}>Processing</span>
-                  <span className='desc'>These accounts are still processing and will be ready soon</span>
+                  <span className='desc'>These accounts may need your attention</span>
                 </div>
                 <div className={processingCollapse ? 'd-none' : ''}>
                   {Object.entries(accountsByProvider).map(([providerName, accounts], index) => (
@@ -170,7 +170,7 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
                         <div className='mm-allocation-overview__block-element text-center'>
                           <div className='mm-allocation-overview__block-element--middle'>
                             <div className='d-inline-flex align-items-center'>
-                              <div className='mm-allocation-overview__block-element--text ml-2'>No enough data</div>
+                              <div className='mm-allocation-overview__block-element--text ml-2'>Not enough data</div>
                             </div>
                             <p>Historical charts will become available once your cross a month end.</p>
                           </div>
@@ -265,7 +265,7 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
                       Here’s how investors with similar profiles are currently allocated
                     </p>
                     <div className='mm-allocation-overview__block--action'>
-                      <Share title='Share Chart'/>
+
                     </div>
                   </div>
                   <div className='text-center text-md-left d-xl-block d-md-flex align-items-md-center justify-content-md-center mm-allocation-overview__block-chart-overview'>

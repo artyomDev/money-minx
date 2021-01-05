@@ -90,9 +90,10 @@ ul.bank-list {
 }
 
 .form-heading .nav {
-    overflow-x: scroll;
+    overflow-x: auto;
     flex-wrap: nowrap;
-    li {
+
+  li {
         white-space: nowrap;
     }
 }
@@ -410,8 +411,9 @@ ul.bank-list {
     width: 100%;
     height: 48px;
     margin-top: 20px;
+
     &::placeholder {
-        color: $gray;
+        color: $placeholder;
     }
 }
 

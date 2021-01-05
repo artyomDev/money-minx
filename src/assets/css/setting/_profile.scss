@@ -81,6 +81,10 @@
         float: unset;
       }
     }
+
+    ::placeholder {
+      color: $placeholder;
+    }
   }
 
   .mm-radial {

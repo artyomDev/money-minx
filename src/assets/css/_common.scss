@@ -228,7 +228,7 @@ textarea.form-control {
   }
 
   &::placeholder {
-    color: $gray;
+    color: $placeholder;
   }
 }
 button.dropdown-toggle {
@@ -269,9 +269,9 @@ button.dropdown-toggle {
 }
 
 #fastlinkContainer {
-  overflow-y: scroll;
   max-height: 670px!important;
   border-radius: 6px;
+  overflow-y: auto;
 
   iframe {
     border-radius: 6px;
@@ -566,4 +566,13 @@ select {
       margin: 0;
     }
   }
+}
+
+// Remove Safari Arrows on Number Fields
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield !important;
 }

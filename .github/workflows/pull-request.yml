@@ -1,0 +1,24 @@
+on: pull_request
+
+name: Test pull request
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Node version 12
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+          check-latest: true
+
+      - name: Install yarn package
+        run: |
+          yarn
+
+      - run: |
+          yarn build --prod

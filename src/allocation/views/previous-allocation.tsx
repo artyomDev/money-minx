@@ -139,7 +139,7 @@ export const SelectedAllocations: React.FC<SelectedAllocationProps> = ({ filter,
                 <div className='mm-allocation-overview__block-element text-center'>
                   <div className='mm-allocation-overview__block-element--middle'>
                     <div className='d-inline-flex align-items-center'>
-                      <div className='mm-allocation-overview__block-element--text ml-2'>No enough data</div>
+                      <div className='mm-allocation-overview__block-element--text ml-2'>Not enough data</div>
                     </div>
                     <p>Historical charts will become available once your cross a month end.</p>
                   </div>

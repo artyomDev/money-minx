@@ -189,7 +189,7 @@
   font-size: 0.875rem;
   border: 1px solid $grayOpacity24;
   border-radius: 4px;
-  padding: 0 20px;
+  padding: 0 50px 0 20px;
   color: $darkGray;
 
   &:active,
@@ -198,7 +198,7 @@
   }
 
   &::placeholder {
-    color: $gray;
+    color: $placeholder;
   }
 }
 
