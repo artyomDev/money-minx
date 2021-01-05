@@ -12,6 +12,7 @@ import AppHeader from 'common/app.header';
 import AppSidebar from 'common/app.sidebar';
 import useToast from 'common/hooks/useToast';
 import { events } from '@mm/data/event-list';
+import useMounted from 'common/hooks/useMounted';
 import MMToolTip from 'common/components/tooltip';
 import FastLinkModal from 'yodlee/fast-link.modal';
 import { useModal } from 'common/components/modal';
@@ -86,10 +87,12 @@ const AccountDetail: React.FC = () => {
   const holdingsDetailsModal = useModal();
   const activityDetailsModal = useModal();
 
+  const mounted = useMounted().current;
+
   useEffect(() => {
     const fetchAccountDetails = async (accId: string, bCurrency: boolean) => {
       const { data, error } = await getAccountDetails(accId, bCurrency);
-      if (!error) {
+      if (!error && mounted) {
         setAccountDetails(data);
       }
       if (error?.statusCode === 403) {
@@ -107,6 +110,7 @@ const AccountDetail: React.FC = () => {
       if (tableType === 'activity') fetchAccountActivity(accountId, fromDate, toDate, timeInterval, baseCurrency);
     }
   }, [
+    mounted,
     toDate,
     history,
     fromDate,
@@ -122,10 +126,10 @@ const AccountDetail: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if (AccountDetails) {
+    if (AccountDetails && mounted) {
       setCurrencySymbol(getCurrencySymbol(AccountDetails.currency));
     }
-  }, [AccountDetails]);
+  }, [AccountDetails, mounted]);
 
   const handleConnectAccountSuccess = async () => {
     setLoading(true);

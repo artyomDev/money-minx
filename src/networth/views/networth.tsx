@@ -385,7 +385,9 @@ const Networth = () => {
                               {otherAssets?.map((oAsset, index) => {
                                 return (
                                   <tr key={index} onClick={() => handleAccountDetail(oAsset.accountId)}>
-                                    <td><span>{oAsset.accountName}</span></td>
+                                    <td>
+                                      <span>{oAsset.accountName}</span>
+                                    </td>
                                     <td className={`hide-type`}>{oAsset.accountType}</td>
                                     {oAsset.balances.map((b, idx) => (
                                       <td
@@ -454,7 +456,9 @@ const Networth = () => {
                               {liabilities?.map((liability, index) => {
                                 return (
                                   <tr key={index} onClick={() => handleAccountDetail(liability.accountId)}>
-                                    <td><span>{liability.accountName}</span></td>
+                                    <td>
+                                      <span>{liability.accountName}</span>
+                                    </td>
                                     <td className={`hide-type`}>{liability.accountType}</td>
                                     {liability.balances.map((b, idx) => (
                                       <td
