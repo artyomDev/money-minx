@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import DefaultAvatar from 'assets/icons/default-avatar.svg';
-import FastLinkModal from 'yodlee/fast-link.modal';
-import LoadingScreen from 'common/loading-screen';
 import moment from 'moment';
 import useToast from 'common/hooks/useToast';
 import useAccounts from 'auth/hooks/useAccounts';
+import LoadingScreen from 'common/loading-screen';
+import FastLinkModal from 'yodlee/fast-link.modal';
 import useAnalytics from 'common/hooks/useAnalytics';
+import DefaultAvatar from 'assets/icons/default-avatar.svg';
 import useGetSubscription from 'auth/hooks/useGetSubscription';
 import useCurrentSubscription from 'auth/hooks/useCurrentSubscription';
 import {
@@ -45,7 +45,7 @@ export const AccountOverview: React.FC<AccountOverviewProps> = ({ reviewSubscrip
   const { fetchingCurrentSubscription, currentSubscription } = useCurrentSubscription();
   const { fetchingSubscription, subscriptionDetail: subscription } = useGetSubscription(currentSubscription?.priceId);
 
-  const accountLength = accounts.length;
+  const accountLength = accounts?.length;
   useEffect(() => {
     if (!accountLength) {
       const getUser = async () => {
@@ -61,8 +61,8 @@ export const AccountOverview: React.FC<AccountOverviewProps> = ({ reviewSubscrip
     return <LoadingScreen />;
   }
 
-  const manualAccounts = accounts.filter((acc) => acc.isManual);
-  const connectedAccounts = accounts.filter((acc) => !acc.isManual);
+  const manualAccounts = accounts!.filter((acc) => acc.isManual);
+  const connectedAccounts = accounts!.filter((acc) => !acc.isManual);
 
   const numberOfConnectedAccounts = subscription?.details?.[pricingDetailConstant.CONNECTED_ACCOUNT] || '0';
   const numberOfManualAccounts = subscription?.details?.[pricingDetailConstant.MANUAL_ACCOUNT] || '0';

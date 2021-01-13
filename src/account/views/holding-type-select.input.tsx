@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/esm/Dropdown';
 
-import { foramtHoldingType } from 'account/views/holdings-details.modal';
+import { formatHoldingTypeAmount } from 'account/views/holdings-details.modal';
 import { HoldingsTypeUpperOptions } from 'account/enum/holdings-type-upper-options';
 import { enumerateStr } from 'common/common-helper';
 
@@ -23,7 +23,7 @@ export const HoldingTypeSelectInput: React.FC<HoldingTypeSelectInputProps> = ({ 
 
   return (
     <Dropdown className='drop-box dropdown-select-input' onToggle={(nextShow) => setShow(nextShow)} show={show}>
-      <Dropdown.Toggle className='dropdown-toggle'>{foramtHoldingType(value)}</Dropdown.Toggle>
+      <Dropdown.Toggle className='dropdown-toggle'>{formatHoldingTypeAmount(value)}</Dropdown.Toggle>
       <Dropdown.Menu className='mm-dropdown-menu'>
         <ul className='checkbox-list single'>
           {args.sort()?.map((val, index) => {
@@ -42,7 +42,7 @@ export const HoldingTypeSelectInput: React.FC<HoldingTypeSelectInputProps> = ({ 
                       setShow(false);
                     }}
                   />
-                  <span>{foramtHoldingType(val)}</span>
+                  <span>{formatHoldingTypeAmount(val)}</span>
                 </label>
               </li>
             );

@@ -84,10 +84,6 @@ export interface HoldingsDetailsModalProps {
   currencySymbol: string;
 }
 
-export interface DisabledInputProps {
-  currencySymbol: string;
-}
-
 export interface AccountHolingsTableProps {
   holdingsData: AccountHoldingItem[];
   openEditPositionModalFun: () => void;

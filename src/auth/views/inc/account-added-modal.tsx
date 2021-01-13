@@ -13,7 +13,8 @@ interface Props {
 
 const AccountAddedModal: React.FC<Props> = ({ accountAddedModal, handleSuccess }) => {
   const { accounts } = useAuthState();
-  const [account] = accounts;
+  const account = accounts?.[0];
+
   if (!account) {
     return <CircularSpinner />;
   }
@@ -22,7 +23,11 @@ const AccountAddedModal: React.FC<Props> = ({ accountAddedModal, handleSuccess }
     <Modal {...accountAddedModal.props} title='Account Added!' size='lg' onSuccess={handleSuccess} canBeClosed>
       <div className='modal-wrapper signup-modal'>
         <div className='signup-done-modal-logo'>
-          {account.providerLogo ? <img src={account.providerLogo} alt={`${account.accountName}`} /> : <LogoImg className='icon auth-logo' />}
+          {account.providerLogo ? (
+            <img src={account.providerLogo} alt={`${account.accountName}`} />
+          ) : (
+            <LogoImg className='icon auth-logo' />
+          )}
         </div>
         <p>
           Money Minx works best when you add all of your accounts so you see your full financial picture. Do you want to

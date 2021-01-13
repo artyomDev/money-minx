@@ -231,6 +231,17 @@ textarea.form-control {
     color: $placeholder;
   }
 }
+.mm-form-field-read {
+  display: block;
+  font-weight: 500;
+  font-size: 1rem;
+  color: $grayText;
+  padding-top: 10px;
+}
+.mm-form-field-error {
+  font-size: 0.75rem;
+  padding-top: 10px;
+}
 button.dropdown-toggle {
   text-align: left;
   padding-left: 20px;
@@ -558,7 +569,8 @@ select {
 
 .dropdown-select-input {
   .checkbox-list {
-    overflow-x: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     max-height: 500px;
     margin-bottom: 0;
     li {

@@ -3,10 +3,11 @@ import ReactDatePicker from 'react-datepicker';
 import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import useSettings from 'setting/hooks/useSettings';
 import { Account } from 'auth/auth.types';
 import { getAccount } from 'api/request.api';
+import useSettings from 'setting/hooks/useSettings';
 import { getCurrencySymbol } from 'common/currency-helper';
+import { numberWithCommas, fNumber } from 'common/number.helper';
 import { arrGroupBy, enumerateStr, serialize } from 'common/common-helper';
 import { AccountCategory, TimeIntervalEnum } from 'networth/networth.enum';
 import { initialState, useNetworthDispatch, useNetworthState } from 'networth/networth.context';
@@ -21,8 +22,6 @@ import {
   setFilterTimeInterval,
 } from 'networth/networth.actions';
 import { NetworthFilterProps, NetworthState, TFilterKey } from 'networth/networth.type';
-
-import { numberWithCommas, fNumber } from '../../../common/number.helper';
 
 const NetworthFilter = (props: NetworthFilterProps) => {
   const dispatch = useNetworthDispatch();
@@ -162,7 +161,7 @@ const NetworthFilter = (props: NetworthFilterProps) => {
             <Dropdown.Toggle variant='' className={fc('fAccounts')}>
               All Accounts
             </Dropdown.Toggle>
-            <Dropdown.Menu className='mm-dropdown-menu'>
+            <Dropdown.Menu className='mm-dropdown-menu dd-my-accounts'>
               <div className='dropdown-box'>
                 <ul className='success'>
                   {currentAccount.map((account, index) => {
@@ -186,7 +185,9 @@ const NetworthFilter = (props: NetworthFilterProps) => {
                             <span>{getRelativeDate(account.balancesFetchedAt)}</span>
                           </div>
                           <div className='account-filter-dd-balance'>
-                            {data?.currency ? getCurrencySymbol(data.currency) : ''}{numberWithCommas(fNumber(account.balance, 2))}</div>
+                            {data?.currency ? getCurrencySymbol(data.currency) : ''}
+                            {numberWithCommas(fNumber(account.balance, 2))}
+                          </div>
                         </div>
                       </li>
                     );
@@ -253,62 +254,60 @@ const NetworthFilter = (props: NetworthFilterProps) => {
             // since filter date will be current timezone string
             // no need to parse this to utc for setting up simply date must work
           }
-            <ReactDatePicker
-              selected={fFromDate ? new Date(fFromDate) : fromDate}
-              onChange={(date) => onChange('start', date)}
-              // selectsStart
-              startDate={fFromDate ? new Date(fFromDate) : fromDate}
-              dateFormat='MM/yyyy'
-              showMonthYearPicker
-              minDate={new Date('1900-01-01')}
-              maxDate={new Date()}
-              className='ml-md-3'
-              // selectsRange
-              customInput={
-                <div className='drop-box'>
-                  <div className='date-box'>
-                    <input
-                      type='text'
-                      className={['month_year', fc('fFromDate')].join(' ')}
-                      value={fFromDate ? getMonthYear(fFromDate) : getMonthYear(fromDate)}
-                      aria-label='From Date Filter'
-                      readOnly
-                    />
-                  </div>
+          <ReactDatePicker
+            selected={fFromDate ? new Date(fFromDate) : fromDate}
+            onChange={(date) => onChange('start', date)}
+            // selectsStart
+            startDate={fFromDate ? new Date(fFromDate) : fromDate}
+            dateFormat='MM/yyyy'
+            showMonthYearPicker
+            minDate={new Date('1900-01-01')}
+            maxDate={new Date()}
+            className='ml-md-3'
+            // selectsRange
+            customInput={
+              <div className='drop-box'>
+                <div className='date-box'>
+                  <input
+                    type='text'
+                    className={['month_year', fc('fFromDate')].join(' ')}
+                    value={fFromDate ? getMonthYear(fFromDate) : getMonthYear(fromDate)}
+                    aria-label='From Date Filter'
+                    readOnly
+                  />
                 </div>
-              }
-            />
-            <span className='date-separator'>to</span>
-            <ReactDatePicker
-              selected={fToDate ? new Date(fToDate) : null}
-              onChange={(date) => onChange('end', date)}
-              // selectsStart
-              startDate={fToDate ? new Date(fToDate) : null}
-              dateFormat='MM/yyyy'
-              showMonthYearPicker
-              minDate={fFromDate ? new Date(fFromDate) : null}
-              maxDate={new Date()}
-              className='mr-md-3'
-              // selectsRange
-              customInput={
-                <div className='drop-box'>
-                  <div className='date-box'>
-                    <input
-                      type='text'
-                      className={['month_year', fc('fToDate')].join(' ')}
-                      value={getMonthYear(fToDate)}
-                      aria-label='To Date Filter'
-                      readOnly
-                    />
-                  </div>
+              </div>
+            }
+          />
+          <span className='date-separator'>to</span>
+          <ReactDatePicker
+            selected={fToDate ? new Date(fToDate) : null}
+            onChange={(date) => onChange('end', date)}
+            // selectsStart
+            startDate={fToDate ? new Date(fToDate) : null}
+            dateFormat='MM/yyyy'
+            showMonthYearPicker
+            minDate={fFromDate ? new Date(fFromDate) : null}
+            maxDate={new Date()}
+            className='mr-md-3'
+            // selectsRange
+            customInput={
+              <div className='drop-box'>
+                <div className='date-box'>
+                  <input
+                    type='text'
+                    className={['month_year', fc('fToDate')].join(' ')}
+                    value={getMonthYear(fToDate)}
+                    aria-label='To Date Filter'
+                    readOnly
+                  />
                 </div>
-              }
-            />
+              </div>
+            }
+          />
         </div>
-
-
       </div>
-    </div >
+    </div>
   );
 };
 

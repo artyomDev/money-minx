@@ -264,9 +264,7 @@ const AllocationOverview: React.FC<AllocationOverviewProps> = ({ allocations, ch
                     <p className='mm-allocation-overview__block--subtitle'>
                       Here’s how investors with similar profiles are currently allocated
                     </p>
-                    <div className='mm-allocation-overview__block--action'>
-
-                    </div>
+                    <div className='mm-allocation-overview__block--action'/>
                   </div>
                   <div className='text-center text-md-left d-xl-block d-md-flex align-items-md-center justify-content-md-center mm-allocation-overview__block-chart-overview'>
                     <AllocationChartSVG className='mm-allocation-overview__block--chart' />

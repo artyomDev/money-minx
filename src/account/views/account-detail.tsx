@@ -33,8 +33,8 @@ import { ReactComponent as NeedsInfo } from 'assets/images/account/Needs Info.sv
 import { ReactComponent as SettingsGear } from 'assets/icons/icon-settings-gear.svg';
 import { ReactComponent as CheckCircle } from 'assets/images/account/check-circle.svg';
 import { ReactComponent as CheckCircleGreen } from 'assets/images/account/check-circle-green.svg';
+import { getDate, getMonthYear, getRelativeDate, parseDateFromString } from 'common/moment.helper';
 import { getAccountDetails, getAccountHoldings, getAccountActivity, getFastlinkUpdate } from 'api/request.api';
-import { getDate, getMonthYear, getQuarter, getRelativeDate, getYear, parseDateFromString } from 'common/moment.helper';
 
 import AccountTable from './account-table';
 import ActivityTable from './activity-table';
@@ -195,8 +195,7 @@ const AccountDetail: React.FC = () => {
     }
   };
 
-  const isCurrent = (interval: string) =>
-    getMonthYear() === interval || getYear() === interval || getQuarter() === interval;
+  const isCurrent = (interval: string) => interval === 'Today';
 
   let curAccountHoldingsItem;
   if (AccountHoldings?.charts) {
@@ -290,351 +289,351 @@ const AccountDetail: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className='content-wrapper'>
-          <div className='container'>
-            <div className='mm-account'>
-              <div className='mm-account__selection mb-3'>
-                <div className='mm-account__selection--info'>
-                  <SettingsGear className='float-left mr-2 settings-gear-button' onClick={() => setAccSetting(true)} />
-                  <ul>
-                    <li>{AccountDetails?.accountName}</li>
-                    {AccountDetails?.accountNumber ? <li>{AccountDetails?.accountNumber.slice(4)}</li> : null}
-                    <li>{AccountDetails?.category?.mmCategory}</li>
-                    <li>{AccountDetails?.category?.mmAccountType}</li>
-                    {AccountDetails?.category?.mmAccountSubType && (
-                      <li>{AccountDetails?.category?.mmAccountSubType}</li>
-                    )}
-                    <li>{AccountDetails?.accountDetails?.currency}</li>
-                  </ul>
-                </div>
-                <div className='d-md-flex justify-content-between mt-3'>
-                  <div className='d-flex'>
-                    <div className='dflex-center'>
-                      {(dateFromFilterOn || dateToFilterOn || intervalFilterOn) && (
-                        <button type='button' className='btn btn-outline-danger clear-filter' onClick={clearFilters}>
-                          Clear Filters
-                        </button>
+          <div className='content-wrapper'>
+            <div className='container'>
+              <div className='mm-account'>
+                <div className='mm-account__selection mb-3'>
+                  <div className='mm-account__selection--info'>
+                    <SettingsGear className='float-left mr-2 settings-gear-button' onClick={() => setAccSetting(true)} />
+                    <ul>
+                      <li>{AccountDetails?.accountName}</li>
+                      {AccountDetails?.accountNumber ? <li>{AccountDetails?.accountNumber.slice(4)}</li> : null}
+                      <li>{AccountDetails?.category?.mmCategory}</li>
+                      <li>{AccountDetails?.category?.mmAccountType}</li>
+                      {AccountDetails?.category?.mmAccountSubType && (
+                        <li>{AccountDetails?.category?.mmAccountSubType}</li>
                       )}
-                      <ReactDatePicker
-                        selected={fromDate ? new Date(fromDate) : fDate ? parseDateFromString(fDate) : null}
-                        onChange={(date) => onChange('start', date)}
-                        // selectsStart
-                        startDate={fromDate ? new Date(fromDate) : fDate ? parseDateFromString(fDate) : null}
-                        dateFormat='MM/yyyy'
-                        showMonthYearPicker
-                        minDate={new Date('1900-01-01')}
-                        maxDate={new Date()}
-                        // selectsRange
-                        customInput={
-                          <div className='drop-box'>
-                            <div className='date-box'>
-                              <input
-                                type='text'
-                                className={['month_year', dateFromFilterOn ? 'active' : ''].join(' ')}
-                                value={
-                                  fromDate
-                                    ? getMonthYear(fromDate)
-                                    : fDate
-                                    ? getMonthYear(fDate)
-                                    : getMonthYear(new Date())
-                                }
-                                readOnly
-                              />
+                      <li>{AccountDetails?.accountDetails?.currency}</li>
+                    </ul>
+                  </div>
+                  <div className='d-md-flex justify-content-between mt-3'>
+                    <div className='d-flex'>
+                      <div className='dflex-center'>
+                        {(dateFromFilterOn || dateToFilterOn || intervalFilterOn) && (
+                          <button type='button' className='btn btn-outline-danger clear-filter' onClick={clearFilters}>
+                            Clear Filters
+                          </button>
+                        )}
+                        <ReactDatePicker
+                          selected={fromDate ? new Date(fromDate) : fDate ? parseDateFromString(fDate) : null}
+                          onChange={(date) => onChange('start', date)}
+                          // selectsStart
+                          startDate={fromDate ? new Date(fromDate) : fDate ? parseDateFromString(fDate) : null}
+                          dateFormat='MM/yyyy'
+                          showMonthYearPicker
+                          minDate={new Date('1900-01-01')}
+                          maxDate={new Date()}
+                          // selectsRange
+                          customInput={
+                            <div className='drop-box'>
+                              <div className='date-box'>
+                                <input
+                                  type='text'
+                                  className={['month_year', dateFromFilterOn ? 'active' : ''].join(' ')}
+                                  value={
+                                    fromDate
+                                      ? getMonthYear(fromDate)
+                                      : fDate
+                                        ? getMonthYear(fDate)
+                                        : getMonthYear(new Date())
+                                  }
+                                  readOnly
+                                />
+                              </div>
                             </div>
-                          </div>
-                        }
-                      />
-                      <span
-                        className={['date-separator', dateFromFilterOn && dateToFilterOn ? 'active' : ''].join(' ')}
-                      >
-                        to
+                          }
+                        />
+                        <span
+                          className={['date-separator', dateFromFilterOn && dateToFilterOn ? 'active' : ''].join(' ')}
+                        >
+                          to
                       </span>
-                      <ReactDatePicker
-                        selected={toDate ? new Date(toDate) : null}
-                        onChange={(date) => onChange('end', date)}
-                        // selectsStart
-                        startDate={toDate ? new Date(toDate) : null}
-                        dateFormat='MM/yyyy'
-                        showMonthYearPicker
-                        minDate={fromDate ? new Date(fromDate) : null}
-                        maxDate={new Date()}
-                        // selectsRange
-                        customInput={
-                          <div className='drop-box'>
-                            <div className='date-box'>
-                              <input
-                                type='text'
-                                className={['month_year', dateToFilterOn ? 'active' : ''].join(' ')}
-                                value={getMonthYear(toDate)}
-                                readOnly
-                              />
+                        <ReactDatePicker
+                          selected={toDate ? new Date(toDate) : null}
+                          onChange={(date) => onChange('end', date)}
+                          // selectsStart
+                          startDate={toDate ? new Date(toDate) : null}
+                          dateFormat='MM/yyyy'
+                          showMonthYearPicker
+                          minDate={fromDate ? new Date(fromDate) : null}
+                          maxDate={new Date()}
+                          // selectsRange
+                          customInput={
+                            <div className='drop-box'>
+                              <div className='date-box'>
+                                <input
+                                  type='text'
+                                  className={['month_year', dateToFilterOn ? 'active' : ''].join(' ')}
+                                  value={getMonthYear(toDate)}
+                                  readOnly
+                                />
+                              </div>
                             </div>
+                          }
+                        />
+                        <Dropdown className={['drop-box m-l-2', intervalFilterOn ? 'active' : ''].join(' ')}>
+                          <Dropdown.Toggle variant='' ref={dropdownToggle}>
+                            {timeInterval}
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu className='mm-dropdown-menu dropsm'>
+                            <ul className='radiolist'>
+                              {enumerateStr(TimeIntervalEnum).map((interval, index) => {
+                                return (
+                                  <li key={index}>
+                                    <label>
+                                      <input
+                                        type='radio'
+                                        name='m-list'
+                                        aria-checked={timeInterval === interval}
+                                        value={interval}
+                                        checked={timeInterval === interval}
+                                        onChange={handleIntervalChange}
+                                        onClick={() => clickElement(dropdownToggle)}
+                                      />
+                                      <span>{interval}</span>
+                                    </label>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                        {filterloading && <CircularSpinner />}
+                      </div>
+                      <div className='mm-account__selection--type'>
+                        {AccountDetails?.syncError ? (
+                          <div className='attention-section'>
+                            <NeedsInfo />
+                            <span className='needsInfo'>Processing</span>
                           </div>
-                        }
-                      />
-                      <Dropdown className={['drop-box m-l-2', intervalFilterOn ? 'active' : ''].join(' ')}>
-                        <Dropdown.Toggle variant='' ref={dropdownToggle}>
-                          {timeInterval}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className='mm-dropdown-menu dropsm'>
-                          <ul className='radiolist'>
-                            {enumerateStr(TimeIntervalEnum).map((interval, index) => {
-                              return (
-                                <li key={index}>
-                                  <label>
-                                    <input
-                                      type='radio'
-                                      name='m-list'
-                                      aria-checked={timeInterval === interval}
-                                      value={interval}
-                                      checked={timeInterval === interval}
-                                      onChange={handleIntervalChange}
-                                      onClick={() => clickElement(dropdownToggle)}
-                                    />
-                                    <span>{interval}</span>
-                                  </label>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                      {filterloading && <CircularSpinner />}
-                    </div>
-                    <div className='mm-account__selection--type'>
-                      {AccountDetails?.syncError ? (
-                        <div className='attention-section'>
-                          <NeedsInfo />
-                          <span className='needsInfo'>Processing</span>
-                        </div>
-                      ) : (
-                        <>
-                          {AccountDetails?.isManual ? (
+                        ) : (
                             <>
-                              <CheckCircle />
-                              <span className='manual'>Manual</span>
-                            </>
-                          ) : (
-                            <>
-                              {AccountDetails?.providerAccount?.status === 'LOGIN_IN_PROGRESS' ||
-                              AccountDetails?.providerAccount?.status === 'IN_PROGRESS' ||
-                              AccountDetails?.providerAccount?.status === 'PARTIAL_SUCCESS' ||
-                              (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
-                                AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled >=
-                                  moment().toISOString()) ||
-                              (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
-                                AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled === null) ? (
+                              {AccountDetails?.isManual ? (
                                 <>
-                                  <CheckCircleGreen />
-                                  <span className='good'>Good</span>
+                                  <CheckCircle />
+                                  <span className='manual'>Manual</span>
                                 </>
-                              ) : AccountDetails?.providerAccount?.status === 'USER_INPUT_REQUIRED' ||
-                                (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
-                                  AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled <
-                                    moment().toISOString()) ? (
-                                <div
-                                  className='attention-section'
-                                  onMouseEnter={() => setPopup(true)}
-                                  onMouseLeave={() => setPopup(false)}
-                                >
-                                  <NeedsInfo />
-                                  <span className='needsInfo'>Attention</span>
-                                  {popup && (
-                                    <Popup
-                                      AccountDetails={AccountDetails}
-                                      handleConnectAccount={() => handleConnectAccount(AccountDetails.id, true, false)}
-                                    />
-                                  )}
-                                </div>
-                              ) : AccountDetails ? (
-                                <div
-                                  className='attention-section'
-                                  onMouseEnter={() => setPopup(true)}
-                                  onMouseLeave={() => setPopup(false)}
-                                >
-                                  <NotLinked />
-                                  <span className='attention'>Error</span>
-                                  {popup && (
-                                    <Popup
-                                      AccountDetails={AccountDetails}
-                                      handleConnectAccount={() => handleConnectAccount(AccountDetails.id, true, false)}
-                                    />
-                                  )}
-                                </div>
                               ) : (
-                                <></>
-                              )}
+                                  <>
+                                    {AccountDetails?.providerAccount?.status === 'LOGIN_IN_PROGRESS' ||
+                                      AccountDetails?.providerAccount?.status === 'IN_PROGRESS' ||
+                                      AccountDetails?.providerAccount?.status === 'PARTIAL_SUCCESS' ||
+                                      (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
+                                        AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled >=
+                                        moment().toISOString()) ||
+                                      (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
+                                        AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled === null) ? (
+                                        <>
+                                          <CheckCircleGreen />
+                                          <span className='good'>Good</span>
+                                        </>
+                                      ) : AccountDetails?.providerAccount?.status === 'USER_INPUT_REQUIRED' ||
+                                        (AccountDetails?.providerAccount?.status === 'SUCCESS' &&
+                                          AccountDetails?.providerAccount?.dataset?.[0]?.nextUpdateScheduled <
+                                          moment().toISOString()) ? (
+                                          <div
+                                            className='attention-section'
+                                            onMouseEnter={() => setPopup(true)}
+                                            onMouseLeave={() => setPopup(false)}
+                                          >
+                                            <NeedsInfo />
+                                            <span className='needsInfo'>Attention</span>
+                                            {popup && (
+                                              <Popup
+                                                AccountDetails={AccountDetails}
+                                                handleConnectAccount={() => handleConnectAccount(AccountDetails.id, true, false)}
+                                              />
+                                            )}
+                                          </div>
+                                        ) : AccountDetails ? (
+                                          <div
+                                            className='attention-section'
+                                            onMouseEnter={() => setPopup(true)}
+                                            onMouseLeave={() => setPopup(false)}
+                                          >
+                                            <NotLinked />
+                                            <span className='attention'>Error</span>
+                                            {popup && (
+                                              <Popup
+                                                AccountDetails={AccountDetails}
+                                                handleConnectAccount={() => handleConnectAccount(AccountDetails.id, true, false)}
+                                              />
+                                            )}
+                                          </div>
+                                        ) : (
+                                            <></>
+                                          )}
+                                  </>
+                                )}
                             </>
                           )}
-                        </>
-                      )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div
-                className={[
-                  'account-ct-box mb-40',
-                  AccountHoldings?.holdings.length === 0 ? 'ct-box-placeholder' : '',
-                  AccountDetails?.syncError ? 'sync-error' : '',
-                ].join(' ')}
-              >
-                {AccountDetails?.syncError ? (
-                  <Placeholder type='syncError' />
-                ) : (
+                <div
+                  className={[
+                    'account-ct-box mb-40',
+                    AccountHoldings?.holdings.length === 0 ? 'ct-box-placeholder' : '',
+                    AccountDetails?.syncError ? 'sync-error' : '',
+                  ].join(' ')}
+                >
+                  {AccountDetails?.syncError ? (
+                    <Placeholder type='syncError' />
+                  ) : (
+                      <>
+                        {AccountHoldings?.holdings.length !== 0 ? (
+                          <div className='graphbox'>
+                            <ul>
+                              {AccountDetails?.category?.mmCategory === 'Investment Assets' && (
+                                <li className='inv-data'>
+                                  <span className='graphbox-label'>Value</span>
+                                  <span className='graphbox-amount'>
+                                    {currencySymbol}
+                                    {curAccountHoldingsItem?.[0]?.value
+                                      ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0]?.value, 0))
+                                      : 0}
+                                  </span>
+                                </li>
+                              )}
+                              {AccountDetails?.category?.mmCategory === 'Other Assets' && (
+                                <li className='other-data'>
+                                  <span className='graphbox-label'>Value</span>
+                                  <span className='graphbox-amount'>
+                                    {currencySymbol}
+                                    {curAccountHoldingsItem?.[0].value
+                                      ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0].value, 0))
+                                      : 0}
+                                  </span>
+                                </li>
+                              )}
+                              {AccountDetails?.category?.mmCategory === 'Liabilities' && (
+                                <li className='lty-data'>
+                                  <span className='graphbox-label'>Value</span>
+                                  <span className='graphbox-amount'>
+                                    {currencySymbol}
+                                    {curAccountHoldingsItem?.[0].value
+                                      ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0].value, 0))
+                                      : 0}
+                                  </span>
+                                </li>
+                              )}
+                            </ul>
+                            <div className='chartbox'>
+                              {AccountHoldings && curAccountHoldingsItem && (
+                                <AccountBarGraph
+                                  data={AccountHoldings.charts}
+                                  curInterval={curAccountHoldingsItem[0]?.interval}
+                                  currencySymbol={currencySymbol}
+                                  mmCategory={AccountDetails?.category?.mmCategory}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                            <Placeholder type='acctDetail' />
+                          )}
+                      </>
+                    )}
+                </div>
+                {AccountDetails?.syncError ? null : (
                   <>
-                    {AccountHoldings?.holdings.length !== 0 ? (
-                      <div className='graphbox'>
-                        <ul>
-                          {AccountDetails?.category?.mmCategory === 'Investment Assets' && (
-                            <li className='inv-data'>
-                              <span className='graphbox-label'>Value</span>
-                              <span className='graphbox-amount'>
-                                {currencySymbol}
-                                {curAccountHoldingsItem?.[0]?.value
-                                  ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0]?.value, 0))
-                                  : 0}
-                              </span>
-                            </li>
-                          )}
-                          {AccountDetails?.category?.mmCategory === 'Other Assets' && (
-                            <li className='other-data'>
-                              <span className='graphbox-label'>Value</span>
-                              <span className='graphbox-amount'>
-                                {currencySymbol}
-                                {curAccountHoldingsItem?.[0].value
-                                  ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0].value, 0))
-                                  : 0}
-                              </span>
-                            </li>
-                          )}
-                          {AccountDetails?.category?.mmCategory === 'Liabilities' && (
-                            <li className='lty-data'>
-                              <span className='graphbox-label'>Value</span>
-                              <span className='graphbox-amount'>
-                                {currencySymbol}
-                                {curAccountHoldingsItem?.[0].value
-                                  ? numberWithCommas(fNumber(curAccountHoldingsItem?.[0].value, 0))
-                                  : 0}
-                              </span>
-                            </li>
-                          )}
-                        </ul>
-                        <div className='chartbox'>
-                          {AccountHoldings && curAccountHoldingsItem && (
-                            <AccountBarGraph
-                              data={AccountHoldings.charts}
-                              curInterval={curAccountHoldingsItem[0]?.interval}
-                              currencySymbol={currencySymbol}
-                              mmCategory={AccountDetails?.category?.mmCategory}
-                            />
-                          )}
-                        </div>
+                    <div className='d-flex justify-content-between flex-wrap'>
+                      <div className='mm-plan-radios mb-4'>
+                        <input
+                          type='radio'
+                          id='mm-account-holding'
+                          value='holdings'
+                          name='mm-radio-holding-activity'
+                          aria-checked='true'
+                          checked={tableType === 'holdings' ? true : false}
+                          onChange={(e) => setTableType('holdings')}
+                        />
+                        <label className='labels' htmlFor='mm-account-holding'>
+                          Holdings
+                      </label>
+                        <input
+                          type='radio'
+                          id='mm-account-activity'
+                          value='activity'
+                          name='mm-radio-holding-activity'
+                          aria-checked='false'
+                          checked={tableType === 'activity' ? true : false}
+                          onChange={(e) => setTableType('activity')}
+                        />
+                        <label className='labels' htmlFor='mm-account-activity'>
+                          Activity
+                      </label>
+                        <div className='mm-radio-bg' />
                       </div>
-                    ) : (
-                      <Placeholder type='acctDetail' />
+                      {AccountDetails?.isManual && tableType === 'holdings' && (
+                        <Button variant='primary' className='mb-4 mm-account__btn' onClick={openNewPositonModal}>
+                          Add Position
+                        </Button>
+                      )}
+                      {AccountDetails?.isManual && tableType === 'activity' && (
+                        <Button variant='primary' className='mb-4 mm-account__btn' onClick={openNewActivityModal}>
+                          Add Activity
+                        </Button>
+                      )}
+                    </div>
+                    {AccountHoldings && tableType === 'holdings' && (
+                      <AccountTable
+                        holdingsData={AccountHoldings.holdings}
+                        openEditPositionModalFun={() => setEditPositonModalOpen(true)}
+                        closeEditPositionModalFun={() => setEditPositonModalOpen(false)}
+                        accountDetails={AccountDetails}
+                        currencySymbol={currencySymbol}
+                      />
+                    )}
+
+                    {tableType === 'activity' && (
+                      <div className='mm-account-activity-block'>
+                        <div className='d-flex align-items-center mb-4'>
+                          <p className='mb-0'>
+                            To properly calculate performance make sure that all withdrawals and deposits are accurately
+                            tracked below as Cash Flow
+                        </p>
+                          <MMToolTip
+                            placement='top'
+                            message='Performance calculations are coming soon. To ensure proper performance returns please mark cash flow transactions properly.'
+                          >
+                            <InfoIcon className='mt-n1 ml-2' />
+                          </MMToolTip>
+                        </div>
+                        {AccountActivity && (
+                          <ActivityTable
+                            transactionsData={AccountActivity.transactions}
+                            openEditActivityModalFun={() => setEditActivityModalOpen(true)}
+                            closeEditActivityModalFun={() => setEditActivityModalOpen(false)}
+                            currencySymbol={currencySymbol}
+                          />
+                        )}
+                      </div>
+                    )}
+                    {newPositonModalOpen && (
+                      <HoldingsDetailsModal
+                        holdingsDetailsModal={holdingsDetailsModal}
+                        accountId={AccountDetails?.id}
+                        closeNewPositionModal={() => setNewPositonModalOpen(false)}
+                        currencySymbol={currencySymbol}
+                      />
+                    )}
+                    {newActivityModalOpen && (
+                      <ActivityDetailsModal
+                        activityDetailsModal={activityDetailsModal}
+                        accountId={AccountDetails?.id}
+                        closeNewActivityModal={() => setNewActivityModalOpen(false)}
+                        currencySymbol={currencySymbol}
+                      />
                     )}
                   </>
                 )}
               </div>
-              {AccountDetails?.syncError ? null : (
-                <>
-                  <div className='d-flex justify-content-between flex-wrap'>
-                    <div className='mm-plan-radios mb-4'>
-                      <input
-                        type='radio'
-                        id='mm-account-holding'
-                        value='holdings'
-                        name='mm-radio-holding-activity'
-                        aria-checked='true'
-                        checked={tableType === 'holdings' ? true : false}
-                        onChange={(e) => setTableType('holdings')}
-                      />
-                      <label className='labels' htmlFor='mm-account-holding'>
-                        Holdings
-                      </label>
-                      <input
-                        type='radio'
-                        id='mm-account-activity'
-                        value='activity'
-                        name='mm-radio-holding-activity'
-                        aria-checked='false'
-                        checked={tableType === 'activity' ? true : false}
-                        onChange={(e) => setTableType('activity')}
-                      />
-                      <label className='labels' htmlFor='mm-account-activity'>
-                        Activity
-                      </label>
-                      <div className='mm-radio-bg' />
-                    </div>
-                    {AccountDetails?.isManual && tableType === 'holdings' && (
-                      <Button variant='primary' className='mb-4 mm-account__btn' onClick={openNewPositonModal}>
-                        Add Position
-                      </Button>
-                    )}
-                    {AccountDetails?.isManual && tableType === 'activity' && (
-                      <Button variant='primary' className='mb-4 mm-account__btn' onClick={openNewActivityModal}>
-                        Add Activity
-                      </Button>
-                    )}
-                  </div>
-                  {AccountHoldings && tableType === 'holdings' && (
-                    <AccountTable
-                      holdingsData={AccountHoldings.holdings}
-                      openEditPositionModalFun={() => setEditPositonModalOpen(true)}
-                      closeEditPositionModalFun={() => setEditPositonModalOpen(false)}
-                      accountDetails={AccountDetails}
-                      currencySymbol={currencySymbol}
-                    />
-                  )}
-
-                  {tableType === 'activity' && (
-                    <div className='mm-account-activity-block'>
-                      <div className='d-flex align-items-center mb-4'>
-                        <p className='mb-0'>
-                          To properly calculate performance make sure that all withdrawals and deposits are accurately
-                          tracked below as Cash Flow
-                        </p>
-                        <MMToolTip
-                          placement='top'
-                          message='Performance calculations are coming soon. To ensure proper performance returns please mark cash flow transactions properly.'
-                        >
-                          <InfoIcon className='mt-n1 ml-2' />
-                        </MMToolTip>
-                      </div>
-                      {AccountActivity && (
-                        <ActivityTable
-                          transactionsData={AccountActivity.transactions}
-                          openEditActivityModalFun={() => setEditActivityModalOpen(true)}
-                          closeEditActivityModalFun={() => setEditActivityModalOpen(false)}
-                          currencySymbol={currencySymbol}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {newPositonModalOpen && (
-                    <HoldingsDetailsModal
-                      holdingsDetailsModal={holdingsDetailsModal}
-                      accountId={AccountDetails?.id}
-                      closeNewPositionModal={() => setNewPositonModalOpen(false)}
-                      currencySymbol={currencySymbol}
-                    />
-                  )}
-                  {newActivityModalOpen && (
-                    <ActivityDetailsModal
-                      activityDetailsModal={activityDetailsModal}
-                      accountId={AccountDetails?.id}
-                      closeNewActivityModal={() => setNewActivityModalOpen(false)}
-                      currencySymbol={currencySymbol}
-                    />
-                  )}
-                </>
-              )}
             </div>
           </div>
-        </div>
-      )}
+        )}
       <FastLinkModal
         fastLinkModal={fastlinkModal}
         fastLinkOptions={fastLinkOptions}

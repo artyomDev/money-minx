@@ -1,14 +1,15 @@
 import Form from 'react-bootstrap/Form';
 import React, { useEffect, useState } from 'react';
 
-import useToast from 'common/hooks/useToast';
-import { MMCategories } from 'auth/auth.enum';
 import MMToolTip from 'common/components/tooltip';
-import { enumerateStr } from 'common/common-helper';
 import useAccountType from 'auth/hooks/useAccountType';
+import useToast from 'common/hooks/useToast';
+import useAccountSubtype from 'auth/hooks/useAccountSubtype';
+import useCurrentSubscription from 'auth/hooks/useCurrentSubscription';
+import { MMCategories } from 'auth/auth.enum';
+import { enumerateStr } from 'common/common-helper';
 import { Modal, ModalType } from 'common/components/modal';
 import { CurrencyOptions } from 'auth/enum/currency-options';
-import useAccountSubtype from 'auth/hooks/useAccountSubtype';
 import { SelectInput } from 'common/components/input/select.input';
 import { getConnectionInfo, postManualAccount } from 'api/request.api';
 import { ReactComponent as InfoIcon } from 'assets/images/signup/info.svg';
@@ -20,12 +21,21 @@ interface SettingModalProps {
   handleSuccess: () => void;
 }
 
-const initialValues = {
+export interface ValuesType {
+  mmCategory: string;
+  mmAccountType: string
+  mmAccountSubType: string,
+  accountName: string,
+  balance: any,
+  currency: string,
+}
+
+const initialValues: ValuesType = {
   mmCategory: 'Other Assets',
   mmAccountType: '',
   mmAccountSubType: '',
   accountName: '',
-  balance: '',
+  balance: null,
   currency: 'USD',
 };
 
@@ -35,8 +45,12 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
   const [values, setValues] = useState(initialValues);
   const { data: accountTypes } = useAccountType(true);
   const [loading, setLoading] = useState<boolean>(false);
-  const [disabled, setDisabled] = useState<boolean>(true);
   const { subType: accountSubTypes } = useAccountSubtype(values.mmAccountType, true);
+  const { currentSubscription } = useCurrentSubscription();
+  const [accountNameError, setAccountNameError] = useState<boolean>(false);
+  const [accountTypeError, setAccountTypeError] = useState<boolean>(false);
+  const [balanceError, setBalanceError] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<any>) => {
     if (e.target.name === 'mmAccountType') {
@@ -44,13 +58,38 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
     }
 
     if (e.target.name === 'balance') {
-      let _float = parseFloat(e.target.value);
+      const _float = parseFloat(e.target.value);
 
       return setValues({ ...values, [e.target.name]: _float });
     }
 
     return setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+
+  useEffect(() => {
+    if (submitted) {
+      if (!values.accountName) {
+        setAccountNameError(true);
+      } else {
+        setAccountNameError(false);
+      }
+      if (!values.mmAccountType) {
+        setAccountTypeError(true);
+      } else {
+        setAccountTypeError(false);
+      }
+      if (!values.balance && values.balance !== 0) {
+        setBalanceError(true);
+      } else {
+        setBalanceError(false);
+      }
+    } else {
+      setAccountNameError(false);
+      setAccountTypeError(false);
+      setBalanceError(false);
+    }
+  }, [values, submitted]);
 
   const setAccountCategory = (cat: string) => {
     return setValues({ ...values, mmCategory: cat });
@@ -62,6 +101,23 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
   };
 
   const handleSubmit = async () => {
+    setSubmitted(true);
+    let valid = true;
+    if (!values.accountName) {
+      setAccountNameError(true);
+      valid = false;
+    }
+    if (!values.mmAccountType) {
+      setAccountTypeError(true);
+      valid = false;
+    }
+    if (!values.balance && values.balance !== 0) {
+      setBalanceError(true);
+      valid = false;
+    }
+    if (!valid) {
+      return;
+    }
     setLoading(true);
     const { error: err } = await postManualAccount(values);
     if (!err) {
@@ -79,15 +135,11 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
   };
 
   useEffect(() => {
+    if (manualAccountModal.props.open) {
+      setSubmitted(false);
+    }
     setValues(initialValues);
   }, [manualAccountModal]);
-
-  useEffect(() => {
-    if (!values.mmCategory || !values.mmAccountType || !values.accountName || !values.balance || !values.currency) {
-      return setDisabled(true);
-    }
-    return setDisabled(false);
-  }, [values]);
 
   return (
     <Modal
@@ -137,7 +189,12 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
                 onChange={handleChange}
                 name='accountName'
                 value={values.accountName}
+                autoComplete='off'
               />
+              {accountNameError &&
+                <div className='mt-2 feedback'>
+                  Account Name is a required field
+              </div>}
             </Form.Group>
             <div className='row-set'>
               <Form.Group controlId='ManualAccountForm.AccountType' className='child'>
@@ -148,16 +205,22 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
                   value={values.mmAccountType}
                   name='mmAccountType'
                 />
+                {accountTypeError &&
+                  <div className='mt-2 feedback'>
+                    Account Type is a required field
+                  </div>}
               </Form.Group>
-              <Form.Group controlId='ManualAccountForm.AccountSubtype' className='child'>
-                <Form.Label className='form-subheading'>Account Subtype</Form.Label>
-                <AccountTypeSelectInput
-                  args={accountSubTypes}
-                  onChange={handleChange}
-                  value={values.mmAccountSubType}
-                  name='mmAccountSubType'
-                />
-              </Form.Group>
+              {accountSubTypes.length > 1 &&
+                <Form.Group controlId='ManualAccountForm.AccountSubtype' className='child'>
+                  <Form.Label className='form-subheading'>Account Subtype</Form.Label>
+                  <AccountTypeSelectInput
+                    args={accountSubTypes}
+                    onChange={handleChange}
+                    value={values.mmAccountSubType}
+                    name='mmAccountSubType'
+                  />
+                </Form.Group>
+              }
             </div>
             <div className='row-set'>
               <Form.Group controlId='ManualAccountForm.CurrentBalance' className='child'>
@@ -169,10 +232,29 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
                   value={values.balance}
                   required
                 />
+                {balanceError &&
+                  <div className='mt-2 feedback'>
+                    Current Value is a required field
+                  </div>}
               </Form.Group>
               <Form.Group controlId='ManualAccountForm.Currency' className='child'>
                 <Form.Label className='form-subheading'>Currency</Form.Label>
-                <SelectInput args={curArr} onChange={handleChange} value={values.currency} name='currency' />
+                {currentSubscription &&
+                  (currentSubscription.name === 'Green' || currentSubscription.name === 'Plus') ? (
+                    <span className='mm-form-field-read'>{values.currency}</span>
+                  ) : (
+                    <SelectInput
+                      args={curArr}
+                      onChange={handleChange}
+                      value={values.currency}
+                      name='currency'
+                    />
+                  )}
+                {currentSubscription && (currentSubscription.name === 'Green' || currentSubscription.name === 'Plus') && (
+                  <label className='mm-form-field-error text--pink'>
+                    Your plan only supports USD. To enable multi currency support upgrade your plan.
+                  </label>
+                )}
               </Form.Group>
             </div>
           </Form>
@@ -183,7 +265,6 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
             <button
               className='mm-btn-animate mm-btn-primary d-flex align-items-center justify-content-center'
               onClick={handleSubmit}
-              disabled={disabled}
             >
               {loading ? (
                 <>
@@ -191,10 +272,10 @@ const ManualAccountModal: React.FC<SettingModalProps> = ({ manualAccountModal, h
                   <span className='ml-1'>Adding...</span>
                 </>
               ) : (
-                <>
-                  Add<span className='hide-sm ml-1'>Account</span>
-                </>
-              )}
+                  <>
+                    Add<span className='hide-sm ml-1'>Account</span>
+                  </>
+                )}
             </button>
           </div>
         </div>

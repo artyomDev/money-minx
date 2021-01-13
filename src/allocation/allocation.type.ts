@@ -1,5 +1,6 @@
-import { AllocationsFilter } from './allocation.enum';
 import { Account } from 'auth/auth.types';
+
+import { AllocationsFilter } from './allocation.enum';
 
 export interface AllocationProps { }
 

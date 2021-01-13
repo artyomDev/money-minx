@@ -9,6 +9,7 @@ import useToast from 'common/hooks/useToast';
 import { AuthLayout } from 'layouts/auth.layout';
 import LoadingScreen from 'common/loading-screen';
 import { useModal } from 'common/components/modal';
+import { setLoginSuccess } from 'auth/auth.actions';
 import { appRouteConstants } from 'app/app-route.constant';
 import { pricingDetailConstant } from 'common/common.constant';
 import { useAuthDispatch, useAuthState } from 'auth/auth.context';
@@ -72,15 +73,16 @@ export const LoginMainSection = () => {
   const responseFacebook = async (response: any) => {
     if (response.accessToken) {
       setFBToken(response.accessToken);
-      const { error } = await postFacebookLogin({
+      const { error, data } = await postFacebookLogin({
         accessToken: response.accessToken,
         mailChimpSubscription: true,
         subscriptionPriceId: env.STRIPE_DEFAULT_PLAN,
       });
 
       if (!error) {
-        history.push(appRouteConstants.auth.CONNECT_ACCOUNT);
         mmToast('Successfully logged in', { type: 'success' });
+        dispatch(setLoginSuccess(data));
+        history.push(appRouteConstants.networth.NET_WORTH);
       } else {
         if (error.statusCode === 400 && error.message) {
           emailNeededModal.open();

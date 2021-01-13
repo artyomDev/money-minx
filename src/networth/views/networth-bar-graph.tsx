@@ -15,6 +15,7 @@ import { BarChartColors } from 'common/color';
 import { fNumber, numberWithCommas } from 'common/number.helper';
 import { formatter, getInterval } from 'common/bar-graph-helper';
 import CircularSpinner from 'common/components/spinner/circular-spinner';
+import BarGraphCustomTick from 'common/components/chart/bargraph-custom-tick';
 import { NetworthTooltipPayloadItem, NetworthBarGraphProps } from 'networth/networth.type';
 
 const CustomTooltip = (props: any) => {
@@ -145,8 +146,9 @@ const NetworthBarGraph: React.FC<NetworthBarGraphProps> = ({ networth, fCategori
           <XAxis
             dataKey='interval'
             tickSize={0}
-            tickMargin={10}
-            tick={{ fontSize: 14 }}
+            tickMargin={0}
+            minTickGap={0}
+            tick={<BarGraphCustomTick />}
             stroke='#969eac'
             axisLine={{ stroke: 'transparent' }}
           />

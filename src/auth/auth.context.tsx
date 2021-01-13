@@ -16,7 +16,7 @@ const initialState: AuthType = {
   token: undefined,
   roles: undefined,
   isSigningIn: false,
-  accounts: [],
+  accounts: undefined,
   isAuthenticated: false,
   authState: AuthState.INITIAL,
   subscriptionDetail: undefined,

@@ -152,7 +152,7 @@ export interface AuthType {
   roles?: RoleEnum[];
   authState: AuthState;
   isSigningIn: boolean;
-  accounts: Account[];
+  accounts?: Account[];
   isAuthenticated: boolean;
   currentSubscription?: ICurrentSubscription;
   subscriptionDetail?: SubscriptionDetail;

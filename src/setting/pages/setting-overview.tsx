@@ -1,7 +1,7 @@
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
+import moment from 'moment';
 import useToast from 'common/hooks/useToast';
 import { useAuthState } from 'auth/auth.context';
 import { useModal } from 'common/components/modal';
@@ -105,7 +105,7 @@ export const SettingOverview: React.FC<SettingOverviewProps> = ({ changeTab }) =
                 </div>
               </div>
               {currentSubscription && (currentSubscription.name === 'Green' || currentSubscription.name === 'Plus') && (
-                <label className='col-sm-6 col-md-6 text-danger'>
+                <label className='col-sm-6 col-md-6 text--pink'>
                   Your plan only supports USD. To enable multi currency support upgrade your plan.
                 </label>
               )}

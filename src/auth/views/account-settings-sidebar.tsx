@@ -36,6 +36,8 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
   const from = useSearchParam('from');
   const isFromFastlink = from === 'fastLink';
 
+  const hasAllAccountOverridden = accounts?.every((acc) => acc.accountDetails.overridden);
+
   /**
    * @description we will avoid the fetch connection info call
    * @if from fastlink and if initial value
@@ -109,7 +111,7 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
         return setCurrentAccount(curProviderAccounts[0]);
       }
     }
-  }, [providerName, accountsByProviderName, clickEvent]);
+  }, [accountsByProviderName, providerName, clickEvent]);
 
   /**
    * set completed account id's
@@ -126,7 +128,14 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
    * If nextProvider not found set finish true
    */
   useEffect(() => {
-    if (currentProviderAccounts && accountsByProviderName && !clickEvent) {
+    const hasCurrentProviderAccounts = currentProviderAccounts?.length || 0;
+    const hasAccountsByProviderName = accountsByProviderName ? Object.keys(accountsByProviderName).length : 0;
+
+    if (hasCurrentProviderAccounts && hasAccountsByProviderName && !clickEvent) {
+      if (hasAllAccountOverridden) {
+        return setFinish?.();
+      }
+
       if (currentProviderAccounts.every((acc) => acc.accountDetails?.overridden)) {
         const pName = currentProviderAccounts[0]?.providerName;
         const providerIndex = Object.keys(accountsByProviderName).indexOf(pName);
@@ -143,7 +152,7 @@ const AccountSettingsSideBar: React.FC<Props> = ({ setFinish, closeSidebar, sele
         }
       }
     }
-  }, [currentProviderAccounts, accountsByProviderName, clickEvent, setFinish]);
+  }, [currentProviderAccounts, accountsByProviderName, clickEvent, setFinish, hasAllAccountOverridden]);
 
   if (!accounts || !currentAccount || !currentProviderAccounts) {
     return <AccountSettingsSidebarSkeleton />;

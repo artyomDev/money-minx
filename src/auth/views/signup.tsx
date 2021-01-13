@@ -12,6 +12,7 @@ import validation from 'lang/en/validation.json';
 import { useModal } from 'common/components/modal';
 import { useAuthDispatch } from 'auth/auth.context';
 import { postFacebookLogin } from 'api/request.api';
+import { setLoginSuccess } from 'auth/auth.actions';
 import useAnalytics from 'common/hooks/useAnalytics';
 import { StringKeyObject } from 'common/common.types';
 import { appRouteConstants } from 'app/app-route.constant';
@@ -58,7 +59,7 @@ export const SignupMainSection = () => {
 
   const reg1 = /^.{8,}$/;
   const reg2 = /(^.*\d+.*$)/;
-  const reg3 = /(^.*[@$!%*#?&].*$)/;
+  const reg3 = /(^.*[~`!@#$%^&*()_+\-={[}\]|\\:;"'<,>.?/].*$)/;
   const reg4 = /(^.*[A-Z].*$)/;
 
   const visibilityIcon = visible ? <VisibleIcon /> : <HiddenIcon />;
@@ -108,7 +109,7 @@ export const SignupMainSection = () => {
     if (response.accessToken) {
       setFBToken(response.accessToken);
 
-      const { error } = await postFacebookLogin({
+      const { error, data } = await postFacebookLogin({
         accessToken: response.accessToken,
         mailChimpSubscription: true,
         subscriptionPriceId: env.STRIPE_DEFAULT_PLAN,
@@ -118,8 +119,9 @@ export const SignupMainSection = () => {
         mmToast('Successfully logged in', { type: 'success' });
         triggerGAEvent();
         triggerPixelTrackEvent();
+        dispatch(setLoginSuccess(data));
 
-        return history.push('/connect-account');
+        return history.push(appRouteConstants.auth.NET_WORTH);
       }
       if (error.statusCode === 400 && error.message) {
         return emailNeededModal.open();
@@ -184,9 +186,7 @@ export const SignupMainSection = () => {
                 <LogoImg className='auth-logo' />
               </Link>
               <h2>Sign up for Money Minx</h2>
-              <p>
-                Create an account to get started with your Money Minx trial.
-              </p>
+              <p>Create an account to get started with your Money Minx trial.</p>
               <div className='form-wrap'>
                 <Formik
                   initialValues={{
@@ -254,7 +254,7 @@ export const SignupMainSection = () => {
                       triggerGAEvent();
                       triggerPixelTrackEvent();
 
-                      return history.push('/connect-account');
+                      return history.push(appRouteConstants.networth.NET_WORTH);
                     }
 
                     if (error.statusCode === 409) {
@@ -319,8 +319,8 @@ export const SignupMainSection = () => {
                                 <Link to={appRouteConstants.auth.FORGOT_PASSWORD}> recover your password?</Link>
                               </span>
                             ) : (
-                              props.errors.password
-                            )}
+                                props.errors.password
+                              )}
                           </div>
                         )}
 

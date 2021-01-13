@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 
 import { isEmpty } from 'lodash';
+import useSearchParam from 'auth/hooks/useSearchParam';
 import { appRouteConstants } from 'app/app-route.constant';
 import { Account, SubscriptionDetail } from 'auth/auth.types';
 import { pricingDetailConstant } from 'common/common.constant';
@@ -8,7 +9,6 @@ import { StripeSubscriptionStatus } from 'setting/setting.enum';
 import { useAuthDispatch, useAuthState } from 'auth/auth.context';
 import { getCurrentSubscription, getSubscription } from 'api/request.api';
 import { setCurSubscription, setSubscriptionDetail } from 'auth/auth.actions';
-import useSearchParam from 'auth/hooks/useSearchParam';
 
 const useSubscriptionValidation = () => {
   const { currentSubscription, subscriptionDetail, onboarded, accounts } = useAuthState();
@@ -18,7 +18,7 @@ const useSubscriptionValidation = () => {
   const [accessibleRoute, setAccessibleRoutes] = useState('');
 
   const subStatus = currentSubscription?.subscriptionStatus;
-  const hasAllValues = [currentSubscription, subscriptionDetail, accounts].every((item) => !isEmpty(item));
+  const hasAllValues = [currentSubscription, subscriptionDetail].every((item) => !isEmpty(item));
 
   const active = StripeSubscriptionStatus.ACTIVE;
   const unpaid = StripeSubscriptionStatus.UNPAID;
@@ -27,12 +27,13 @@ const useSubscriptionValidation = () => {
   const isPlanExist = subStatus === active || subStatus === trailing;
   const isPlanExpired = subStatus === canceled || subStatus === unpaid;
 
-  const existingManualAccounts = accounts?.filter((account: Account) => account.isManual).length;
-  const existingAutoAccounts = accounts?.filter((account: Account) => !account.isManual).length;
+  const existingManualAccounts = accounts?.filter((account: Account) => account.isManual).length || 0;
+  const existingAutoAccounts = accounts?.filter((account: Account) => !account.isManual).length || 0;
   const numberOfConnectedAccountOnPlan = subscriptionDetail?.details?.[pricingDetailConstant.CONNECTED_ACCOUNT] || '0';
   const numberOfManualAccountOnPlan = subscriptionDetail?.details?.[pricingDetailConstant.MANUAL_ACCOUNT] || '0';
   const hasUnlimitedConnectedAccount = numberOfConnectedAccountOnPlan.toUpperCase() === 'UNLIMITED';
   const hasUnlimitedManualAccount = numberOfManualAccountOnPlan.toUpperCase() === 'UNLIMITED';
+  const isAccountEmpty = accounts && accounts.length <= 0;
 
   const checkPlanExceeds = () => {
     if (hasUnlimitedConnectedAccount && hasUnlimitedManualAccount) {
@@ -86,7 +87,7 @@ const useSubscriptionValidation = () => {
     let route: string = '';
     (() => {
       if (!onboarded) {
-        route = appRouteConstants.auth.CONNECT_ACCOUNT
+        route = appRouteConstants.auth.CONNECT_ACCOUNT;
       }
 
       if (from === 'accountSettings') {
@@ -94,8 +95,15 @@ const useSubscriptionValidation = () => {
       }
 
       if (hasAllValues && !loading) {
+        if (isAccountEmpty) {
+          route = appRouteConstants.auth.CONNECT_ACCOUNT;
+
+          return route;
+        }
+
         if (isPlanExpired) {
           route = appRouteConstants.subscription.SUBSCRIPTION;
+
           return route;
         }
 
@@ -109,7 +117,7 @@ const useSubscriptionValidation = () => {
 
         // todo: fix this as visited net-worth for the first time sets onboarded to true.
         // also onboarded is only detected after first logout as is in JWT. The registration based session becomes corrupted due to this.
-        if (isPlanExist && (onboarded || from === 'accountSettings') && !isPlanExceeds) {
+        if (isPlanExist && (onboarded || from === 'accountSettings') && !isPlanExceeds && !isAccountEmpty) {
           route = 'all';
 
           return route;
@@ -122,7 +130,7 @@ const useSubscriptionValidation = () => {
     })();
 
     setAccessibleRoutes(route);
-  }, [isPlanExpired, isPlanExist, onboarded, isPlanExceeds, hasAllValues, loading, from]);
+  }, [isPlanExpired, isPlanExist, onboarded, isPlanExceeds, hasAllValues, loading, from, isAccountEmpty]);
 
   return {
     loading,

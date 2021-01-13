@@ -5,6 +5,7 @@ import { AccountCategory } from 'networth/networth.enum';
 import { AccountBarGraphProps } from 'account/account.type';
 import { fNumber, numberWithCommas } from 'common/number.helper';
 import { formatter, getInterval } from 'common/bar-graph-helper';
+import BarGraphCustomTick from 'common/components/chart/bargraph-custom-tick';
 import { ResponsiveContainer, ComposedChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceArea } from 'recharts';
 
 const CustomTooltip = (props: any) => {
@@ -57,6 +58,8 @@ const AccountBarGraph: React.FC<AccountBarGraphProps> = ({ data, curInterval, cu
       max = accountChartItem.value;
     }
   }
+
+  const firstProjection = data.find((datum) => datum.type === 'projection');
 
   const dataWithAbsoluteValues = data.map((accountChartItem) => {
     return {
@@ -114,7 +117,7 @@ const AccountBarGraph: React.FC<AccountBarGraphProps> = ({ data, curInterval, cu
             dataKey='interval'
             tickSize={0}
             tickMargin={10}
-            tick={{ fontSize: 14 }}
+            tick={<BarGraphCustomTick />}
             stroke='#969eac'
             axisLine={{ stroke: 'transparent' }}
           />
@@ -130,7 +133,7 @@ const AccountBarGraph: React.FC<AccountBarGraphProps> = ({ data, curInterval, cu
             tickFormatter={(tick) => formatter(tick, currencySymbol)}
             domain={['auto', _interval * 4]}
           />
-          <ReferenceArea x1={curInterval} y1={0} label={renderCustomRALabel} fill='url(#colorPr)' />
+          <ReferenceArea x1={firstProjection?.interval} y1={0} label={renderCustomRALabel} fill='url(#colorPr)' />
           <Tooltip separator='' cursor={false} content={<CustomTooltip currencySymbol={currencySymbol} />} />
           <Bar dataKey='value' barSize={10} fill={getBarColor(mmCategory)} radius={[2, 2, 0, 0]} />
         </ComposedChart>

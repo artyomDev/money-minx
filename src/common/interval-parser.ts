@@ -7,7 +7,7 @@ import { parseString } from './moment.helper';
 export const parseInterval = (obj: Record<string, any>, isQuarter: boolean = false): Record<string, any> => {
   return {
     ...obj,
-    interval: parseString(obj.interval, isQuarter),
+    interval: obj.interval === 'Today' ? obj.interval : parseString(obj.interval, isQuarter),
   };
 };
 
@@ -30,14 +30,16 @@ export const parseAccountDetails = (accDetails: Record<AccountCategory, AccountI
 };
 
 export const isCurrent = (interval: string) =>
-  getMonthYear() === interval || getYear() === interval || getQuarter() === interval;
+  interval === 'Today' || getMonthYear() === interval || getYear() === interval || getQuarter() === interval;
 
-export const gc = (interval: string) => {
-  if (interval) {
-    if (isCurrent(interval)) {
-      return 'current-m';
-    }
+export const gc = (interval: string) => (interval === 'Today' ? 'current-m' : '');
+
+export const parseIntervalText = (txt: string) => {
+  if (txt === 'Today') {
+    return txt;
   }
-  // return 'tab-hide';
-  return '';
+
+  const [month, year] = txt.split(' ');
+
+  return `${month} ${year?.slice(2)}`;
 };
