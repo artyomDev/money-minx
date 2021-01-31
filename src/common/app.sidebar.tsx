@@ -50,7 +50,7 @@ const AppSidebar: React.FC<NetworthSidebarProps> = ({ openLeft, openRight }) => 
             </Link>
           </li>
           <li>
-            <Link to='community/profile/edit'>
+            <Link to='/community/profile/edit'>
               <CommunityProfile />
               <i className='icon-profile' />
               Community Profile
