@@ -67,7 +67,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleLeftMenu, toggleRightMenu, 
             <Link to='/allocation' className={navClass('allocation')}>
               Allocation
             </Link>
-              <Link to='/community' className={navClass('allocation')}>
+              <Link to='/community' className={navClass('community')}>
                 Community
               </Link>
           </div>
