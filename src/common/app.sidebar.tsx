@@ -5,6 +5,7 @@ import { logout } from 'auth/auth.service';
 import { ReactComponent as Logout } from 'assets/icons/logout.svg';
 import { ReactComponent as Upgrade } from 'assets/icons/upgrade.svg';
 import { ReactComponent as Profile } from 'assets/icons/profile.svg';
+import { ReactComponent as CommunityProfile } from 'assets/icons/community.svg';
 import { ReactComponent as Support } from 'assets/icons/support.svg';
 import { ReactComponent as Settings } from 'assets/icons/settings.svg';
 import { ReactComponent as ResourceCenter } from 'assets/icons/resource-center.svg';
@@ -46,6 +47,13 @@ const AppSidebar: React.FC<NetworthSidebarProps> = ({ openLeft, openRight }) => 
               <Profile />
               <i className='icon-profile' />
               Profile
+            </Link>
+          </li>
+          <li>
+            <Link to='community/profile/edit'>
+              <CommunityProfile />
+              <i className='icon-profile' />
+              Community Profile
             </Link>
           </li>
           <li>

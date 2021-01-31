@@ -6,7 +6,7 @@ import { createForum } from '@peerboard/core';
 
 import CommunityLayout from './community.layout';
 
-const boardID = 1504465751;
+const boardID = env.PEERBOARD_BOARD_ID as number;
 const pathPrefix = '/community';
 
 export default class Community extends React.Component {
@@ -60,23 +60,6 @@ export default class Community extends React.Component {
           <title>Community | Money Minx</title>
           <meta property='og:description' content='Discussions on personal investing, stocks, ETFs, crowdfunding and more. Join other investors and grow your wealth through knowledge.' />
         </Helmet>
-        {/*<header className={`ui inverted menu ${this.state.lastScrollY > 99 ? 'blue' : ''}`}>
-          <div className="ui container">
-            <div className="header-container">
-              <div className="logo-container">
-                <a href="/">
-                  <img className="logo" src={require('../Assets/images/logo.svg')} alt="money minx logo"/>
-                </a>
-                <span className="badge-coming-soon">Coming Soon!</span>
-              </div>
-              <div className="btn-signup-container">
-                <a className="ui primary button btn-signup" href="/#signup-today">
-                  Get Notified
-                </a>
-              </div>
-            </div>
-          </div>
-        </header>*/}
 
         {this.state.error && this.state.error}
         {this.state.loading && 'Loading...'}
