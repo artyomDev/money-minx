@@ -10,7 +10,7 @@ const pathPrefix = '/community';
 
 export default class Community extends React.Component {
 
-  containerRef = React.createRef();
+  containerRef = React.createRef<HTMLDivElement>();
 
   state = {
     error: null,
@@ -50,8 +50,6 @@ export default class Community extends React.Component {
   }
 
   render() {
-    // @ts-ignore
-    // @ts-ignore
     return (
       <div>
         <Helmet>
@@ -78,7 +76,7 @@ export default class Community extends React.Component {
 
         {this.state.error && this.state.error}
         {this.state.loading && 'Loading...'}
-        <div/>
+        <div ref={this.containerRef}/>
         <footer className='ui vertical footer'>
           <div className='ui center aligned container'>
             <span className='text-footer-author'>© 2021 Money Minx, LLC. All Rights Reserved | </span>
