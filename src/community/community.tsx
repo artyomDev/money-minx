@@ -1,11 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
+import env from 'app/app.env';
 import { createForum } from '@peerboard/core';
-/*Prod*/
-const boardID = 1001332462;
-/*Local*/
-/*const boardID = '1504465751';*/
+
+import CommunityLayout from './community.layout';
+
+const boardID = 1504465751;
 const pathPrefix = '/community';
 
 export default class Community extends React.Component {
@@ -50,8 +51,11 @@ export default class Community extends React.Component {
   }
 
   render() {
+    // @ts-ignore
+    // @ts-ignore
     return (
-      <div>
+      <CommunityLayout>
+        <div>
         <Helmet>
           <title>Community | Money Minx</title>
           <meta property='og:description' content='Discussions on personal investing, stocks, ETFs, crowdfunding and more. Join other investors and grow your wealth through knowledge.' />
@@ -77,13 +81,9 @@ export default class Community extends React.Component {
         {this.state.error && this.state.error}
         {this.state.loading && 'Loading...'}
         <div ref={this.containerRef}/>
-        <footer className='ui vertical footer'>
-          <div className='ui center aligned container'>
-            <span className='text-footer-author'>© 2021 Money Minx, LLC. All Rights Reserved | </span>
-            <a className='text-footer-author' href='https://www.moneyminx.com/blog/privacy-policy/' target='_blank' rel='noopener noreferrer'>Privacy</a>
-          </div>
-        </footer>
+
       </div>
+      </CommunityLayout>
     );
   }
 }
