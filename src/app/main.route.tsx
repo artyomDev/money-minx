@@ -20,6 +20,7 @@ import {
   FeaturesTransactionHistory,
 } from 'website/views';
 import { ForgotPassword } from 'auth/views';
+import Community from 'community/community';
 
 import AppRoute from './app.route';
 import { ResetPassword, TokenExpired } from './app.view';
@@ -37,6 +38,7 @@ const {
     FEATURES_TRANSACTION_HISTORY,
   },
   auth: { DEF, LOGIN, SIGNUP, FORGOT_PASSWORD, TOKEN_EXPIRED, RESET_PASSWORD },
+  community: {COMMUNITY}
 } = appRouteConstants;
 
 function MainRoute() {
@@ -73,6 +75,7 @@ function MainRoute() {
         <Route exact path={FEATURES_SYNCED_MANUAL} component={FeaturesSyncedManual} />
         <Route exact path={FEATURES_MULTICURRENCY} component={FeaturesMulticurrency} />
         <Route exact path={FEATURES_TRANSACTION_HISTORY} component={FeaturesTransactionHistory} />
+        <Route exact path={COMMUNITY} component={Community} />
 
         <Route path='/'>
           <AppRoute />

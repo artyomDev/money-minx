@@ -25,6 +25,9 @@ export const appRouteConstants = {
   networth: {
     NET_WORTH: '/net-worth',
   },
+  community: {
+    COMMUNITY: '/community',
+  },
 
   web: {
     ABOUT: '/about',

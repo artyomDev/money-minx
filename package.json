@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@peerboard/core": "0.0.8",
     "@stripe/stripe-js": "^1.9.0",
     "@types/moment": "^2.13.0",
     "@types/react-datepicker": "^3.1.1",
