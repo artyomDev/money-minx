@@ -92,8 +92,8 @@ export const PlanOverview = () => {
     }
   };
 
-  const monthlyPricingList = subscriptions?.filter((sub: any) => sub.duration === 'month' && sub.active === true);
-  const annualPricingList = subscriptions?.filter((sub: any) => sub.duration === 'year' && sub.active === true);
+  const monthlyPricingList = subscriptions?.filter((sub: any) => sub.duration === 'month' && sub.active === true && sub.name !== 'Free');
+  const annualPricingList = subscriptions?.filter((sub: any) => sub.duration === 'year' && sub.active === true && sub.name !== 'Free');
 
   const planBtnClasses = 'mm-btn-animate trial-btn ml-3 btn-xs-block';
 

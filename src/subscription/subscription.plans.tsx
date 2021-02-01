@@ -18,8 +18,8 @@ const SubscriptionPlans = () => {
     return <CircularSpinner />;
   }
 
-  const monthlyPricingList = subscriptions?.filter((sub: any) => sub.duration === 'month' && sub.active === true);
-  const annualPricingList = subscriptions?.filter((sub: any) => sub.duration === 'year' && sub.active === true);
+  const monthlyPricingList = subscriptions?.filter((sub: any) => sub.duration === 'month' && sub.active === true && sub.name !== 'Free');
+  const annualPricingList = subscriptions?.filter((sub: any) => sub.duration === 'year' && sub.active === true && sub.name !== 'Free');
 
   const pricingList = type === 'monthly' ? monthlyPricingList : annualPricingList;
 
