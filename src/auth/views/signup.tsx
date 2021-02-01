@@ -194,7 +194,6 @@ export const SignupMainSection = () => {
                     password: '',
                     termsAccepted: false,
                     mailChimpSubscription: false,
-                    communitySubscription: false,
                     subscriptionPriceId: priceId || env.STRIPE_DEFAULT_PLAN,
                   }}
                   validate={async (values) => {
@@ -237,7 +236,7 @@ export const SignupMainSection = () => {
 
                     const emptyFields = Object.keys(values).filter((key) => {
                       const value = (values as StringKeyObject)[key];
-                      if (key === 'mailChimpSubscription' || key === 'communitySubscription') {
+                      if (key === 'mailChimpSubscription') {
                         return false;
                       }
                       return value === '' || value === false || value === undefined;
@@ -326,23 +325,6 @@ export const SignupMainSection = () => {
                         )}
 
                         <div className='credentials-checkbox'>
-                          <span className='checkbox-item'>
-                            <label className='check-box'>
-                              Skip the trial, join the community only with a free plan
-                              <input
-                                type='checkbox'
-                                className='newsletter-checkbox'
-                                name='communitySubscription'
-                                placeholder=''
-                                aria-checked={props.values.communitySubscription}
-                                checked={props.values.communitySubscription}
-                                value={`${props.values.communitySubscription}`}
-                                onChange={props.handleChange}
-                              />
-                              <span className='geekmark' />
-                            </label>
-                          </span>
-
                           <span className='checkbox-item'>
                             <label className='check-box'>
                               I accept the{' '}
