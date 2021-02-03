@@ -3,15 +3,23 @@ import Skeleton from 'react-loading-skeleton';
 import Table from 'react-bootstrap/esm/Table';
 
 import { gc } from 'common/interval-parser';
+import classNames from 'common/classes.helper';
 import { parseAmount } from 'common/common-helper';
+import { useModal } from 'common/components/modal';
 import { IBalanceTable } from 'account/account.type';
+import AccountBalanceModal from 'account/components/account-balance-modal';
 
-const BalanceTable: React.FC<IBalanceTable> = ({ balanceData, currencySymbol }) => {
+const BalanceTable: React.FC<IBalanceTable> = ({ balanceData, currencySymbol, account, handleRefresh }) => {
+  const accountBalanceModal = useModal();
+
   if (!balanceData) {
     return <Skeleton width={1232} height={250} />;
   }
 
   const balances = balanceData.balances;
+  const hasHoldings = account?.hasHoldings;
+
+  const rowClasses = classNames(hasHoldings ? 'no-hover' : '');
 
   return (
     <section>
@@ -19,7 +27,7 @@ const BalanceTable: React.FC<IBalanceTable> = ({ balanceData, currencySymbol }) 
         <div className='col-12'>
           <div className='ct-box'>
             <div className='table-holder'>
-              <Table className='tb-responsive account' id='table-account-xls'>
+              <Table className='tb-responsive account'>
                 <thead>
                   <tr>
                     <th className='s-hide'>Description</th>
@@ -31,7 +39,7 @@ const BalanceTable: React.FC<IBalanceTable> = ({ balanceData, currencySymbol }) 
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className='no-hover'>
+                  <tr className={rowClasses} onClick={accountBalanceModal.open}>
                     <td>{balanceData.accountName}</td>
                     {balances.map((balanceObj, index) => (
                       <td key={index} className={gc(balanceObj.interval)}>
@@ -45,6 +53,7 @@ const BalanceTable: React.FC<IBalanceTable> = ({ balanceData, currencySymbol }) 
           </div>
         </div>
       </div>
+      <AccountBalanceModal accountBalanceModal={accountBalanceModal} account={account} onSuccess={handleRefresh} />
     </section>
   );
 };

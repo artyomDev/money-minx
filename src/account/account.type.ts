@@ -1,5 +1,5 @@
-import { ModalType } from 'common/components/modal';
 import { Account } from 'auth/auth.types';
+import { ModalType } from 'common/components/modal';
 
 export interface AccountSubNavigationProps {
   AccountDetails: Account;
@@ -165,6 +165,8 @@ export interface Classifications {
 export interface IBalanceTable {
   balanceData?: IBalanceData;
   currencySymbol: string;
+  account?: Account;
+  handleRefresh: () => void;
 }
 
 export interface IBalance {
@@ -178,3 +180,17 @@ export interface IBalanceData {
   accountName: string;
   balances: IBalance[];
 }
+
+export interface IAccountBalanceModal {
+  account?: Account;
+  accountBalanceModal: ModalType;
+  onSuccess: () => void;
+}
+
+export interface IFormBalance {
+  date: string;
+  dateUTC: string;
+  balance: number | null;
+}
+
+export type TFormBalances = IFormBalance[] | undefined;

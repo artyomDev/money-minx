@@ -63,5 +63,6 @@ export const urls = {
   },
   account: {
     BALANCES: '/account-details/balances',
+    BALANCE_ACCOUNT: '/account-details/balances/account/:accountId',
   },
 };

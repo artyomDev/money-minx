@@ -161,6 +161,7 @@ const AccountDetail: React.FC = () => {
       if (tableType !== 'balance') {
         return false;
       }
+
       setFilterLoading(true);
       const { data, error } = await getAccountDetailBalances({ accountId, baseCurrency });
       setFilterLoading(false);
@@ -169,7 +170,7 @@ const AccountDetail: React.FC = () => {
         setBalanceData(data);
       }
     })();
-  }, [accountId, tableType, baseCurrency]);
+  }, [accountId, tableType, baseCurrency, refreshCounter]);
 
   const handleRefresh = () => setRefreshCounter((c) => c + 1);
 
@@ -407,10 +408,15 @@ const AccountDetail: React.FC = () => {
   }
 
   const providerLastUpdated =
-    AccountDetails?.providerAccount?.dataset?.[0]?.lastUpdated?.toString() !==null ?
-    'Last updated ' + getRelativeDate(AccountDetails?.providerAccount?.dataset?.[0]?.lastUpdated?.toString()) : 'Not yet updated';
+    AccountDetails?.providerAccount?.dataset?.[0]?.lastUpdated?.toString() !== null
+      ? 'Last updated ' + getRelativeDate(AccountDetails?.providerAccount?.dataset?.[0]?.lastUpdated?.toString())
+      : 'Not yet updated';
 
-  const providerStatusIssue = providerStatus === 'ERROR' || providerStatus === 'ERROR_NEW_CREDENTIALS' ||providerStatus === 'ATTENTION' || providerStatus === 'ATTENTION_WAIT';
+  const providerStatusIssue =
+    providerStatus === 'ERROR' ||
+    providerStatus === 'ERROR_NEW_CREDENTIALS' ||
+    providerStatus === 'ATTENTION' ||
+    providerStatus === 'ATTENTION_WAIT';
 
   return (
     <div className='mm-setting'>
@@ -432,9 +438,7 @@ const AccountDetail: React.FC = () => {
           <div className='connection-issue-left'>
             <div className='connection-label-container'>
               <span className='label'>Connection Lost</span>
-              <span className='time'>
-                {providerLastUpdated}
-              </span>
+              <span className='time'>{providerLastUpdated}</span>
             </div>
             <div className='connection-error-msg'>
               {providerStatus === 'ERROR_NEW_CREDENTIALS' ? (
@@ -462,9 +466,7 @@ const AccountDetail: React.FC = () => {
           <div className='connection-issue-left'>
             <div className='connection-label-container'>
               <span className='label'>Refresh Connection</span>
-              <span className='time'>
-                {providerLastUpdated}
-              </span>
+              <span className='time'>{providerLastUpdated}</span>
             </div>
             <div className='connection-error-msg'>
               {providerStatus === 'ATTENTION_WAIT' ? (
@@ -791,7 +793,12 @@ const AccountDetail: React.FC = () => {
                   )}
 
                   {tableType === 'balance' ? (
-                    <BalanceTable balanceData={balanceData} currencySymbol={currencySymbol} />
+                    <BalanceTable
+                      balanceData={balanceData}
+                      currencySymbol={currencySymbol}
+                      account={AccountDetails}
+                      handleRefresh={handleRefresh}
+                    />
                   ) : null}
 
                   {tableType === 'activity' && (

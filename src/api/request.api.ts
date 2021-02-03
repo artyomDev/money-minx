@@ -262,3 +262,7 @@ export const deleteHoldingByPosition = (positionId: string): TApiResponse => {
 export const deleteActivityTransaction = (transactionId: string): TApiResponse => {
   return http.remove(urls.auth.ACCOUNT_ACTIVITY + `/${transactionId}`);
 };
+
+export const putBalanceAccountDetails = <T>(accountId: string, balances: T): TApiResponse => {
+  return http.put(urls.account.BALANCE_ACCOUNT.replace(':accountId', accountId), balances);
+};

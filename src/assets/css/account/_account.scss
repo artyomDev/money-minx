@@ -926,3 +926,133 @@
     }
   }
 }
+
+.balance-modal-form {
+  &__action-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 2rem;
+  }
+  button:last-child {
+    margin-left: 1rem;
+  }
+}
+
+.balance-modal-wrapper {
+  .description {
+    font-size: 1rem;
+    line-height: 150%;
+    color: $grayText;
+  }
+  .form-control {
+    height: 44px;
+    font-size: 0.875rem;
+    border: 1px solid $grayOpacity24;
+    padding: 0 20px;
+    &:focus,
+    &:active {
+      border: 1px solid $gray;
+    }
+    &:disabled {
+      -webkit-text-fill-color: #969eac;
+    }
+  }
+  .balance-value{
+    font-size: 0.875rem;
+  }
+
+  // segmented control
+  .nav-tabs {
+    border-bottom: 1px solid $white;
+    position: relative;
+    overflow: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    border: 1px solid rgba($gray, 0.24);
+    border-radius: 4px;
+  }
+  .nav-tabs .nav-link,
+  .nav-tabs .mm-nav-link {
+    font-size: 0.875rem;
+    line-height: 16px;
+    padding: 15px 49px;
+    margin-right: 0;
+    color: $gray;
+    border-color: $white;
+  }
+  .nav-tabs .nav-link.active,
+  .nav-tabs .active.mm-nav-link,
+  .nav-tabs .nav-item.show .nav-link,
+  .nav-tabs .show.mm-nav-item .nav-link,
+  .nav-tabs .nav-item.show .mm-nav-link,
+  .nav-tabs .show.mm-nav-item .mm-nav-link {
+    color: $purple;
+    border: 1.5px solid $white;
+  }
+  #yearly-balance-tab-null {
+    border: 1.5px solid $primary;
+    border-radius: 4px;
+    width: 133.61px;
+    height: 48px;
+    position: absolute;
+  }
+  .nav-tabs a:first-child.active ~ #yearly-balance-tab-null {
+    transform: translateX(0);
+    transition: transform 0.2s ease-in-out;
+  }
+  .nav-tabs a:nth-child(2).active ~ #yearly-balance-tab-null {
+    transform: translateX(133.61px);
+    transition: transform 0.2s ease-in-out;
+  }
+  .nav-tabs a:nth-child(3).active ~ #yearly-balance-tab-null {
+    transform: translateX(267.22px);
+    transition: transform 0.2s ease-in-out;
+  }
+  .nav-tabs a:nth-child(4).active ~ #yearly-balance-tab-null {
+    transform: translateX(400.83px);
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
+.yearly-form-wrapper {
+  .form-elements-wrapper {
+    margin-top: 20px;
+    display: flex;
+    .form-row {
+      @extend .form-row;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 260px;
+
+      .input-add-on {
+        padding-top: 12px;
+
+        &.left {
+          position: absolute;
+          left: -6px;
+          top: -9px;
+        }
+      }
+
+      .form-control {
+        @extend .form-control;
+        &:disabled {
+          border: 0;
+          background: none;
+        }
+      }
+    }
+  }
+}
+
+.modal-form-row {
+  display: block;
+
+  li {
+    width: 100%;
+    padding: 8px 12px;
+  }
+  li:nth-child(odd) {
+    background: linear-gradient(90deg, #534cea0a 0%, #534cea08 100%);
+  }
+}
